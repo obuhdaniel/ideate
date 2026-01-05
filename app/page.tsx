@@ -48,29 +48,29 @@ export default function HeroSection() {
     ))}
   </div>
 
-  {/* ===== PURPLE ORBITS ===== */}
-  <div className="absolute inset-0 z-0 pointer-events-none">
-    <div className="absolute top-1/3 left-1/4 w-40 h-40 opacity-40">
-      {[...Array(4)].map((_, i) => (
+{/* ===== CENTERED ORBIT WITH 6 RINGS ===== */}
+<div className="absolute inset-0 z-0 pointer-events-none flex items-center justify-center">
+  <div className="relative">
+    {[...Array(6)].map((_, i) => {
+      const baseSize = 700; // Large starting circle
+      const increment = 200; // Only 20px difference between circles
+      const size = baseSize + (i * increment);
+      
+      return (
         <div
           key={i}
-          className="absolute inset-0 rounded-full border border-purple-500/40"
-          style={{ transform: `scale(${1 + i * 0.35})` }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-8 border-[#272731]"
+          style={{ 
+            width: `${size}px`,
+            height: `${size}px`,
+            opacity: `${0.9 - (i * 0.15)}`,
+            borderWidth: `${2 + i * 0.5}px`, // Optional: thicker borders for outer circles
+          }}
         />
-      ))}
-    </div>
-
-    <div className="absolute bottom-1/3 right-1/4 w-40 h-40 opacity-40">
-      {[...Array(4)].map((_, i) => (
-        <div
-          key={i}
-          className="absolute inset-0 rounded-full border border-purple-500/40"
-          style={{ transform: `scale(${1 + i * 0.35})` }}
-        />
-      ))}
-    </div>
+      );
+    })}
   </div>
-
+</div>
   <Navigation />
 
   {/* ===== IDEATE BACKDROP TEXT ===== */}
