@@ -4,9 +4,10 @@ import { useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import * as motion from "framer-motion/client";
 import { AnimatePresence } from "framer-motion";
-import { Canvas } from "@react-three/fiber";
 import Navigation from "@/components/layout/Navigation";
-import WireframePlanet from "@/components/ui/Planet3D";
+import StarField from "@/components/ui/StarField";
+import OrbitRings from "@/components/ui/OrbitRings";
+import PlanetWithCanvas from "@/components/ui/PlanetWithCanvas";
 
 // ============================================
 // CONSTANTS
@@ -50,79 +51,6 @@ const textTransition = {
 // ============================================
 // SUB-COMPONENTS
 // ============================================
-
-function StarField() {
-  return (
-    <div className="absolute inset-0 z-0">
-      {[...Array(60)].map((_, i) => (
-        <span
-          key={i}
-          className="absolute h-[2px] w-[2px] rounded-full bg-white/70 animate-twinkle"
-          style={{
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 4}s`,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
-interface PlanetContainerProps {
-  position: "left" | "right";
-  glowIntensity: number;
-}
-
-function PlanetContainer({ position, glowIntensity }: PlanetContainerProps) {
-  const positionClasses =
-    position === "left" ? "top-[30%] left-[8%]" : "bottom-[15%] right-[8%]";
-
-  return (
-    <div
-      className={`absolute ${positionClasses} w-[180px] h-[180px] z-[5] pointer-events-none`}
-    >
-      <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
-        <WireframePlanet glowIntensity={glowIntensity} />
-      </Canvas>
-    </div>
-  );
-}
-
-interface OrbitRingsProps {
-  isTransitioning: boolean;
-}
-
-function OrbitRings({ isTransitioning }: OrbitRingsProps) {
-  const rings = [700, 900, 1100, 1300, 1500, 1700];
-
-  return (
-    <div className="absolute inset-0 z-[3] pointer-events-none flex items-center justify-center">
-      <div className="relative">
-        {rings.map((size, i) => (
-          <motion.div
-            key={i}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#272731]"
-            style={{
-              width: `${size}px`,
-              height: `${size}px`,
-              borderWidth: `${1.5 + i * 0.3}px`,
-            }}
-            animate={{
-              opacity: isTransitioning ? 0.15 : 0.5 - i * 0.06,
-              borderColor: isTransitioning ? "#12121a" : "#272731",
-            }}
-            transition={{
-              duration: 2.5,
-              ease: [0.4, 0, 0.2, 1],
-              delay: i * 0.05,
-            }}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
 
 interface SlideTextProps {
   currentSlide: number;
@@ -288,11 +216,11 @@ export default function HeroSection() {
 
   return (
     <section className="relative h-screen w-full overflow-hidden bg-[#070d1f]">
-      <StarField />
-      <OrbitRings isTransitioning={isTransitioning} />
+      <StarField className="z-0" />
+      <OrbitRings isTransitioning={isTransitioning} className="z-[3]" />
 
-      <PlanetContainer position="left" glowIntensity={glowIntensity} />
-      <PlanetContainer position="right" glowIntensity={glowIntensity} />
+      <PlanetWithCanvas position="left" glowIntensity={glowIntensity} />
+      <PlanetWithCanvas position="right" glowIntensity={glowIntensity} />
 
       <Navigation />
 
