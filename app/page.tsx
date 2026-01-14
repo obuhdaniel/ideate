@@ -6,6 +6,7 @@ import ProjectSection from "@/components/sections/ProjectSection";
 import ServicesSection from "@/components/sections/ServicesSection";
 import ProcessSection from "@/components/sections/ProcessSection";
 import ToolsSection from "@/components/sections/ToolsSection";
+import Footer from "@/components/layout/Footer";
 
 export default function HomePage() {
   const portfolioRef = useRef<HTMLDivElement>(null);
@@ -46,6 +47,9 @@ export default function HomePage() {
       <div id="tools">
         <ToolsSection />
       </div>
+
+      {/* Footer */}
+      <Footer />
     </main>
   );
 }
