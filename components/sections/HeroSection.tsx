@@ -71,7 +71,7 @@ function SlideText({ currentSlide, direction }: SlideTextProps) {
           animate="center"
           exit="exit"
           transition={textTransition}
-          className="text-[10rem] md:text-[16rem] lg:text-[20rem] xl:text-[24rem] font-extralight tracking-tight text-[#d8d8d8]/70 select-none leading-none"
+          className="text-[810rem] md:text-[16rem] lg:text-[16rem] xl:text-[18rem] font-extralight tracking-tight text-[#d8d8d8]/70 select-none leading-none"
         >
           {SLIDES[currentSlide].title}
         </motion.h1>
@@ -82,13 +82,12 @@ function SlideText({ currentSlide, direction }: SlideTextProps) {
 
 function HeroImage() {
   return (
-    <div className="absolute inset-0 z-20 flex items-center justify-center pt-20">
+    <div className="absolute inset-0 z-20 flex items-center justify-center pt-40">
       <img
         src={HERO_IMAGE}
         alt="Hero"
-        className="h-auto max-h-[85vh] object-contain"
+        className="max-h-screen w-auto object-contain"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#070d1f] via-transparent to-transparent" />
     </div>
   );
 }
@@ -219,7 +218,7 @@ export default function HeroSection({ onExplore }: HeroSectionProps) {
   return (
     <section
       id="hero"
-      className="relative h-screen w-full overflow-hidden bg-[#070d1f]"
+      className="relative h-[120vh] w-full overflow-hidden bg-[#070d1f]"
     >
       <StarField className="z-0" />
       <OrbitRings isTransitioning={isTransitioning} className="z-[3]" />

@@ -1,7 +1,7 @@
 export default function Navigation() {
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center px-8 mb-16 bg-transparent">
+      <nav className="left-0 right-0 z-50 flex items-center justify-center px-8 mb-16 bg-transparent">
         <div className="flex items-center mx-auto gap-32 w-fit px-8 py-6">
           <a
             href="#process"
