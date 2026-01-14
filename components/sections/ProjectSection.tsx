@@ -5,6 +5,7 @@ import PortfolioCarousel, {
   PortfolioProject,
 } from "@/components/features/PortfolioCarousel";
 import GlowingPlanet from "@/components/ui/GlowingPlanet";
+import StarField from "@/components/ui/StarField";
 import OrbitRings from "@/components/ui/OrbitRings";
 
 const PORTFOLIO_PROJECTS: PortfolioProject[] = [
@@ -45,6 +46,8 @@ const PORTFOLIO_PROJECTS: PortfolioProject[] = [
 export default function ProjectSection() {
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-[#070d1f] py-20 lg:py-32">
+      {/* Star Field Background */}
+      <StarField count={100} className="pointer-events-none" />
       {/* Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Orbit Rings - positioned at left side */}
