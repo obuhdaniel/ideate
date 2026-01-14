@@ -8,6 +8,7 @@ interface ServiceCardProps {
   title: string;
   description: string;
   delay?: number;
+  position?: "top-left" | "top-right" | "bottom-left" | "bottom-right";
 }
 
 export default function ServiceCard({
@@ -15,22 +16,27 @@ export default function ServiceCard({
   title,
   description,
   delay = 0,
+  position = "top-left",
 }: ServiceCardProps) {
+  // Determine border classes based on position in the grid
+  const borderClasses = {
+    "top-left": "border-r border-b border-white/10",
+    "top-right": "border-b border-white/10",
+    "bottom-left": "border-r border-white/10",
+    "bottom-right": "",
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay }}
-      whileHover={{ y: -5, scale: 1.02 }}
-      className="group relative p-6 rounded-xl bg-white/5 border border-white/10 hover:border-purple-500/30 transition-all duration-300"
+      className={`group relative p-8 lg:p-10 ${borderClasses[position]} hover:bg-white/[0.02] transition-all duration-300`}
     >
-      {/* Hover glow effect */}
-      <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-purple-600/0 to-cyan-600/0 group-hover:from-purple-600/10 group-hover:to-cyan-600/10 transition-all duration-500" />
-
       <div className="relative z-10">
         {/* Icon */}
-        <div className="w-12 h-12 mb-4">
+        <div className="w-8 h-8 mb-5">
           <img
             src={icon}
             alt={title}
@@ -39,17 +45,14 @@ export default function ServiceCard({
         </div>
 
         {/* Title */}
-        <h3 className="text-lg font-bold text-white mb-2 uppercase tracking-wide">
+        <h3 className="text-xl md:text-2xl font-bold text-white mb-3 uppercase tracking-wide">
           {title}
         </h3>
 
         {/* Description */}
-        <p className="text-sm text-white/60 leading-relaxed">{description}</p>
-      </div>
-
-      {/* Corner accent */}
-      <div className="absolute top-0 right-0 w-16 h-16 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-        <div className="absolute top-2 right-2 w-2 h-2 bg-purple-500 rounded-full" />
+        <p className="text-base text-white/60 leading-relaxed max-w-sm">
+          {description}
+        </p>
       </div>
     </motion.div>
   );

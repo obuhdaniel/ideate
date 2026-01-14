@@ -3,7 +3,7 @@
 
 import * as motion from "framer-motion/client";
 import { VisitButton } from "@/components/ui/Button";
-import GlowingPlanet from "@/components/ui/GlowingPlanet";
+import OrbitRings from "@/components/ui/OrbitRings";
 
 interface ContactBannerProps {
   email?: string;
@@ -15,85 +15,97 @@ export default function ContactBanner({
   onFillFormClick,
 }: ContactBannerProps) {
   return (
-    <section className="relative w-full overflow-hidden bg-[#070d1f] py-16 lg:py-20">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/10 to-transparent pointer-events-none" />
+    <section className="relative w-full overflow-hidden bg-[#070d1f] py-16 lg:py-24">
+      {/* Left vertical line */}
+      <div className="absolute left-[8%] md:left-[10%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
 
-      {/* Decorative star elements */}
-      <div className="absolute top-[20%] left-[8%] w-3 h-3 pointer-events-none">
-        <img
-          src="/images/custom-images/space-star.png"
-          alt=""
-          className="w-full h-full object-contain animate-pulse"
-        />
-      </div>
-      <div className="absolute bottom-[30%] right-[12%] w-4 h-4 pointer-events-none">
-        <img
-          src="/images/custom-images/space-star.png"
-          alt=""
-          className="w-full h-full object-contain animate-pulse"
-          style={{ animationDelay: "0.5s" }}
-        />
-      </div>
-      <div className="absolute top-[60%] left-[45%] w-2 h-2 pointer-events-none">
-        <img
-          src="/images/custom-images/space-star.png"
-          alt=""
-          className="w-full h-full object-contain animate-pulse"
-          style={{ animationDelay: "0.8s" }}
-        />
-      </div>
+      {/* Right vertical line */}
+      <div className="absolute right-[8%] md:right-[10%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
 
-      {/* Sun-like planet decoration */}
-      <GlowingPlanet
-        src="/images/custom-images/sun-like-planet.png"
-        alt="Sun Planet"
-        size={100}
-        glowColor="rgba(251, 191, 36, 0.5)"
-        position={{ bottom: "10%", right: "5%" }}
-      />
+      {/* Top decorative line */}
+      <div className="absolute top-0 left-[10%] right-[10%] h-px bg-white/10" />
+
+      {/* Orbit Rings Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <OrbitRings
+          sizes={[400, 600, 800]}
+          centerX="80%"
+          centerY="50%"
+          className="opacity-15"
+        />
+      </div>
 
       {/* Content */}
-      <div className="relative z-20 max-w-7xl mx-auto px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8"
-        >
-          {/* Text Content */}
-          <div className="space-y-4">
-            <h3 className="text-2xl md:text-3xl font-bold text-white uppercase tracking-wide">
-              Have an idea but having difficulties
-              <br />
-              implementing it?
-            </h3>
-            <p className="text-white/70 text-lg">
-              Email us at{" "}
-              <a
-                href={`mailto:${email}`}
-                className="text-white font-medium hover:text-purple-400 transition-colors"
-              >
-                {email}
-              </a>
-            </p>
+      <div className="relative z-20 max-w-5xl mx-auto px-12 md:px-16 lg:px-20">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+          {/* Left Content */}
+          <div className="flex-1">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="space-y-4"
+            >
+              <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-white uppercase tracking-wide leading-tight">
+                Have an idea but having difficulties
+                <br />
+                implementing it?
+              </h3>
+              <p className="text-white/70 text-base md:text-lg">
+                Email us at{" "}
+                <a
+                  href={`mailto:${email}`}
+                  className="text-white font-semibold hover:text-purple-400 transition-colors"
+                >
+                  {email}
+                </a>
+              </p>
+            </motion.div>
           </div>
 
           {/* CTA Button */}
-          <VisitButton
-            onClick={onFillFormClick}
-            variant="outline"
-            size="md"
-            className="whitespace-nowrap"
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
           >
-            Fill the Form
-          </VisitButton>
-        </motion.div>
+            <VisitButton
+              onClick={onFillFormClick}
+              variant="outline"
+              size="lg"
+              className="whitespace-nowrap"
+            >
+              Fill the Form
+            </VisitButton>
+          </motion.div>
+
+          {/* Large Rocket Image */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="hidden lg:block"
+          >
+            <motion.img
+              src="/images/custom-images/rocket.png"
+              alt="Rocket"
+              className="w-32 h-32 lg:w-40 lg:h-40 object-contain"
+              animate={{ y: [0, -10, 0] }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          </motion.div>
+        </div>
       </div>
 
-      {/* Decorative line */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+      {/* Bottom decorative line */}
+      <div className="absolute bottom-0 left-[10%] right-[10%] h-px bg-white/10" />
     </section>
   );
 }
