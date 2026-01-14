@@ -18,13 +18,16 @@ import { ExploreButton } from "@/components/ui/Button";
 const SLIDE_DURATION = 6000;
 const TRANSITION_DURATION = 2500;
 
-const SLIDES = [
+const TEXT_SLIDES = [
   { title: "IDEATE" },
   { title: "DIGITAL" },
   { title: "AGENCY" },
 ] as const;
 
-const HERO_IMAGE = "/images/hero/2.png";
+const HERO_IMAGES = [
+  "/images/hero/hero-female.png",
+  "/images/hero/hero-male.png",
+] as const;
 
 // ============================================
 // ANIMATION VARIANTS
@@ -50,44 +53,78 @@ const textTransition = {
   opacity: { duration: 2 },
 };
 
+const imageVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? 1000 : -1000,
+    opacity: 0,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+  },
+  exit: (direction: number) => ({
+    x: direction < 0 ? 1000 : -1000,
+    opacity: 0,
+  }),
+};
+
+const imageTransition = {
+  x: { type: "spring", stiffness: 50, damping: 25 },
+  opacity: { duration: 0.4 },
+};
+
 // ============================================
 // SUB-COMPONENTS
 // ============================================
 
 interface SlideTextProps {
-  currentSlide: number;
-  direction: number;
+  currentTextSlide: number;
+  textDirection: number;
 }
 
-function SlideText({ currentSlide, direction }: SlideTextProps) {
+function SlideText({ currentTextSlide, textDirection }: SlideTextProps) {
   return (
     <div className="absolute inset-0 z-10 flex items-start justify-center pt-16 lg:pt-16 pointer-events-none overflow-hidden">
-      <AnimatePresence mode="wait" custom={direction}>
+      <AnimatePresence mode="wait" custom={textDirection}>
         <motion.h1
-          key={currentSlide}
-          custom={direction}
+          key={currentTextSlide}
+          custom={textDirection}
           variants={textVariants}
           initial="enter"
           animate="center"
           exit="exit"
           transition={textTransition}
-          className="text-[810rem] md:text-[16rem] lg:text-[16rem] xl:text-[18rem] font-extralight tracking-tight text-[#d8d8d8]/70 select-none leading-none"
+          className="text-[8rem] md:text-[16rem] lg:text-[16rem] xl:text-[18rem] font-extralight tracking-tight text-[#d8d8d8]/70 select-none leading-none"
         >
-          {SLIDES[currentSlide].title}
+          {TEXT_SLIDES[currentTextSlide].title}
         </motion.h1>
       </AnimatePresence>
     </div>
   );
 }
 
-function HeroImage() {
+interface HeroImageProps {
+  currentSlide: number;
+  direction: number;
+}
+
+function HeroImage({ currentSlide, direction }: HeroImageProps) {
   return (
-    <div className="absolute inset-0 z-20 flex items-center justify-center pt-40">
-      <img
-        src={HERO_IMAGE}
-        alt="Hero"
-        className="max-h-screen w-auto object-contain"
-      />
+    <div className="absolute inset-0 z-20 flex items-center justify-center pt-40 overflow-hidden">
+      <AnimatePresence mode="wait" custom={direction}>
+        <motion.img
+          key={currentSlide}
+          custom={direction}
+          variants={imageVariants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={imageTransition}
+          src={HERO_IMAGES[currentSlide]}
+          alt="Hero"
+          className="max-h-screen w-auto object-contain"
+        />
+      </AnimatePresence>
     </div>
   );
 }
@@ -173,9 +210,14 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ onExplore }: HeroSectionProps) {
+  // Image slide state (controlled by buttons)
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // Text slide state (auto-sliding)
+  const [currentTextSlide, setCurrentTextSlide] = useState(0);
+  const [textDirection, setTextDirection] = useState(1);
 
   const goToSlide = useCallback(
     (index: number) => {
@@ -189,13 +231,24 @@ export default function HeroSection({ onExplore }: HeroSectionProps) {
   const nextSlide = useCallback(() => {
     setDirection(1);
     setIsTransitioning(true);
-    setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
+    setCurrentSlide((prev) => (prev + 1) % HERO_IMAGES.length);
   }, []);
 
   const prevSlide = useCallback(() => {
     setDirection(-1);
     setIsTransitioning(true);
-    setCurrentSlide((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
+    setCurrentSlide(
+      (prev) => (prev - 1 + HERO_IMAGES.length) % HERO_IMAGES.length
+    );
+  }, []);
+
+  // Auto-slide text only
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTextDirection(1);
+      setCurrentTextSlide((prev) => (prev + 1) % TEXT_SLIDES.length);
+    }, SLIDE_DURATION);
+    return () => clearInterval(timer);
   }, []);
 
   useEffect(() => {
@@ -207,11 +260,6 @@ export default function HeroSection({ onExplore }: HeroSectionProps) {
       return () => clearTimeout(timer);
     }
   }, [isTransitioning]);
-
-  useEffect(() => {
-    const timer = setInterval(nextSlide, SLIDE_DURATION);
-    return () => clearInterval(timer);
-  }, [nextSlide]);
 
   const glowIntensity = isTransitioning ? 0.3 : 1;
 
@@ -228,9 +276,12 @@ export default function HeroSection({ onExplore }: HeroSectionProps) {
 
       <Navigation />
 
-      <SlideText currentSlide={currentSlide} direction={direction} />
+      <SlideText
+        currentTextSlide={currentTextSlide}
+        textDirection={textDirection}
+      />
 
-      <HeroImage />
+      <HeroImage currentSlide={currentSlide} direction={direction} />
 
       <Tagline />
 
@@ -238,7 +289,7 @@ export default function HeroSection({ onExplore }: HeroSectionProps) {
         onPrev={prevSlide}
         onNext={nextSlide}
         currentSlide={currentSlide}
-        totalSlides={SLIDES.length}
+        totalSlides={HERO_IMAGES.length}
         onSelectSlide={goToSlide}
         onExplore={onExplore}
       />

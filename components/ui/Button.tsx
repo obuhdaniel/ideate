@@ -31,7 +31,7 @@ export function VisitButton({
 
   const variantClasses = {
     primary:
-      "bg-purple-600 hover:bg-purple-500 text-white border-purple-600 shadow-lg shadow-purple-600/30",
+      "bg-[#580196] hover:bg-[#6a02b3] text-white border-[#580196] shadow-lg shadow-[#580196]/30",
     outline:
       "bg-transparent hover:bg-white/5 text-white border-purple-500/50 hover:border-purple-400",
   };
@@ -51,7 +51,7 @@ export function VisitButton({
       {showArrow && (
         <motion.span
           className="inline-flex"
-          whileHover={{ x: 4 }}
+          whileHover={{ x: 4, rotate: -45 }}
           transition={{ duration: 0.2 }}
         >
           <ArrowRight className="w-4 h-4" />
@@ -99,9 +99,18 @@ export function ExploreButton({ onClick, className = "" }: ExploreButtonProps) {
       onClick={onClick}
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.97 }}
-      className={`px-12 py-4 bg-purple-600 hover:bg-purple-500 text-white rounded-full transition-colors duration-300 font-medium text-sm tracking-wider shadow-lg shadow-purple-600/30 ${className}`}
+      className={`px-12 py-4 bg-[#580196] hover:bg-[#6a02b3] text-white rounded-full transition-colors duration-300 font-medium text-lg tracking-wider shadow-lg shadow-[#580196]/30 ${className}`}
     >
-      EXPLORE <span className="ml-2">→</span>
+      <h2 className="flex items-center">
+      EXPLORE{" "}
+      <motion.span
+        className="inline-flex ml-2"
+        whileHover={{ rotate: -45, x: 4 }}
+        transition={{ duration: 0.2 }}
+      >
+        →
+      </motion.span>
+      </h2>
     </motion.button>
   );
 }
