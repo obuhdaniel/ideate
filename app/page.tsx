@@ -4,8 +4,7 @@ import { useRef } from "react";
 import HeroSection from "@/components/sections/HeroSection";
 import ProjectSection from "@/components/sections/ProjectSection";
 import ServicesSection from "@/components/sections/ServicesSection";
-import ContactBanner from "@/components/sections/ContactBanner";
-import AboutSection from "@/components/sections/AboutSection";
+import ProcessSection from "@/components/sections/ProcessSection";
 
 export default function HomePage() {
   const portfolioRef = useRef<HTMLDivElement>(null);
@@ -34,15 +33,12 @@ export default function HomePage() {
 
       {/* Services Section */}
       <div id="services">
-        <ServicesSection />
+        <ServicesSection onFillFormClick={handleFillForm} />
       </div>
 
-      {/* Contact Banner */}
-      <ContactBanner onFillFormClick={handleFillForm} />
-
-      {/* About/Why We Started Section */}
-      <div id="about">
-        <AboutSection />
+      {/* Process Section */}
+      <div id="process">
+        <ProcessSection />
       </div>
     </main>
   );
