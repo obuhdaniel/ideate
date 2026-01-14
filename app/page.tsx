@@ -5,6 +5,7 @@ import HeroSection from "@/components/sections/HeroSection";
 import ProjectSection from "@/components/sections/ProjectSection";
 import ServicesSection from "@/components/sections/ServicesSection";
 import ProcessSection from "@/components/sections/ProcessSection";
+import ToolsSection from "@/components/sections/ToolsSection";
 
 export default function HomePage() {
   const portfolioRef = useRef<HTMLDivElement>(null);
@@ -39,6 +40,11 @@ export default function HomePage() {
       {/* Process Section */}
       <div id="process">
         <ProcessSection />
+      </div>
+
+      {/* Tools Section */}
+      <div id="tools">
+        <ToolsSection />
       </div>
     </main>
   );
