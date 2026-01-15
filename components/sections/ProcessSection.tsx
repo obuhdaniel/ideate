@@ -56,12 +56,14 @@ export default function ProcessSection() {
   };
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-[#070d1f] py-20 lg:py-32">
-      {/* Star Field Background */}
-      <StarField count={80} className="pointer-events-none" />
+    <section className="relative w-full min-h-screen overflow-hidden bg-[#070d1f] py-20 lg:py-32 flex items-center">
+      {/* --- BACKGROUND ELEMENTS --- */}
+
+      {/* Star Field */}
+      <StarField count={80} className="pointer-events-none opacity-60" />
 
       {/* Planet with bodies - Top Left */}
-      <div className="absolute top-[5%] left-[2%] w-16 h-16 md:w-24 md:h-24 pointer-events-none">
+      <div className="absolute top-[-5%] left-[-5%] w-32 h-32 md:w-64 md:h-64 pointer-events-none">
         <img
           src="/images/process/planet-with-bodies-around.png"
           alt=""
@@ -70,7 +72,7 @@ export default function ProcessSection() {
       </div>
 
       {/* Planet with bodies - Bottom Right */}
-      <div className="absolute bottom-[15%] right-[5%] w-20 h-20 md:w-28 md:h-28 pointer-events-none opacity-70">
+      <div className="absolute bottom-[35%] left-[10%] w-40 h-40 md:w-80 md:h-80 pointer-events-none opacity-70">
         <img
           src="/images/process/planet-with-bodies-around.png"
           alt=""
@@ -78,150 +80,150 @@ export default function ProcessSection() {
         />
       </div>
 
-      {/* Content Container */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Left Content */}
-          <div className="space-y-8">
-            {/* Section Label */}
+      {/* Dynamic Background Image */}
+      <div className="absolute inset-0 z-0 flex items-end justify-center pointer-events-none">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeStep}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6 }}
+            className="relative w-full max-w-5xl h-full flex items-end justify-center"
+          >
+            <img
+              src={PROCESS_STEPS[activeStep].image}
+              alt="Process"
+              className="w-full h-[75%] object-contain object-bottom"
+            />
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* --- CONTENT CONTAINER --- */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-8 items-center">
+          {/* LEFT COLUMN: Headings & Mission */}
+          <div className="lg:pr-10">
+            {/* Tagline */}
             <div className="flex items-center gap-3">
-              <span className="text-purple-400 font-mono text-sm">//</span>
-              <span className="text-purple-400 font-medium tracking-wide">
+              <span className="text-purple-500 font-mono text-sm">//</span>
+              <span className="text-purple-400 text-2xl tracking-wide uppercase">
                 The Process
               </span>
             </div>
 
-            {/* Animated Title */}
-            <div className="h-32 md:h-40 overflow-hidden">
+            {/* Cycling Big Text */}
+            <div className="h-32 lg:h-40 flex flex-col justify-start mb-30">
               <AnimatePresence mode="wait">
                 <motion.h2
                   key={currentWordIndex}
-                  initial={{ y: 50, opacity: 0 }}
+                  initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -50, opacity: 0 }}
-                  transition={{ duration: 0.5, ease: "easeInOut" }}
-                  className="text-4xl md:text-5xl lg:text-6xl font-bold text-white"
+                  exit={{ y: -20, opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="text-4xl md:text-4xl lg:text-4xl font-bold text-white leading-tight"
                 >
                   {ANIMATED_WORDS[currentWordIndex]}
                 </motion.h2>
               </AnimatePresence>
             </div>
 
-            {/* Mission Text */}
-            <p className="text-gray-300 text-lg max-w-md">
-              <span className="text-white font-medium">Our mission</span> when
-              you trust us to bring your product to life.
-            </p>
+            {/* Mission Statement */}
+            <div className="max-w-[50%] space-y-5">
+              <p className="text-xl md:text-2xl text-gray-300 font-light leading-relaxed">
+                <span className="text-white font-medium">Our mission</span> when
+                you trust us to bring your product to life.
+              </p>
 
-            {/* Find Out Button */}
-            <VisitButton
-              onClick={handleFindOut}
-              variant="primary"
-              size="lg"
-              showArrow={true}
-            >
-              Find Out
-            </VisitButton>
+              {/* CTA Button */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                <VisitButton href="/about" variant="outline" size="lg">
+                  Find Out
+                </VisitButton>
+              </motion.div>
+            </div>
           </div>
 
-          {/* Right Content - Image and Steps */}
-          <div className="relative flex items-center gap-6 lg:gap-10">
-            {/* Process Image */}
-            <div className="relative flex-1">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeStep}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.4, ease: "easeInOut" }}
-                  className="relative aspect-[3/4] w-full max-w-md mx-auto"
-                >
-                  <img
-                    src={PROCESS_STEPS[activeStep].image}
-                    alt={PROCESS_STEPS[activeStep].title}
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                </motion.div>
-              </AnimatePresence>
-            </div>
+          {/* RIGHT COLUMN: The Timeline List */}
+          <div className="relative pl-4 lg:pl-70 py-10">
+            <div className="flex flex-col">
+              {PROCESS_STEPS.map((step, index) => {
+                const isLast = index === PROCESS_STEPS.length - 1;
+                const isActive = activeStep === index;
 
-            {/* Process Steps */}
-            <div className="flex flex-col gap-6 lg:gap-8">
-              {PROCESS_STEPS.map((step, index) => (
-                <ProcessStep
-                  key={step.id}
-                  step={step}
-                  isActive={activeStep === index}
-                  onClick={() => handleStepClick(index)}
-                />
-              ))}
+                return (
+                  <div
+                    key={step.id}
+                    className={`relative group cursor-pointer flex flex-col ${
+                      // Add padding to create vertical space, except for the last item
+                      !isLast ? "pb-20" : ""
+                    }`}
+                    onClick={() => handleStepClick(index)}
+                  >
+                    {/* --- THE CONNECTOR LINE --- */}
+                    {/* Logic: Show line ONLY if step is NOT active and NOT last. 
+                        This creates the "alternating" effect where the active step 
+                        breaks the line to show the Glow Indicator instead. */}
+                    {!isLast && !isActive && (
+                      <div className="absolute left-[3px] lg:left-[3px] top-[2.5rem] bottom-0 w-px bg-white/10" />
+                    )}
+
+                    <div className="flex items-start gap-8 lg:gap-12 relative z-10">
+                      {/* Number Column */}
+                      <div className="flex flex-col items-center w-[7px]">
+                        <span
+                          className={`text-sm font-mono mt-1 transition-colors duration-300 ${
+                            isActive ? "text-purple-400" : "text-gray-600"
+                          }`}
+                        >
+                          {step.number}
+                        </span>
+                      </div>
+
+                      {/* Text Content */}
+                      <div className="flex-1 space-y-3 pt-0">
+                        <h3
+                          className={`text-3xl font-bold transition-colors duration-300 ${
+                            isActive
+                              ? "text-white"
+                              : "text-gray-600 group-hover:text-gray-400"
+                          }`}
+                        >
+                          {step.title}
+                        </h3>
+
+                        <p
+                          className={`text-base max-w-xs transition-colors duration-300 ${
+                            isActive ? "text-gray-300" : "text-gray-700"
+                          }`}
+                        >
+                          {step.description}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* --- THE ACTIVE GLOW INDICATOR --- */}
+                    {/* This replaces the connector line when the step is active */}
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeGlow"
+                        className="absolute left-[3px] lg:left-[3px] top-2 h-12 w-[2px] bg-white -translate-x-1/2 shadow-[0_0_15px_rgba(255,255,255,0.8)]"
+                        transition={{ duration: 0.3 }}
+                      />
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
       </div>
     </section>
-  );
-}
-
-interface ProcessStepProps {
-  step: (typeof PROCESS_STEPS)[0];
-  isActive: boolean;
-  onClick: () => void;
-}
-
-function ProcessStep({ step, isActive, onClick }: ProcessStepProps) {
-  return (
-    <button
-      onClick={onClick}
-      className="text-left group cursor-pointer transition-all duration-300"
-    >
-      <div className="flex items-start gap-4">
-        {/* Step Number */}
-        <span
-          className={`text-sm font-mono transition-colors duration-300 ${
-            isActive ? "text-purple-400" : "text-gray-600"
-          }`}
-        >
-          {step.number}
-        </span>
-
-        {/* Step Content */}
-        <div className="space-y-2">
-          <h3
-            className={`text-xl md:text-2xl font-semibold transition-colors duration-300 ${
-              isActive
-                ? "text-white"
-                : "text-gray-500 group-hover:text-gray-400"
-            }`}
-          >
-            {step.title}
-          </h3>
-
-          {/* Description - Only visible when active */}
-          <AnimatePresence>
-            {isActive && (
-              <motion.p
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="text-gray-400 text-sm md:text-base max-w-xs"
-              >
-                {step.description}
-              </motion.p>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
-
-      {/* Active Indicator Line */}
-      <motion.div
-        className="mt-3 ml-8 h-[1px] bg-purple-500/50"
-        initial={{ width: 0 }}
-        animate={{ width: isActive ? "100%" : 0 }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-      />
-    </button>
   );
 }
