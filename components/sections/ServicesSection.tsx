@@ -54,12 +54,29 @@ export default function ServicesSection({
 
   return (
     <>
-      <section className="relative w-full overflow-hidden bg-[#070d1f] py-20 lg:py-32">
+      <section className="relative w-full overflow-visible bg-[#070d1f] py-20 lg:py-32">
+        {/* --- DECORATIVE LINES --- */}
+
         {/* Left vertical line */}
-        <div className="absolute left-[8%] md:left-[10%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+        <div className="absolute left-[8%] md:left-[18%] top-[25%] bottom-[8%] w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
 
         {/* Right vertical line */}
-        <div className="absolute right-[8%] md:right-[10%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+        <div className="absolute right-[8%] md:right-[18%] top-[25%] bottom-[8%] w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+
+        {/* Top decorative line */}
+        <div className="absolute top-[33.5%] left-[10%] right-[10%] h-px bg-white/10" />
+
+        {/* Bottom decorative line */}
+        <div className="absolute bottom-[14.5%] left-[10%] right-[10%] h-px bg-white/10" />
+
+        {/* --- NEW: THE ENCLOSED BOX FILL --- 
+            Top: 33.5% (Matches top line)
+            Bottom: 14.5% (Matches bottom line)
+            Left/Right: 8% -> 18% (Matches vertical lines)
+        */}
+        <div className="absolute top-[33.5%] bottom-[14.5%] left-[8%] right-[8%] md:left-[18%] md:right-[18%] bg-white/[0.03] pointer-events-none" />
+
+        {/* --- BACKGROUND ELEMENTS --- */}
 
         {/* Multiple Orbit Rings at different positions */}
         <div className="absolute inset-0 pointer-events-none">
@@ -90,37 +107,37 @@ export default function ServicesSection({
         <GlowingPlanet
           src="/images/services/purple-planet.png"
           alt="Purple Planet"
-          size={70}
+          size={250}
           glowColor="rgba(147, 51, 234, 0.5)"
-          position={{ top: "3%", left: "3%" }}
+          position={{ top: "8%", left: "2%" }}
         />
 
         {/* Globe - Top Right */}
         <GlowingPlanet
           src="/images/services/globe.png"
           alt="Globe"
-          size={60}
+          size={250}
           glowColor="rgba(100, 200, 255, 0.4)"
-          position={{ top: "5%", right: "5%" }}
+          position={{ top: "8%", right: "2%" }}
         />
 
         {/* Content */}
         <div className="relative z-20 max-w-5xl mx-auto px-12 md:px-16 lg:px-20">
           {/* Section Header */}
-          <div className="mb-12">
+          <div className="mb-20">
             <div className="flex items-center gap-3 mb-4">
               <span className="text-purple-400 font-mono text-sm">//</span>
-              <span className="text-purple-400 font-medium tracking-wide">
+              <span className="text-purple-400 text-2xl tracking-wide">
                 Our Services
               </span>
             </div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white ">
               What We Do, Done with intention
             </h2>
           </div>
 
           {/* Services Grid with border structure */}
-          <div className="border-t border-l border-white/10">
+          <div className="">
             <div className="grid grid-cols-1 md:grid-cols-2">
               {SERVICES.map((service, index) => (
                 <ServiceCard
@@ -141,18 +158,18 @@ export default function ServicesSection({
         <GlowingPlanet
           src="/images/services/globe.png"
           alt="Globe"
-          size={50}
+          size={250}
           glowColor="rgba(100, 200, 255, 0.4)"
-          position={{ bottom: "15%", left: "8%" }}
+          position={{ bottom: "2%", left: "2%" }}
         />
 
         {/* Earth-like Planet - Right side */}
         <GlowingPlanet
           src="/images/services/earth-like-planet.png"
           alt="Earth Planet"
-          size={55}
+          size={250}
           glowColor="rgba(100, 180, 255, 0.4)"
-          position={{ bottom: "20%", right: "8%" }}
+          position={{ bottom: "2%", right: "2%" }}
         />
       </section>
 

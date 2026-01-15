@@ -45,13 +45,18 @@ export function VisitButton({
     ${className}
   `;
 
+  const arrowVariants = {
+    rest: { x: 0, rotate: 0 },
+    hover: { x: 4, rotate: -45 },
+  };
+
   const content = (
     <>
       <span>{children}</span>
       {showArrow && (
         <motion.span
           className="inline-flex"
-          whileHover={{ x: 4, rotate: -45 }}
+          variants={arrowVariants}
           transition={{ duration: 0.2 }}
         >
           <ArrowRight className="w-4 h-4" />
@@ -66,9 +71,11 @@ export function VisitButton({
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        whileHover={{ scale: 1.02 }}
+        initial="rest"
+        whileHover="hover"
         whileTap={{ scale: 0.98 }}
         className={baseClasses}
+        style={{ scale: 1 }}
       >
         {content}
       </motion.a>
@@ -78,7 +85,8 @@ export function VisitButton({
   return (
     <motion.button
       onClick={onClick}
-      whileHover={{ scale: 1.02 }}
+      initial="rest"
+      whileHover="hover"
       whileTap={{ scale: 0.98 }}
       className={baseClasses}
     >
@@ -87,7 +95,6 @@ export function VisitButton({
   );
 }
 
-// Explore button for hero section
 interface ExploreButtonProps {
   onClick?: () => void;
   className?: string;
@@ -97,19 +104,24 @@ export function ExploreButton({ onClick, className = "" }: ExploreButtonProps) {
   return (
     <motion.button
       onClick={onClick}
-      whileHover={{ scale: 1.03 }}
+      whileHover="hover" 
+      initial="rest"
       whileTap={{ scale: 0.97 }}
       className={`px-12 py-4 bg-[#580196] hover:bg-[#6a02b3] text-white rounded-full transition-colors duration-300 font-medium text-lg tracking-wider shadow-lg shadow-[#580196]/30 ${className}`}
     >
+
       <h2 className="flex items-center">
-      EXPLORE{" "}
-      <motion.span
-        className="inline-flex ml-2"
-        whileHover={{ rotate: -45, x: 4 }}
-        transition={{ duration: 0.2 }}
-      >
-        →
-      </motion.span>
+        EXPLORE{" "}
+        <motion.span
+          className="inline-flex ml-2"
+          variants={{
+            rest: { rotate: 0, x: 0 },
+            hover: { rotate: -45, x: 4 },
+          }}
+          transition={{ duration: 0.2 }}
+        >
+          →
+        </motion.span>
       </h2>
     </motion.button>
   );

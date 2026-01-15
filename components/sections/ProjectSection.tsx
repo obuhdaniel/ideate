@@ -15,7 +15,7 @@ const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     description:
       "Website for the Association of Computer Engineering Students, UNIBEN.",
     image: "/images/portfolio/aces-site.png",
-    url: "https://aces-uniben.vercel.app",
+    url: "https://acesuniben.org",
   },
   {
     id: "spcc",
@@ -23,29 +23,61 @@ const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     description:
       "Official website of St. Peter Catholic Chaplaincy, Oleh Campus, Delta State University.",
     image: "/images/portfolio/spcc-site.png",
-    url: "https://spcc-oleh.vercel.app",
-  },
-  {
-    id: "adagba",
-    title: "ADAGBA",
-    description:
-      "Portfolio website showcasing creative works and professional services.",
-    image: "/images/portfolio/adagba-site.png",
-    url: "https://adagba.vercel.app",
+    url: "https://spccoleh.com.ng",
   },
   {
     id: "bullion",
-    title: "BULLION",
+    title: "BULLION (WEB 3)",
     description:
       "Modern financial services platform with intuitive user experience.",
     image: "/images/portfolio/bullion-site.png",
     url: "https://bullion-site.vercel.app",
   },
+  {
+    id: "goldenmedia",
+    title: "GOLDEN MEDIA",
+    description:
+      "A website for an advertising agency in Delta State, that showcases their previous works.",
+    image: "/images/portfolio/goldenmedia-site.png",
+    url: "https://goldenmedia-site.vercel.app",
+  },
+  {
+    id: "adagba",
+    title: "ADAGBA",
+    description:
+      "A News Publication website for a student body that shows their current news and updates.",
+    image: "/images/portfolio/adagba-site.png",
+    url: "https://adagba.vercel.app",
+  },
+  {
+    id: "acesmobileapp",
+    title: "ACES MOBILE APP",
+    description:
+      "A mobile application for the Association of Computer Engineering Students, UNIBEN.",
+    image: "/images/portfolio/aces-app.png",
+    url: "https://acesmobileapp.vercel.app",
+  },
+  {
+    id: "acesdashboard",
+    title: "ACES DASHBOARD",
+    description:
+      "An admin portal for ACES UNIBEN used to register students and post information on the website and app.",
+    image: "/images/portfolio/aces-dashboard.png",
+    url: "https://acesdashboard.vercel.app",
+  },
+  {
+    id: "passpaymobileapp",
+    title: "PASSPAY MOBILE APP",
+    description:
+      "A mobile app that integrates LazorKit's SDK for passkey-powered Solana wallets with gasless transactions.",
+    image: "/images/portfolio/passpay-app.png",
+    url: "https://passpaymobileapp.vercel.app",
+  },
 ];
 
 export default function ProjectSection() {
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-[#070d1f] py-20 lg:py-32">
+    <section className="relative w-full overflow-hidden bg-[#070d1f] py-20 lg:py-32">
       {/* Star Field Background */}
       <StarField count={100} className="pointer-events-none" />
       {/* Background Elements */}
@@ -71,18 +103,18 @@ export default function ProjectSection() {
       <GlowingPlanet
         src="/images/services/purple-planet.png"
         alt="Purple Planet"
-        size={200}
+        size={250}
         glowColor="rgba(147, 51, 234, 0.6)"
-        position={{ top: "15%", left: "-50px" }}
+        position={{ top: "8%", left: "2%" }}
       />
 
       {/* Earth-like Planet - Right side */}
       <GlowingPlanet
-        src="/images/services/earth-like-planet.png"
+        src="/images/services/globe.png"
         alt="Earth Planet"
-        size={120}
+        size={250}
         glowColor="rgba(59, 130, 246, 0.5)"
-        position={{ top: "10%", right: "5%" }}
+        position={{ top: "8%", right: "2%" }}
       />
 
       {/* Space Star Decorations */}
@@ -103,21 +135,21 @@ export default function ProjectSection() {
       </div>
 
       {/* Content */}
-      <div className="relative z-20 max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="relative z-20 max-w-5xl mx-auto px-6 lg:px-20">
         {/* Section Header */}
-        <div className="mb-16">
+        <div className="mb-12">
           <div className="flex items-center gap-3 mb-4">
             <span className="text-purple-400 font-mono text-sm">//</span>
-            <span className="text-purple-400 font-medium tracking-wide">
+            <span className="text-purple-400 text-2xl tracking-wide">
               Our Portfolio
             </span>
           </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
             Projects We Have Done And Completed.
           </h2>
           <p className="text-lg md:text-xl text-white/60">
-            <span className="text-white font-medium">What We Offer.</span>{" "}
-            Designed for people. Built for the future.
+            <span className="text-white text-2xl">What We Offer.</span> Designed
+            for people. Built for the future.
           </p>
         </div>
 

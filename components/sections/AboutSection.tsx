@@ -49,11 +49,28 @@ export default function AboutSection() {
       id="about"
       className="relative w-full overflow-hidden bg-[#070d1f] py-20 lg:py-32"
     >
+      {/* --- DECORATIVE LINES & BOX --- */}
+
       {/* Left vertical line */}
-      <div className="absolute left-[8%] md:left-[10%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+      <div className="absolute left-[8%] md:left-[18%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
 
       {/* Right vertical line */}
-      <div className="absolute right-[8%] md:right-[10%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+      <div className="absolute right-[8%] md:right-[18%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+
+      {/* Top decorative line */}
+      <div className="absolute top-[18%] left-[10%] right-[10%] h-px bg-white/10" />
+
+      {/* Bottom decorative line */}
+      <div className="absolute bottom-[18%] left-1/2 -translate-x-1/2 w-[90%] h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+      {/* NEW: THE ENCLOSED BOX FILL 
+          Coordinates match the lines above:
+          Top/Bottom: 18%
+          Left/Right: 8% (mobile) -> 18% (desktop)
+      */}
+      <div className="absolute top-[18%] bottom-[18%] left-[8%] right-[8%] md:left-[18%] md:right-[18%] bg-white/[0.03] pointer-events-none" />
+
+      {/* --- BACKGROUND ELEMENTS --- */}
 
       {/* Orbit Rings */}
       <div className="absolute inset-0 pointer-events-none">
@@ -71,8 +88,8 @@ export default function AboutSection() {
       <DecorativeStar bottom="30%" left="20%" size={3} delay={0.8} />
       <DecorativeStar top="50%" left="35%" size={4} delay={1.2} />
 
-      {/* Content */}
-      <div className="relative z-20 max-w-4xl mx-auto px-12 md:px-16 lg:px-20 text-center">
+      {/* --- CONTENT --- */}
+      <div className="relative z-20 max-w-5xl mx-auto px-12 md:px-16 lg:px-45 py-15 text-left">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -81,7 +98,7 @@ export default function AboutSection() {
           transition={{ duration: 0.6 }}
           className="mb-10"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white uppercase tracking-wide">
+          <h2 className="text-3xl md:text-4xl lg:text-4xl font-bold text-white uppercase tracking-wide text-center">
             Why We Started Ideate
           </h2>
         </motion.div>
@@ -111,15 +128,13 @@ export default function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
+          className="text-center"
         >
           <VisitButton href="/about" variant="outline" size="lg">
             Read Why
           </VisitButton>
         </motion.div>
       </div>
-
-      {/* Bottom horizontal line */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[90%] h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
     </section>
   );
 }

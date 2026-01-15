@@ -131,7 +131,7 @@ export default function PortfolioCarousel({
               <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
                 {currentProject.title}
               </h3>
-              <p className="text-lg text-white/80 leading-relaxed max-w-lg">
+              <p className="text-2xl text-white/80 leading-relaxed max-w-lg">
                 {currentProject.description}
               </p>
 
@@ -157,14 +157,14 @@ export default function PortfolioCarousel({
           {/* Navigation - Left Arrow */}
           <button
             onClick={prevSlide}
-            className="absolute left-0 lg:left-auto lg:right-[calc(100%+3rem)] top-1/2 -translate-y-1/2 h-12 w-12 rounded-full border border-white/30 hover:border-white/60 hover:bg-white/5 flex items-center justify-center transition-all duration-300 group z-10"
+            className="absolute left-0 lg:left-auto lg:right-[calc(-20%+3rem)] top-1/2 -translate-y-1/2 h-12 w-12 rounded-full border border-white/30 hover:border-white/60 hover:bg-white/5 flex items-center justify-center transition-all duration-300 group z-10"
             aria-label="Previous project"
           >
             <ChevronLeft className="w-5 h-5 text-white/70 group-hover:text-white transition-colors" />
           </button>
         </div>
 
-        {/* Right side - Laptop Mockup */}
+        {/* Right side - Project Image */}
         <div className="flex-1 relative flex items-center justify-center">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
@@ -177,26 +177,16 @@ export default function PortfolioCarousel({
               transition={transition}
               className="relative w-full max-w-2xl"
             >
-              {/* Laptop Frame */}
-              <div className="relative">
-                {/* Screen */}
-                <div className="relative bg-gray-900 rounded-t-lg overflow-hidden aspect-[16/10] border-t-8 border-x-8 border-gray-800">
-                  <img
-                    src={currentProject.image}
-                    alt={currentProject.title}
-                    className="w-full h-full object-cover object-top"
-                  />
-                </div>
-                {/* Laptop Base */}
-                <div className="relative h-4 bg-gradient-to-b from-gray-700 to-gray-800 rounded-b-lg">
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-1 bg-gray-600 rounded-b" />
-                </div>
-                {/* Stand/Bottom */}
-                <div className="relative mx-auto w-[60%] h-2 bg-gradient-to-b from-gray-600 to-gray-700 rounded-b-xl" />
-              </div>
+              {/* Image Container with simple border/shadow */}
+              <img
+                src={currentProject.image}
+                alt={currentProject.title}
+                // Changed to object-cover to fill the space nicely
+                className="w-full h-auto object-cover"
+              />
 
-              {/* Glow effect behind laptop */}
-              <div className="absolute inset-0 -z-10 bg-gradient-to-br from-purple-600/20 via-transparent to-cyan-600/20 blur-3xl scale-110" />
+              {/* Glow effect behind image */}
+              {/* <div className="absolute inset-0 -z-10 bg-gradient-to-br from-purple-600/20 via-transparent to-cyan-600/20 blur-3xl scale-105" /> */}
             </motion.div>
           </AnimatePresence>
 

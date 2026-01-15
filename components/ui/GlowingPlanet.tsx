@@ -22,7 +22,7 @@ export default function GlowingPlanet({
   src,
   alt = "Planet",
   size = 150,
-  glowColor = "rgba(147, 51, 234, 0.6)", // Purple glow by default
+  glowColor = "rgba(147, 51, 234, 1)",
   className = "",
   position,
 }: GlowingPlanetProps) {
@@ -30,7 +30,7 @@ export default function GlowingPlanet({
 
   return (
     <motion.div
-      className={`absolute pointer-events-auto cursor-pointer z-10 ${className}`}
+      className={`absolute pointer-events-auto cursor-pointer z-10 flex items-center justify-center ${className}`}
       style={{
         width: size,
         height: size,
@@ -39,48 +39,48 @@ export default function GlowingPlanet({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       animate={{
-        scale: isHovered ? 1.1 : 1,
+        scale: isHovered ? 1.05 : 1,
       }}
       transition={{
         duration: 0.5,
         ease: "easeOut",
       }}
     >
-      {/* Glow effect */}
       <motion.div
-        className="absolute inset-0 rounded-full"
+        className="absolute inset-0 rounded-full blur-xl"
         style={{
-          background: `radial-gradient(circle, ${glowColor} 0%, transparent 70%)`,
+          background: glowColor,
         }}
         animate={{
-          opacity: isHovered ? 1 : 0.3,
-          scale: isHovered ? 1.5 : 1,
+          opacity: isHovered ? 0.2 : 0,
+          scale: isHovered ? 1.2 : 0.8,
         }}
-        transition={{
-          duration: 0.5,
-          ease: "easeOut",
-        }}
+        transition={{ duration: 0.5 }}
       />
 
-      {/* Planet image */}
+      {/* PLANET IMAGE */}
       <motion.img
         src={src}
         alt={alt}
         className="w-full h-full object-contain relative z-10"
+        animate={{
+          filter: isHovered ? "brightness(1.1)" : "brightness(1)",
+        }}
+        transition={{ duration: 0.5 }}
+      />
+
+      <motion.div
+        className="absolute inset-0 rounded-full z-20 pointer-events-none"
         style={{
-          filter: isHovered
-            ? `drop-shadow(0 0 30px ${glowColor})`
-            : `drop-shadow(0 0 10px ${glowColor.replace("0.6", "0.3")})`,
+          mixBlendMode: "screen",
         }}
         animate={{
-          filter: isHovered
-            ? `drop-shadow(0 0 40px ${glowColor})`
-            : `drop-shadow(0 0 15px ${glowColor.replace("0.6", "0.3")})`,
+          boxShadow: isHovered
+            ? `inset 0 0 40px 10px ${glowColor}, 0 0 20px 5px ${glowColor}` // Strong inner + subtle outer rim
+            : `inset 0 0 0px 0px transparent`,
+          opacity: isHovered ? 1 : 0,
         }}
-        transition={{
-          duration: 0.5,
-          ease: "easeOut",
-        }}
+        transition={{ duration: 0.4 }}
       />
     </motion.div>
   );

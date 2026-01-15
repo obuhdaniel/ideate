@@ -15,15 +15,27 @@ export default function ContactBanner({
   onFillFormClick,
 }: ContactBannerProps) {
   return (
-    <section className="relative w-full overflow-hidden bg-[#070d1f] py-16 lg:py-24">
+    <section className="relative w-full overflow-visible bg-[#070d1f] py-20 lg:py-32 ">
+      {/* --- DECORATIVE LINES --- */}
+
       {/* Left vertical line */}
-      <div className="absolute left-[8%] md:left-[10%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+      <div className="absolute left-[8%] md:left-[18%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
 
       {/* Right vertical line */}
-      <div className="absolute right-[8%] md:right-[10%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+      <div className="absolute right-[8%] md:right-[18%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
 
       {/* Top decorative line */}
-      <div className="absolute top-0 left-[10%] right-[10%] h-px bg-white/10" />
+      <div className="absolute top-[15%] left-[10%] right-[10%] h-px bg-white/10" />
+
+      {/* Bottom decorative line */}
+      <div className="absolute bottom-[15%] left-[10%] right-[10%] h-px bg-white/10" />
+
+      {/* --- NEW: THE ENCLOSED BOX FILL --- 
+          We use the exact coordinates from the lines above:
+          Top/Bottom: 15%
+          Left/Right: 8% (mobile) -> 18% (desktop)
+      */}
+      <div className="absolute top-[15%] bottom-[15%] left-[8%] right-[8%] md:left-[18%] md:right-[18%] bg-white/[0.03] pointer-events-none" />
 
       {/* Orbit Rings Background */}
       <div className="absolute inset-0 pointer-events-none">
@@ -36,8 +48,8 @@ export default function ContactBanner({
       </div>
 
       {/* Content */}
-      <div className="relative z-20 max-w-5xl mx-auto px-12 md:px-16 lg:px-20">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+      <div className="relative z-20 max-w-5xl mx-auto px-12 md:px-16 lg:px-25 ">
+        <div className="flex flex-col lg:flex-row items-center justify-between">
           {/* Left Content */}
           <div className="flex-1">
             <motion.div
@@ -47,7 +59,7 @@ export default function ContactBanner({
               transition={{ duration: 0.6 }}
               className="space-y-4"
             >
-              <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-white uppercase tracking-wide leading-tight">
+              <h3 className="text-xl md:text-2xl lg:text-2xl font-bold text-white uppercase tracking-wide leading-tight">
                 Have an idea but having difficulties
                 <br />
                 implementing it?
@@ -81,31 +93,47 @@ export default function ContactBanner({
             </VisitButton>
           </motion.div>
 
-          {/* Large Rocket Image */}
+          {/* Rocket Image - Absolute Position with Scroll-based Animation */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="hidden lg:block"
+            className="hidden z-[9999] lg:block absolute right-[-33%] top-[-35%] -translate-y-1/2"
           >
-            <motion.img
-              src="/images/custom-images/rocket.png"
-              alt="Rocket"
-              className="w-32 h-32 lg:w-40 lg:h-40 object-contain"
-              animate={{ y: [0, -10, 0] }}
+            {/* INTERACTION WRAPPER:
+              This wrapper handles the Launch (Hover) and the Drop (Return).
+              We use a 'spring' transition here to make the drop feel like gravity.
+            */}
+            <motion.div
+              whileHover={{ y: -500 }}
               transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut",
+                type: "spring",
+                stiffness: 50, // Controls speed of the return
+                damping: 15, // Controls the 'bounciness' on landing
+                mass: 1.2, // Makes it feel like it has weight
               }}
-            />
+              className="cursor-pointer"
+            >
+              {/* IMAGE:
+                This only handles the continuous floating animation.
+                It is isolated so it doesn't conflict with the drop physics.
+              */}
+              <motion.img
+                src="/images/custom-images/rocket.png"
+                alt="Rocket"
+                className="w-32 h-32 lg:w-200 lg:h-200 object-contain"
+                animate={{ y: [0, -10, 0] }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+            </motion.div>
           </motion.div>
         </div>
       </div>
-
-      {/* Bottom decorative line */}
-      <div className="absolute bottom-0 left-[10%] right-[10%] h-px bg-white/10" />
     </section>
   );
 }
