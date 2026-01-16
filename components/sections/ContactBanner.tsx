@@ -67,7 +67,7 @@ export default function ContactBanner({
               className="space-y-4"
             >
               <h3 className="text-xl md:text-2xl lg:text-2xl font-bold text-white uppercase tracking-wide leading-tight">
-                Have an idea but having difficulties
+                Got an idea but having difficulties
                 <br />
                 implementing it?
               </h3>
