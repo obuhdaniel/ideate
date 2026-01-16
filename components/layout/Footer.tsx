@@ -2,6 +2,7 @@
 "use client";
 
 import { VisitButton } from "@/components/ui/Button";
+import * as motion from "framer-motion/client";
 
 const SOCIAL_LINKS = [
   {
@@ -18,11 +19,6 @@ const SOCIAL_LINKS = [
     name: "X",
     icon: "/images/footer/x-icon.png",
     url: "https://x.com",
-  },
-  {
-    name: "Github",
-    icon: "/images/tools/github-icon.png", // Assuming you have this based on previous code
-    url: "https://github.com",
   },
   {
     name: "Gmail",
@@ -50,17 +46,19 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative w-full bg-[#070d1f] py-12 lg:py-16">
-      {/* Separator Line */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <footer className="relative w-full bg-[#070d1f] py-12 lg:py-20">
+      {/* UPDATED CONTAINER WIDTH: 
+          Changed from 'max-w-7xl' to 'w-[90%] max-w-[1800px]' 
+          This makes the footer stretch almost to the edges of the screen.
+      */}
+      <div className="w-[90%] max-w-[1800px] mx-auto">
+        {/* Separator Line */}
         <div className="w-full h-[1px] bg-white/10 mb-12" />
-      </div>
 
-      {/* Footer Content */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        {/* Footer Content */}
         <div className="flex flex-col lg:flex-row justify-between items-center lg:items-end gap-10 lg:gap-0">
           {/* LEFT SIDE: Brand & Copyright */}
-          <div className="text-center lg:text-left space-y-12">
+          <div className="text-center lg:text-left space-y-10">
             <h3 className="text-3xl md:text-4xl font-bold uppercase tracking-wide leading-tight">
               <span className="text-purple-400">Ideate Digital</span>
               <br />
@@ -87,25 +85,29 @@ export default function Footer() {
                   <img
                     src={social.icon}
                     alt={social.name}
-                    className="w-6 h-6 md:w-8 md:h-8 object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300"
+                    className="w-6 h-6 md:w-7 md:h-7 object-contain opacity-60 group-hover:opacity-100 transition-opacity duration-300"
                   />
                 </a>
               ))}
             </div>
 
             {/* Bottom Row: Website + Button */}
-            <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8">
-              <span className="text-gray-300 text-lg">www.ideate.com.ng</span>
+            <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10">
+              <span className="text-gray-300 text-lg tracking-wide">
+                www.ideate.com.ng
+              </span>
 
-              <VisitButton
-                onClick={handleMessageUs}
-                variant="primary"
-                size="md"
-                showArrow={true}
-                className="rounded-full px-8 py-3 bg-[#2D1B4E] border border-purple-500/30 hover:bg-[#3d2569] text-white uppercase text-sm tracking-wider"
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="text-center"
               >
-                MESSAGE US
-              </VisitButton>
+                <VisitButton href="/about" variant="outline" size="lg">
+                  MESSAGE US
+                </VisitButton>
+              </motion.div>
             </div>
           </div>
         </div>

@@ -15,9 +15,9 @@ export default function WireframePlanet({
   const groupRef = useRef<THREE.Group>(null);
 
   // Slow rotation animation
-  useFrame((state) => {
+  useFrame((state, delta) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y = state.clock.elapsedTime * 0.15;
+      groupRef.current.rotation.y += delta * 0.2;
     }
   });
 

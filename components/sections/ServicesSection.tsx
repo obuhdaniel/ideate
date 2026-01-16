@@ -13,28 +13,28 @@ const SERVICES = [
     title: "UI/UX Design",
     description:
       "User-centered interfaces crafted for clarity, usability, and seamless experiences.",
-    position: "top-left" as const,
+    position: "top-left",
   },
   {
     icon: "/images/services/web-dev-icon.png",
     title: "Web Applications",
     description:
       "Scalable and secure web applications designed to solve real business problems.",
-    position: "top-right" as const,
+    position: "top-right",
   },
   {
     icon: "/images/services/web-des-icon.png",
     title: "Website Design",
     description:
       "Visually engaging, high-performance websites built to strengthen your online presence.",
-    position: "bottom-left" as const,
+    position: "bottom-left",
   },
   {
     icon: "/images/services/app-icon.png",
     title: "Mobile Apps",
     description:
       "Intuitive mobile applications built for performance, engagement, and real users.",
-    position: "bottom-right" as const,
+    position: "bottom-right",
   },
 ];
 
@@ -69,32 +69,37 @@ export default function ServicesSection({
         {/* Bottom decorative line */}
         <div className="absolute bottom-[14.5%] left-[10%] right-[10%] h-px bg-white/10" />
 
-        {/* --- NEW: THE ENCLOSED BOX FILL --- 
-            Top: 33.5% (Matches top line)
-            Bottom: 14.5% (Matches bottom line)
-            Left/Right: 8% -> 18% (Matches vertical lines)
+        {/* --- GRID CROSS LINES (NEW) --- 
+            These create the inner cross-hair grid seen in the image.
+            Calculated based on Top (33.5%) and Bottom (14.5% from bottom = 85.5% from top).
+            Midpoint is approx 59.5%.
         */}
+
+        {/* Horizontal Middle Line - Stretches fully between vertical poles */}
+        <div className="absolute top-[59.5%] left-[8%] right-[8%] md:left-[18%] md:right-[18%] h-px bg-white/10 z-0" />
+
+        {/* Vertical Center Line - Stretches between Top and Bottom lines */}
+        <div className="absolute left-1/2 -translate-x-1/2 top-[33.5%] bottom-[14.5%] w-px bg-white/10 z-0" />
+
+        {/* --- ENCLOSED BOX FILL --- */}
         <div className="absolute top-[33.5%] bottom-[14.5%] left-[8%] right-[8%] md:left-[18%] md:right-[18%] bg-white/[0.03] pointer-events-none" />
 
         {/* --- BACKGROUND ELEMENTS --- */}
 
-        {/* Multiple Orbit Rings at different positions */}
+        {/* Multiple Orbit Rings */}
         <div className="absolute inset-0 pointer-events-none">
-          {/* Top-left orbit rings */}
           <OrbitRings
             sizes={[200, 300, 400]}
             centerX="5%"
             centerY="15%"
             className="opacity-20"
           />
-          {/* Center-right orbit rings */}
           <OrbitRings
             sizes={[300, 450, 600]}
             centerX="95%"
             centerY="40%"
             className="opacity-15"
           />
-          {/* Bottom-left orbit rings */}
           <OrbitRings
             sizes={[250, 400, 550]}
             centerX="10%"
@@ -103,7 +108,7 @@ export default function ServicesSection({
           />
         </div>
 
-        {/* Purple Planet - Top Left */}
+        {/* Floating Planets */}
         <GlowingPlanet
           src="/images/services/purple-planet.png"
           alt="Purple Planet"
@@ -112,7 +117,6 @@ export default function ServicesSection({
           position={{ top: "8%", left: "2%" }}
         />
 
-        {/* Globe - Top Right */}
         <GlowingPlanet
           src="/images/services/globe.png"
           alt="Globe"
@@ -136,9 +140,9 @@ export default function ServicesSection({
             </h2>
           </div>
 
-          {/* Services Grid with border structure */}
+          {/* Services Grid */}
           <div className="">
-            <div className="grid grid-cols-1 md:grid-cols-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 relative">
               {SERVICES.map((service, index) => (
                 <ServiceCard
                   key={service.title}
@@ -153,8 +157,7 @@ export default function ServicesSection({
           </div>
         </div>
 
-        {/* Planets below the services grid */}
-        {/* Globe - Left side */}
+        {/* Bottom Planets */}
         <GlowingPlanet
           src="/images/services/globe.png"
           alt="Globe"
@@ -163,7 +166,6 @@ export default function ServicesSection({
           position={{ bottom: "2%", left: "2%" }}
         />
 
-        {/* Earth-like Planet - Right side */}
         <GlowingPlanet
           src="/images/services/earth-like-planet.png"
           alt="Earth Planet"
@@ -176,7 +178,7 @@ export default function ServicesSection({
       {/* Contact Banner */}
       <ContactBanner onFillFormClick={onFillFormClick || handleFillForm} />
 
-      {/* About/Why We Started Section */}
+      {/* About Section */}
       <AboutSection />
     </>
   );

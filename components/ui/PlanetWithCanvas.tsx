@@ -51,7 +51,11 @@ export default function PlanetWithCanvas({
         ...getCustomStyles(),
       }}
     >
-      <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
+      <Canvas
+        camera={{ position: [0, 0, 4], fov: 50 }}
+        frameloop="always"
+        dpr={[1, 2]}
+      >
         <WireframePlanet glowIntensity={glowIntensity} />
       </Canvas>
     </div>

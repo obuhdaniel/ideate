@@ -54,7 +54,7 @@ export default function ToolsSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 flex flex-col items-center text-left">
         <div className="max-w-6xl mb-16">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
-            <span className="text-gray-400">DIGITAL PRESENCE</span> TURNS
+            DIGITAL PRESENCE <span className="text-gray-400">TURNS </span>
             VISIBILITY INTO OPPORTUNITY.
           </h2>
 
