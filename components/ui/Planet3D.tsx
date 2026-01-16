@@ -14,33 +14,39 @@ export default function WireframePlanet({
 }: WireframePlanetProps) {
   const groupRef = useRef<THREE.Group>(null);
 
-  // Slow rotation animation
   useFrame((state, delta) => {
     if (groupRef.current) {
       groupRef.current.rotation.y += delta * 0.2;
+
+      const time = state.clock.getElapsedTime();
+      const pulse = Math.sin(time * 1.5) + Math.sin(time * 4) * 0.3;
+      const flickeringOpacity = 0.4 + ((pulse + 1.3) / 2.6) * 0.6;
+
+      groupRef.current.children.forEach((child: any) => {
+        if (child.material) {
+          const baseMultiplier = child.userData.isMeridian ? 0.5 : 1;
+          child.material.opacity =
+            flickeringOpacity * glowIntensity * baseMultiplier;
+        }
+      });
     }
   });
 
-  // Create latitude rings (horizontal circles at different heights)
-  const rings = useMemo(() => {
-    const ringData = [];
-    const numRings = 16; // More rings for denser look
+  const { rings, meridians } = useMemo(() => {
     const radius = 1.4;
+    const segments = 64;
+
+    const ringData = [];
+    const numRings = 16;
 
     for (let i = 0; i < numRings; i++) {
-      // Calculate Y position from -radius to +radius
       const t = i / (numRings - 1);
       const yPos = -radius + t * radius * 2;
-
-      // Calculate ring radius at this height (circular cross-section)
       const ringRadius = Math.sqrt(Math.max(0, radius * radius - yPos * yPos));
 
-      // Include even small rings at top/bottom
       if (ringRadius < 0.05) continue;
 
-      // Create circular ring points
       const points: [number, number, number][] = [];
-      const segments = 64;
       for (let j = 0; j <= segments; j++) {
         const angle = (j / segments) * Math.PI * 2;
         points.push([
@@ -52,39 +58,66 @@ export default function WireframePlanet({
 
       ringData.push({
         points,
-        yPos,
         index: i,
-        key: `ring-${i}`,
+        key: `lat-${i}`,
+        color: i % 2 === 0 ? "#c27070" : "#4a5568",
       });
     }
 
-    return ringData;
+    const meridianData = [];
+    const numMeridians = 12;
+
+    for (let i = 0; i < numMeridians; i++) {
+      const points: [number, number, number][] = [];
+      const meridianAngle = (i / numMeridians) * Math.PI * 2;
+
+      for (let j = 0; j <= segments; j++) {
+        const theta = (j / segments) * Math.PI * 2;
+        const xBase = Math.cos(theta) * radius;
+        const yBase = Math.sin(theta) * radius;
+
+        const x = xBase * Math.cos(meridianAngle);
+        const z = xBase * Math.sin(meridianAngle);
+        const y = yBase;
+
+        points.push([x, y, z]);
+      }
+
+      meridianData.push({
+        points,
+        index: i,
+        key: `long-${i}`,
+        color: "#4a5568",
+      });
+    }
+
+    return { rings: ringData, meridians: meridianData };
   }, []);
 
-  // Alternating colors: pink/coral and purple/blue-gray
-  const getColor = (index: number): string => {
-    const isEven = index % 2 === 0;
-    if (isEven) {
-      // Pink/coral/salmon color
-      return "#c27070";
-    } else {
-      // Purple/blue-gray color (darker, more muted)
-      return "#4a5568";
-    }
-  };
-
   return (
-    // Tilt the entire planet for the slanted look (matching reference)
     <group rotation={[0.4, 0.2, -0.5]}>
       <group ref={groupRef}>
         {rings.map((ring) => (
           <Line
             key={ring.key}
             points={ring.points}
-            color={getColor(ring.index)}
+            color={ring.color}
             lineWidth={2}
             transparent
             opacity={glowIntensity}
+            userData={{ isMeridian: false }}
+          />
+        ))}
+
+        {meridians.map((meridian) => (
+          <Line
+            key={meridian.key}
+            points={meridian.points}
+            color={meridian.color}
+            lineWidth={1}
+            transparent
+            opacity={glowIntensity * 0.5}
+            userData={{ isMeridian: true }}
           />
         ))}
       </group>

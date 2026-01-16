@@ -47,6 +47,17 @@ export default function ContactBanner({
         />
       </div>
 
+      {/* Space Star - Adjust position as needed */}
+      <motion.img
+        src="/images/custom-images/space-star.png"
+        alt="Space Star"
+        initial={{ opacity: 0, scale: 0.8 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="absolute top-[60%] left-[70%] w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 object-contain pointer-events-none"
+      />
+
       {/* Content */}
       <div className="relative z-20 max-w-5xl mx-auto px-12 md:px-16 lg:px-25 ">
         <div className="flex flex-col lg:flex-row items-center justify-between">

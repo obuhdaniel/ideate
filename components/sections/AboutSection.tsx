@@ -82,6 +82,28 @@ export default function AboutSection() {
         />
       </div>
 
+      {/* Space Star - Adjust position as needed */}
+      <motion.img
+        src="/images/custom-images/space-star.png"
+        alt="Space Star"
+        initial={{ opacity: 0, scale: 0.8 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="absolute top-[50%] left-[60%] w-16 h-16 md:w-20 md:h-20 lg:w-64 lg:h-64 object-contain pointer-events-none"
+      />
+
+      {/* Space Star - Adjust position as needed */}
+      <motion.img
+        src="/images/custom-images/space-star.png"
+        alt="Space Star"
+        initial={{ opacity: 0, scale: 0.8 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="absolute top-[15%] left-[3%] w-16 h-16 md:w-20 md:h-20 lg:w-64 lg:h-64 object-contain pointer-events-none"
+      />
+
       {/* Decorative stars */}
       <DecorativeStar top="15%" right="12%" size={4} delay={0} />
       <DecorativeStar top="25%" right="8%" size={3} delay={0.4} />
