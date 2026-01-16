@@ -138,7 +138,7 @@ export default function ToolsSection() {
           alt="Planet with bodies"
           size={200}
           glowColor="rgba(147, 51, 234, 0.6)"
-          position={{ top: "-30%", left: "50%" }}
+          position={{ top: "-15%", left: "50%" }}
         />
 
         {/* Planet with bodies - Right */}

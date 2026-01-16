@@ -27,7 +27,7 @@ const HERO_IMAGES = [
   "/images/hero/hero-male.png",
 ] as const;
 
-// Animation variants
+// ANIMATION VARIANTS
 
 const textVariants = {
   enter: (direction: number) => ({
@@ -46,7 +46,7 @@ const textVariants = {
 
 const textTransition = {
   x: { type: "spring", stiffness: 40, damping: 20 },
-  opacity: { duration: 2 },
+  opacity: { duration: 1 },
 };
 
 const imageVariants = {
@@ -64,9 +64,10 @@ const imageVariants = {
   }),
 };
 
+// Image remains snappy/fast
 const imageTransition = {
-  x: { type: "spring", stiffness: 50, damping: 25 },
-  opacity: { duration: 0.4 },
+  x: { type: "spring", stiffness: 120, damping: 20 },
+  opacity: { duration: 0.2 },
 };
 
 // Sub-components
@@ -129,31 +130,33 @@ function Tagline({ currentSlide }: { currentSlide: number }) {
     <div className="absolute bottom-40 left-0 z-30 px-8 lg:px-16">
       <AnimatePresence mode="wait">
         {currentSlide === 0 ? (
-          <motion.p
+          <motion.div
             key="tagline-0"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.5 }}
-            className="text-lg md:text-xl lg:text-2xl font-light text-white/90 leading-relaxed max-w-md"
+            transition={{ duration: 0.2, ease: "easeOut" }}
           >
-            We Bring Your <span className="font-normal text-white">Idea</span>,
-            Your
-            <br />
-            <span className="font-normal text-white">Brand</span>, Your{" "}
-            <span className="font-normal text-white">Product</span> To Life.
-          </motion.p>
+            <p className="text-lg md:text-xl lg:text-2xl font-light text-white/90 leading-relaxed max-w-md">
+              We Bring Your <span className="font-normal text-white">Idea</span>
+              , Your
+              <br />
+              <span className="font-normal text-white">Brand</span>, Your{" "}
+              <span className="font-normal text-white">Product</span> To Life.
+            </p>
+          </motion.div>
         ) : (
-          <motion.p
+          <motion.div
             key="tagline-1"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.5 }}
-            className="text-lg md:text-xl lg:text-2xl font-light text-white/90 leading-relaxed max-w-md"
+            transition={{ duration: 0.2, ease: "easeOut" }}
           >
-            While You Grow Your Business, Leave Design To Us.
-          </motion.p>
+            <p className="text-lg md:text-xl lg:text-2xl font-light text-white/90 leading-relaxed max-w-md">
+              While you grow your business, leave design to us
+            </p>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
@@ -219,19 +222,19 @@ function NavigationControls({
   );
 }
 
-// Hero component
+// ============================================
+// MAIN COMPONENT
+// ============================================
 
 interface HeroSectionProps {
   onExplore?: () => void;
 }
 
 export default function HeroSection({ onExplore }: HeroSectionProps) {
-  // Image slide state (controlled by buttons)
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // Text slide state (auto-sliding)
   const [currentTextSlide, setCurrentTextSlide] = useState(0);
   const [textDirection, setTextDirection] = useState(1);
 
@@ -299,7 +302,6 @@ export default function HeroSection({ onExplore }: HeroSectionProps) {
 
       <HeroImage currentSlide={currentSlide} direction={direction} />
 
-      {/* UPDATED: Passing currentSlide to Tagline so it can switch text */}
       <Tagline currentSlide={currentSlide} />
 
       <NavigationControls

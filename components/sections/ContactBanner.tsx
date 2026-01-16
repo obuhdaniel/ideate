@@ -30,11 +30,7 @@ export default function ContactBanner({
       {/* Bottom decorative line */}
       <div className="absolute bottom-[15%] left-[10%] right-[10%] h-px bg-white/10" />
 
-      {/* --- NEW: THE ENCLOSED BOX FILL --- 
-          We use the exact coordinates from the lines above:
-          Top/Bottom: 15%
-          Left/Right: 8% (mobile) -> 18% (desktop)
-      */}
+      {/* Enclosed Box Fill */}
       <div className="absolute top-[15%] bottom-[15%] left-[8%] right-[8%] md:left-[18%] md:right-[18%] bg-white/[0.03] pointer-events-none" />
 
       {/* Orbit Rings Background */}
@@ -47,7 +43,7 @@ export default function ContactBanner({
         />
       </div>
 
-      {/* Space Star - Adjust position as needed */}
+      {/* Space Star */}
       <motion.img
         src="/images/custom-images/space-star.png"
         alt="Space Star"
@@ -93,6 +89,7 @@ export default function ContactBanner({
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
+            className="relative z-30"
           >
             <VisitButton
               onClick={onFillFormClick}
@@ -104,39 +101,50 @@ export default function ContactBanner({
             </VisitButton>
           </motion.div>
 
-          {/* Rocket Image - Absolute Position with Scroll-based Animation */}
+          {/* Rocket Image Wrapper */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="hidden z-[9999] lg:block absolute right-[-33%] top-[-35%] -translate-y-1/2"
+            transition={{ duration: 1.5, delay: 0.9 }}
+            className="hidden z-[9999] lg:block absolute right-[-33%] top-[-35%] -translate-y-1/2 pointer-events-none"
           >
-            {/* INTERACTION WRAPPER:
-              This wrapper handles the Launch (Hover) and the Drop (Return).
-              We use a 'spring' transition here to make the drop feel like gravity.
-            */}
+            {/* INTERACTION WRAPPER */}
             <motion.div
-              whileHover={{ y: -500 }}
-              transition={{
-                type: "spring",
-                stiffness: 50, // Controls speed of the return
-                damping: 15, // Controls the 'bounciness' on landing
-                mass: 1.2, // Makes it feel like it has weight
+              variants={{
+                rest: {
+                  y: 0,
+                  transition: {
+                    type: "spring",
+                    stiffness: 50,
+                    damping: 15,
+                    mass: 1.2,
+                    delay: 3,
+                  },
+                },
+                hover: {
+                  y: -500,
+                  transition: {
+                    type: "spring",
+                    stiffness: 50,
+                    damping: 15,
+                    mass: 1.2,
+                    delay: 0,
+                  },
+                },
               }}
-              className="cursor-pointer"
+              initial="rest"
+              whileHover="hover"
+              animate="rest"
+              className="cursor-pointer pointer-events-auto"
             >
-              {/* IMAGE:
-                This only handles the continuous floating animation.
-                It is isolated so it doesn't conflict with the drop physics.
-              */}
               <motion.img
                 src="/images/custom-images/rocket.png"
                 alt="Rocket"
                 className="w-32 h-32 lg:w-200 lg:h-200 object-contain"
                 animate={{ y: [0, -10, 0] }}
                 transition={{
-                  duration: 3,
+                  duration: 6,
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
