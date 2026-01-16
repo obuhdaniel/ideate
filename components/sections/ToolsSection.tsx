@@ -47,7 +47,7 @@ export default function ToolsSection() {
         alt="Sun Planet"
         size={250}
         glowColor="rgba(255, 180, 50, 0.6)"
-        position={{ top: "5%", right: "2%" }}
+        position={{ top: "2%", right: "2%" }}
       />
 
       {/* Main Content */}
@@ -147,7 +147,7 @@ export default function ToolsSection() {
           alt="Planet with bodies"
           size={250}
           glowColor="rgba(147, 51, 234, 0.6)"
-          position={{ top: "-20%", left: "80%" }}
+          position={{ top: "-12%", left: "80%" }}
         />
 
         {/* Build with tools we trust */}
@@ -158,10 +158,10 @@ export default function ToolsSection() {
           alt="Sun Planet"
           size={250}
           glowColor="rgba(255, 180, 50, 0.5)"
-          position={{ top: "20%", right: "1%" }}
+          position={{ top: "15%", right: "1%" }}
         />
 
-        {/* Planet with bodies - Right */}
+        {/* Planet with bodies - Left */}
         <GlowingPlanet
           src="/images/custom-images/planet-with-bodies-around.png"
           alt="Planet with bodies"
