@@ -181,7 +181,6 @@ export default function PortfolioCarousel({
               <img
                 src={currentProject.image}
                 alt={currentProject.title}
-                // Changed to object-cover to fill the space nicely
                 className="w-full h-auto object-cover"
               />
 

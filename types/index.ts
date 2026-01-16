@@ -1,6 +1,5 @@
-// ============================================
-// PORTFOLIO PROJECT TYPES
-// ============================================
+// Type definitions for the application
+// Portfolio project types
 
 export interface PortfolioProject {
   id: string;
@@ -10,9 +9,7 @@ export interface PortfolioProject {
   url: string;
 }
 
-// ============================================
-// SERVICE TYPES
-// ============================================
+// Service types
 
 export interface Service {
   icon: string;
@@ -20,26 +17,20 @@ export interface Service {
   description: string;
 }
 
-// ============================================
-// NAVIGATION TYPES
-// ============================================
+// Navigation types
 
 export interface NavLink {
   label: string;
   href: string;
 }
 
-// ============================================
-// HERO SLIDE TYPES
-// ============================================
+// Hero slide types
 
 export interface HeroSlide {
   title: string;
 }
 
-// ============================================
-// BUTTON TYPES
-// ============================================
+// Button types
 
 export type ButtonVariant = "primary" | "outline";
 export type ButtonSize = "sm" | "md" | "lg";

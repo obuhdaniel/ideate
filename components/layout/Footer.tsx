@@ -46,7 +46,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative w-full bg-[#070d1f] py-12 lg:py-20">
+    <footer className="relative w-full bg-transparent py-12 lg:py-20">
       {/* UPDATED CONTAINER WIDTH: 
           Changed from 'max-w-7xl' to 'w-[90%] max-w-[1800px]' 
           This makes the footer stretch almost to the edges of the screen.

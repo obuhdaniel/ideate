@@ -1,8 +1,6 @@
 import type { PortfolioProject, Service, HeroSlide } from "@/types";
 
-// ============================================
-// HERO SECTION CONSTANTS
-// ============================================
+// lib/constants: application-wide constants used across sections
 
 export const HERO_SLIDES: readonly HeroSlide[] = [
   { title: "IDEATE" },
@@ -18,18 +16,14 @@ export const HERO_TAGLINE = {
   line2: "To Life.",
 };
 
-// ============================================
-// ANIMATION DURATIONS (ms)
-// ============================================
+// Animation durations (ms)
 
 export const ANIMATION = {
   SLIDE_INTERVAL: 5000,
   TRANSITION_DURATION: 1500,
 } as const;
 
-// ============================================
-// SITE METADATA
-// ============================================
+// Site metadata
 
 export const SITE = {
   name: "Ideate",
@@ -37,9 +31,7 @@ export const SITE = {
   email: "ideatedigitalagency@gmail.com",
 } as const;
 
-// ============================================
-// NAVIGATION LINKS
-// ============================================
+// Navigation links
 
 export const NAV_LINKS = [
   { label: "Process", href: "#process" },
@@ -48,9 +40,7 @@ export const NAV_LINKS = [
   { label: "Contact us", href: "#contact" },
 ] as const;
 
-// ============================================
-// PORTFOLIO PROJECTS
-// ============================================
+// Portfolio projects
 
 export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   {
@@ -87,9 +77,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
 ];
 
-// ============================================
-// SERVICES
-// ============================================
+// Services
 
 export const SERVICES: Service[] = [
   {

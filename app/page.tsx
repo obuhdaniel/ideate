@@ -43,13 +43,17 @@ export default function HomePage() {
         <ProcessSection />
       </div>
 
-      {/* Tools Section */}
-      <div id="tools">
-        <ToolsSection />
-      </div>
+      <div className="bg-gradient-to-br from-[#1D2948] via-[#141D33] via-[#0F1628] to-[#050A16]">
+        {/* Tools Section */}
+        <div id="tools">
+          <ToolsSection />
+        </div>
 
-      {/* Footer */}
-      <Footer />
+        {/* Footer */}
+        <div id="contact">
+          <Footer />
+        </div>
+      </div>
     </main>
   );
 }

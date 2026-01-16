@@ -11,9 +11,7 @@ import OrbitRings from "@/components/ui/OrbitRings";
 import PlanetWithCanvas from "@/components/ui/PlanetWithCanvas";
 import { ExploreButton } from "@/components/ui/Button";
 
-// ============================================
-// CONSTANTS
-// ============================================
+// Hero section constants
 
 const SLIDE_DURATION = 6000;
 const TRANSITION_DURATION = 2500;
@@ -29,9 +27,7 @@ const HERO_IMAGES = [
   "/images/hero/hero-male.png",
 ] as const;
 
-// ============================================
-// ANIMATION VARIANTS
-// ============================================
+// Animation variants
 
 const textVariants = {
   enter: (direction: number) => ({
@@ -73,9 +69,7 @@ const imageTransition = {
   opacity: { duration: 0.4 },
 };
 
-// ============================================
-// SUB-COMPONENTS
-// ============================================
+// Sub-components
 
 interface SlideTextProps {
   currentTextSlide: number;
@@ -129,15 +123,39 @@ function HeroImage({ currentSlide, direction }: HeroImageProps) {
   );
 }
 
-function Tagline() {
+// Tagline sub-component
+function Tagline({ currentSlide }: { currentSlide: number }) {
   return (
     <div className="absolute bottom-40 left-0 z-30 px-8 lg:px-16">
-      <p className="text-lg md:text-xl lg:text-2xl font-light text-white/90 leading-relaxed max-w-md">
-        We Bring Your <span className="font-normal text-white">Idea</span>, Your
-        <br />
-        <span className="font-normal text-white">Brand</span>, Your{" "}
-        <span className="font-normal text-white">Product</span> To Life.
-      </p>
+      <AnimatePresence mode="wait">
+        {currentSlide === 0 ? (
+          <motion.p
+            key="tagline-0"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.5 }}
+            className="text-lg md:text-xl lg:text-2xl font-light text-white/90 leading-relaxed max-w-md"
+          >
+            We Bring Your <span className="font-normal text-white">Idea</span>,
+            Your
+            <br />
+            <span className="font-normal text-white">Brand</span>, Your{" "}
+            <span className="font-normal text-white">Product</span> To Life.
+          </motion.p>
+        ) : (
+          <motion.p
+            key="tagline-1"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.5 }}
+            className="text-lg md:text-xl lg:text-2xl font-light text-white/90 leading-relaxed max-w-md"
+          >
+            While You Grow Your Business, Leave Design To Us.
+          </motion.p>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -201,9 +219,7 @@ function NavigationControls({
   );
 }
 
-// ============================================
-// MAIN COMPONENT
-// ============================================
+// Hero component
 
 interface HeroSectionProps {
   onExplore?: () => void;
@@ -266,7 +282,7 @@ export default function HeroSection({ onExplore }: HeroSectionProps) {
   return (
     <section
       id="hero"
-      className="relative h-[120vh] w-full overflow-hidden bg-[#070d1f]"
+      className="relative h-[120vh] w-full overflow-hidden bg-gradient-to-br from-[#1D2948] via-[#141D33] via-[#0F1628] to-[#050A16]"
     >
       <StarField className="z-0" />
       <OrbitRings isTransitioning={isTransitioning} className="z-[3]" />
@@ -283,7 +299,8 @@ export default function HeroSection({ onExplore }: HeroSectionProps) {
 
       <HeroImage currentSlide={currentSlide} direction={direction} />
 
-      <Tagline />
+      {/* UPDATED: Passing currentSlide to Tagline so it can switch text */}
+      <Tagline currentSlide={currentSlide} />
 
       <NavigationControls
         onPrev={prevSlide}

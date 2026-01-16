@@ -28,7 +28,7 @@ export default function ToolsSection() {
   const [isEarthHovered, setIsEarthHovered] = useState(false);
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#070d1f] py-20 lg:py-32">
+    <section className="relative w-full overflow-hidden bg-transparent py-20 lg:py-32">
       {/* Star Field Background */}
       <StarField count={100} className="pointer-events-none" />
 
@@ -193,7 +193,7 @@ export default function ToolsSection() {
           alt="Purple Planet"
           size={200}
           glowColor="rgba(147, 51, 234, 0.6)"
-          position={{ bottom: "-10%", left: "5%" }}
+          position={{ bottom: "-6%", left: "5%" }}
         />
       </div>
     </section>

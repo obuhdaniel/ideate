@@ -47,7 +47,7 @@ export default function AboutSection() {
   return (
     <section
       id="about"
-      className="relative w-full overflow-hidden bg-[#070d1f] py-20 lg:py-32"
+      className="relative w-full overflow-hidden py-20 lg:py-32 bg-transparent"
     >
       {/* --- DECORATIVE LINES & BOX --- */}
 

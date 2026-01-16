@@ -77,7 +77,7 @@ const PORTFOLIO_PROJECTS: PortfolioProject[] = [
 
 export default function ProjectSection() {
   return (
-    <section className="relative w-full overflow-hidden bg-[#070d1f] py-20 lg:py-32">
+    <section className="relative w-full overflow-hidden bg-gradient-to-br from-[#2F327D] via-[#0A0C10] via-[#0F1628] via-[#141D33] to-[#6E499F] py-20 lg:py-32">
       {/* Star Field Background */}
       <StarField count={100} className="pointer-events-none" />
       {/* Background Elements */}
@@ -158,7 +158,7 @@ export default function ProjectSection() {
       </div>
 
       {/* Bottom gradient */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#070d1f] to-transparent pointer-events-none" />
+      {/* <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#070d1f] to-transparent pointer-events-none" /> */}
     </section>
   );
 }

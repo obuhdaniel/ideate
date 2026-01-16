@@ -15,7 +15,7 @@ export default function ContactBanner({
   onFillFormClick,
 }: ContactBannerProps) {
   return (
-    <section className="relative w-full overflow-visible bg-[#070d1f] py-20 lg:py-32 ">
+    <section className="relative w-full overflow-visible py-20 lg:py-32 bg-transparent">
       {/* --- DECORATIVE LINES --- */}
 
       {/* Left vertical line */}
