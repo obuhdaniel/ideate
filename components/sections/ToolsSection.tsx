@@ -45,20 +45,20 @@ export default function ToolsSection() {
       <GlowingPlanet
         src="/images/custom-images/sun-like-planet.png"
         alt="Sun Planet"
-        size={100}
+        size={250}
         glowColor="rgba(255, 180, 50, 0.6)"
-        position={{ top: "5%", right: "8%" }}
+        position={{ top: "5%", right: "2%" }}
       />
 
       {/* Main Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
-        {/* Header Text */}
-        <div className="max-w-2xl mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 flex flex-col items-center text-left">
+        <div className="max-w-6xl mb-16">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
             <span className="text-gray-400">DIGITAL PRESENCE</span> TURNS
             VISIBILITY INTO OPPORTUNITY.
           </h2>
-          <p className="text-gray-400 text-base md:text-lg leading-relaxed">
+
+          <p className="text-gray-400 text-base lg:text-3xl leading-relaxed">
             Your website is your business, working 24/7. At Ideate Digital
             Agency we are interested in bringing digital presence to your
             business because a website doesn&apos;t just show your business, it
@@ -75,44 +75,50 @@ export default function ToolsSection() {
           className="w-full h-auto object-cover"
         />
 
-        {/* Earth-like Planet with Rocket */}
-        <div
-          className="absolute right-[15%] top-[10%] md:top-[15%] z-20"
-          onMouseEnter={() => setIsEarthHovered(true)}
-          onMouseLeave={() => setIsEarthHovered(false)}
-        >
-          {/* Earth Planet */}
-          <motion.div
-            className="relative cursor-pointer"
-            animate={{
-              filter: isEarthHovered
-                ? "drop-shadow(0 0 30px rgba(100, 200, 255, 0.7))"
-                : "drop-shadow(0 0 10px rgba(100, 200, 255, 0.3))",
-            }}
-            transition={{ duration: 0.4 }}
-          >
-            <img
-              src="/images/custom-images/earth-like-planet.png"
-              alt="Earth"
-              className="w-16 h-16 md:w-24 md:h-24 object-contain"
-            />
-          </motion.div>
+        {/* Earth Planet */}
+        <GlowingPlanet
+          src="/images/services/earth-like-planet.png"
+          alt="Earth Planet"
+          size={250}
+          glowColor="rgba(100, 200, 255, 0.4)"
+          position={{ top: "40%", right: "1%" }}
+        />
 
-          {/* Rocket */}
+        {/* Rocket Image */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="hidden z-[9999] lg:block absolute right-[2%] top-[35%] -translate-y-1/2"
+        >
+          {/* Interaction Wrapper */}
           <motion.div
-            className="absolute -top-8 -right-4 md:-top-12 md:-right-6"
-            animate={{
-              y: isEarthHovered ? -10 : 0,
+            // UPDATED: Move Diagonal (Up and Left) to match the -45deg rotation
+            whileHover={{ x: -700, y: -600 }}
+            transition={{
+              type: "spring",
+              stiffness: 50,
+              damping: 15,
+              mass: 1.2,
             }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
+            // Added padding (p-10) to increase hit area so it triggers when "close"
+            className="cursor-pointer p-5 -m-5"
           >
-            <img
+            <motion.img
               src="/images/custom-images/rocket.png"
               alt="Rocket"
-              className="w-8 h-8 md:w-12 md:h-12 object-contain"
+              style={{ rotate: -45 }}
+              className="w-32 h-32 lg:w-200 lg:h-200 object-contain"
+              animate={{ y: [0, -10, 0] }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
             />
           </motion.div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Scattered Planets Section */}
@@ -121,35 +127,55 @@ export default function ToolsSection() {
         <GlowingPlanet
           src="/images/custom-images/purple-planet.png"
           alt="Purple Planet"
-          size={60}
+          size={200}
           glowColor="rgba(147, 51, 234, 0.6)"
-          position={{ top: "20%", left: "10%" }}
+          position={{ top: "-7%", left: "3%" }}
         />
 
         {/* Planet with bodies - Center */}
-        <div className="absolute top-[40%] left-[45%] w-14 h-14 pointer-events-none">
-          <img
-            src="/images/tools/planet-with-bodies-around.png"
-            alt=""
-            className="w-full h-full object-contain"
-          />
-        </div>
+        <GlowingPlanet
+          src="/images/custom-images/planet-with-bodies-around.png"
+          alt="Planet with bodies"
+          size={200}
+          glowColor="rgba(147, 51, 234, 0.6)"
+          position={{ top: "-30%", left: "50%" }}
+        />
+
+        {/* Planet with bodies - Right */}
+        <GlowingPlanet
+          src="/images/custom-images/planet-with-bodies-around.png"
+          alt="Planet with bodies"
+          size={250}
+          glowColor="rgba(147, 51, 234, 0.6)"
+          position={{ top: "-20%", left: "80%" }}
+        />
+
+        {/* Build with tools we trust */}
 
         {/* Sun-like Planet - Right */}
         <GlowingPlanet
           src="/images/custom-images/sun-like-planet.png"
           alt="Sun Planet"
-          size={50}
+          size={250}
           glowColor="rgba(255, 180, 50, 0.5)"
-          position={{ top: "60%", right: "15%" }}
+          position={{ top: "20%", right: "1%" }}
+        />
+
+        {/* Planet with bodies - Right */}
+        <GlowingPlanet
+          src="/images/custom-images/planet-with-bodies-around.png"
+          alt="Planet with bodies"
+          size={250}
+          glowColor="rgba(147, 51, 234, 0.6)"
+          position={{ top: "10%", left: "-5%" }}
         />
 
         {/* Built with Tools Section */}
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 mt-20">
-          <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 mt-20 flex flex-col mt-50">
+          <h3 className="text-2xl md:text-3xl lg:text-5xl font-bold text-white mb-4">
             BUILT WITH TOOLS WE TRUST
           </h3>
-          <p className="text-gray-400 text-base md:text-lg max-w-xl mb-12">
+          <p className=" text-base md:text-3xl mb-12">
             The right tools are used to build your product based on the
             requirements
           </p>
@@ -157,10 +183,7 @@ export default function ToolsSection() {
 
         {/* Tool Carousels */}
         <div className="relative z-10 space-y-6 mt-8">
-          {/* Top Carousel - Sliding Left */}
           <InfiniteCarousel tools={TOP_CAROUSEL_TOOLS} direction="left" />
-
-          {/* Bottom Carousel - Sliding Right */}
           <InfiniteCarousel tools={BOTTOM_CAROUSEL_TOOLS} direction="right" />
         </div>
 
@@ -168,9 +191,9 @@ export default function ToolsSection() {
         <GlowingPlanet
           src="/images/custom-images/purple-planet.png"
           alt="Purple Planet"
-          size={80}
+          size={200}
           glowColor="rgba(147, 51, 234, 0.6)"
-          position={{ bottom: "-5%", left: "5%" }}
+          position={{ bottom: "-10%", left: "5%" }}
         />
       </div>
     </section>
