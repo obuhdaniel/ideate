@@ -1,4 +1,3 @@
-// @ts-nocheck
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -13,8 +12,8 @@ import { ExploreButton } from "@/components/ui/Button";
 
 // Hero section constants
 
-const SLIDE_DURATION = 6000;
-const TRANSITION_DURATION = 2500;
+const SLIDE_DURATION = 3000;
+const TRANSITION_DURATION = 1000;
 
 const TEXT_SLIDES = [
   { title: "IDEATE" },
