@@ -56,6 +56,12 @@ export default function ProcessSection() {
   const lastScrollYRef = useRef(0);
   const scrollDirectionRef = useRef<"up" | "down" | null>(null);
   const scrollIntentRef = useRef<"up" | "down" | null>(null);
+  const mobileTrackRef = useRef<HTMLDivElement>(null);
+  const mobileX = useMotionValue(0);
+  const mobileItemRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+
+
 
 
 
@@ -91,6 +97,54 @@ export default function ProcessSection() {
     window.removeEventListener("wheel", handleWheel);
   };
 }, []);
+
+
+useEffect(() => {
+  if (isProcessLocked) {
+    centerActiveMobileItem(activeStep);
+  }
+}, [activeStep, isProcessLocked]);
+
+
+  // Translate vertical scroll to horizontal scroll
+  const updateMobileHorizontalScroll = (scrollDistance: number) => {
+    if (!mobileTrackRef.current) return;
+
+    const track = mobileTrackRef.current;
+    const viewportWidth = window.innerWidth;
+    const contentWidth = track.scrollWidth;
+
+    const maxTranslateX = Math.max(contentWidth - viewportWidth, 0);
+
+    // Normalize scroll distance (0 → window.innerHeight)
+    const progress = Math.min(Math.max(scrollDistance / window.innerHeight, 0), 1);
+
+    // Direction-aware translation
+    const x =
+      lockDirection === "forward"
+        ? -progress * maxTranslateX
+        : -(1 - progress) * maxTranslateX;
+
+    mobileX.set(x);
+  };
+
+  const centerActiveMobileItem = (stepIndex: number) => {
+  const track = mobileTrackRef.current;
+  const item = mobileItemRefs.current[stepIndex];
+
+  if (!track || !item) return;
+
+  const trackRect = track.getBoundingClientRect();
+  const itemRect = item.getBoundingClientRect();
+
+  const trackCenter = trackRect.width / 2;
+  const itemCenter =
+    item.offsetLeft + itemRect.width / 2;
+
+  const translateX = trackCenter - itemCenter;
+
+  mobileX.set(translateX);
+};
 
 
 
@@ -152,6 +206,9 @@ export default function ProcessSection() {
       
       // Calculate scroll distance from when we locked
       let scrollDistanceSinceLock = currentScrollY - scrollStartRef.current;
+
+      // For mobile movement
+      updateMobileHorizontalScroll(scrollDistanceSinceLock);
       
       // For backward lock, reverse the direction (scrolling up = positive progress)
       if (lockDirection === "backward") {
@@ -201,6 +258,7 @@ export default function ProcessSection() {
       // Update active step
       if (clampedStep !== activeStep) {
         setActiveStep(clampedStep);
+        centerActiveMobileItem(clampedStep);
       }
 
       // Sync word index based on total progress through all steps
@@ -267,7 +325,7 @@ export default function ProcessSection() {
             zIndex: isProcessLocked ? 30 : "auto",
           }}
         >
-          <section className="relative w-full h-full flex items-center bg-gradient-to-br from-[#1D2948] via-[#141D33] via-[#0F1628] to-[#050A16]">
+          <section className="relative w-full h-full flex flex-col md:flex-row items-center bg-gradient-to-br from-[#1D2948] via-[#141D33] via-[#0F1628] to-[#050A16]">
             {/* --- BACKGROUND ELEMENTS WITH PARALLAX --- */}
 
             <StarField count={80} className="pointer-events-none opacity-60" />
@@ -331,23 +389,23 @@ export default function ProcessSection() {
             </div>
 
             {/* --- CONTENT CONTAINER --- */}
-            <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12 h-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-6 items-center h-auto md:py-20">
+            <div className="relative z-10 w-full md:max-w-7xl mx-auto px-4 py-5 md:py-0 md:px-12 h-auto">
+              <div className="flex flex-col justify-between md:flex-row gap-2 md:gap-6 items-center h-auto md:py-20">
                 {/* LEFT COLUMN */}
-                <div className="lg:pr-10">
+                <div className="md:pr-10">
                   <motion.div 
-                    className="flex items-center gap-3"
+                    className="flex items-center gap-1 md:gap-3"
                     initial={{ opacity: 0, x: -20 }}
                     animate={isProcessLocked ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
                   >
-                    <span className="text-purple-500 font-mono text-sm">//</span>
-                    <span className="text-purple-400 text-2xl tracking-wide uppercase">
+                    <span className="text-purple-500 font-mono text-xs md:text-sm">//</span>
+                    <span className="text-purple-400 text-md md:text-2xl tracking-wide uppercase">
                       The Process
                     </span>
                   </motion.div>
 
-                  <div className="h-auto flex flex-row md:flex-col justify-start mb-30 overflow-hidden">
+                  <div className="h-auto flex flex-row md:flex-col justify-start mb-6 md:mb-30 overflow-hidden">
                     <AnimatePresence mode="wait">
                       <motion.h2
                         key={currentWordIndex}
@@ -355,14 +413,14 @@ export default function ProcessSection() {
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: -40, opacity: 0 }}
                         transition={{ duration: 0.7, ease: "easeOut" }}
-                        className="text-4xl md:text-4xl lg:text-4xl font-bold text-white leading-tight"
+                        className="text-2xl md:text-4xl lg:text-4xl font-bold text-white leading-tight"
                       >
                         {ANIMATED_WORDS[currentWordIndex]}
                       </motion.h2>
                     </AnimatePresence>
                   </div>
 
-                  <div className="max-w-[50%] space-y-5">
+                  <div className="md:max-w-[50%] space-y-5">
                     {/* Narrative text that changes with steps */}
                     <AnimatePresence mode="wait">
                       <motion.p
@@ -377,7 +435,7 @@ export default function ProcessSection() {
                       </motion.p>
                     </AnimatePresence>
 
-                    <p className="text-xl md:text-2xl text-gray-300 font-light leading-relaxed">
+                    <p className="text-xl md:text-2xl mb-4 md:mb-0 text-gray-300 font-light leading-relaxed">
                       <span className="text-white font-medium">Our mission</span>{" "}
                       when you trust us to bring your product to life.
                     </p>
@@ -388,14 +446,16 @@ export default function ProcessSection() {
                       viewport={{ once: true }}
                       transition={{ duration: 0.6, delay: 0.2 }}
                     >
-                      <VisitButton
-                        onClick={handleFindOut}
-                        variant="outline"
-                        size="lg"
-                        className="relative z-50"
-                      >
-                        Find Out
-                      </VisitButton>
+                      <div className="hidden md:block">
+                        <VisitButton
+                          onClick={handleFindOut}
+                          variant="outline"
+                          size="lg"
+                          className="relative z-50"
+                        >
+                          Find Out
+                        </VisitButton>
+                      </div>
                     </motion.div>
                   </div>
                 </div>
@@ -487,18 +547,25 @@ export default function ProcessSection() {
                 </div>
 
                 {/* Mobile: Horizontal Layout at Top */}
-                <div className="md:hidden w-full -mx-6 px-6 lg:px-12">
+                <div className="md:hidden w-full mt-10 -mx-6 px-4">
                   <div className="flex flex-col gap-6">
                     {/* Horizontal Process Cards */}
-                    <div className="flex flex-row gap-4 overflow-x-auto pb-2 scrollbar-hide">
+                    <div className="md:hidden w-full overflow-hidden">
+                      <motion.div
+                        ref={mobileTrackRef}
+                        className="flex flex-row gap-4 pb-2 will-change-transform"
+                        style={{ x: mobileX }}
+                        transition={{ type: "spring", damping: 20, stiffness: 120 }}
+                      >
                       {PROCESS_STEPS.map((step, index) => {
                         const isActive = activeStep === index;
                         const isPast = index < activeStep;
 
                         return (
                           <motion.div
+                            ref={(el) => (mobileItemRefs.current[index] = el)}
                             key={step.id}
-                            className={`relative group flex flex-col min-w-[200px] transition-all duration-500 p-4 rounded-lg border ${
+                            className={`relative group flex flex-col min-w-[70%] h-1/3 transition-all duration-500 p-4 rounded-lg border ${
                               isActive
                                 ? "opacity-100 border-purple-400/50 bg-white/5"
                                 : isPast ? "opacity-60 border-purple-300/30" : "opacity-40 border-gray-700/30"
@@ -518,7 +585,7 @@ export default function ProcessSection() {
                               </span>
 
                               <h3
-                                className={`text-lg font-bold transition-colors duration-500 ${
+                                className={`text-xl font-bold transition-colors duration-500 ${
                                   isActive
                                     ? "text-white"
                                     : isPast ? "text-gray-400" : "text-gray-600 group-hover:text-gray-400"
@@ -528,7 +595,7 @@ export default function ProcessSection() {
                               </h3>
 
                               <p
-                                className={`text-xs transition-colors duration-500 ${
+                                className={`text-md transition-colors duration-500 ${
                                   isActive ? "text-gray-300" : isPast ? "text-gray-600" : "text-gray-700"
                                 }`}
                               >
@@ -546,43 +613,10 @@ export default function ProcessSection() {
                           </motion.div>
                         );
                       })}
-                    </div>
-
-                    {/* Mobile Description */}
-                    <div className="space-y-3">
-                      <AnimatePresence mode="wait">
-                        <motion.p
-                          key={activeStep}
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -10 }}
-                          transition={{ duration: 0.4 }}
-                          className="text-sm text-gray-300 font-light leading-relaxed italic"
-                        >
-                          {PROCESS_STEPS[activeStep].narrative}
-                        </motion.p>
-                      </AnimatePresence>
-
-                      <p className="text-lg text-gray-300 font-light leading-relaxed">
-                        <span className="text-white font-medium">Our mission</span>{" "}
-                        when you trust us to bring your product to life.
-                      </p>
-
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                      >
-                        <VisitButton
-                          onClick={handleFindOut}
-                          variant="outline"
-                          size="lg"
-                        >
-                          Find Out
-                        </VisitButton>
                       </motion.div>
                     </div>
+
+                    
                   </div>
                 </div>
               </div>
