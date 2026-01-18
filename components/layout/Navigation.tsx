@@ -107,7 +107,7 @@ export default function Navigation() {
                 </div>
               ))}
             </div>
-            <StarField className="z-0" />
+            <StarField count={20} className="z-0" />
           </div>
         )}
 

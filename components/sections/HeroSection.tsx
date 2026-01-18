@@ -12,8 +12,8 @@ import { ExploreButton } from "@/components/ui/Button";
 
 // Hero section constants
 
-const SLIDE_DURATION = 3000;
-const TRANSITION_DURATION = 1000;
+const SLIDE_DURATION = 5000;
+const TRANSITION_DURATION = 1500;
 
 const TEXT_SLIDES = [
   { title: "IDEATE" },
@@ -78,7 +78,7 @@ interface SlideTextProps {
 
 function SlideText({ currentTextSlide, textDirection }: SlideTextProps) {
   return (
-    <div className="absolute inset-0 z-10 flex items-start justify-center pt-16 lg:pt-16 pointer-events-none overflow-hidden">
+    <div className="absolute inset-0 z-10 flex items-start leading-12 justify-center pt-42 md:pt-16 pointer-events-none overflow-hidden">
       <AnimatePresence mode="wait" custom={textDirection}>
         <motion.h1
           key={currentTextSlide}
@@ -88,7 +88,7 @@ function SlideText({ currentTextSlide, textDirection }: SlideTextProps) {
           animate="center"
           exit="exit"
           transition={textTransition}
-          className="text-[8rem] md:text-[16rem] lg:text-[16rem] xl:text-[18rem] font-extralight tracking-tight text-[#d8d8d8]/70 select-none leading-none"
+          className="text-[6rem] md:text-[16rem] lg:text-[16rem] xl:text-[18rem] font-extralight tracking-tight text-[#d8d8d8]/70 select-none leading-none"
         >
           {TEXT_SLIDES[currentTextSlide].title}
         </motion.h1>
@@ -104,7 +104,7 @@ interface HeroImageProps {
 
 function HeroImage({ currentSlide, direction }: HeroImageProps) {
   return (
-    <div className="absolute inset-0 z-20 flex items-center justify-center pt-40 overflow-hidden">
+    <div className="absolute inset-0 z-20 flex items-end md:items-center justify-center md:pt-40 overflow-hidden">
       <AnimatePresence mode="wait" custom={direction}>
         <motion.img
           key={currentSlide}
@@ -116,7 +116,7 @@ function HeroImage({ currentSlide, direction }: HeroImageProps) {
           transition={imageTransition}
           src={HERO_IMAGES[currentSlide]}
           alt="Hero"
-          className="max-h-screen w-auto object-contain"
+          className="h-[70%] w-full md:h-auto md:max-h-screen object-cover md:object-contain"
         />
       </AnimatePresence>
     </div>
@@ -126,7 +126,7 @@ function HeroImage({ currentSlide, direction }: HeroImageProps) {
 // Tagline sub-component
 function Tagline({ currentSlide }: { currentSlide: number }) {
   return (
-    <div className="absolute bottom-40 left-0 z-30 px-8 lg:px-16">
+    <div className="absolute top-25 md:top-auto md:bottom-40 left-0 z-30 px-8 lg:px-16">
       <AnimatePresence mode="wait">
         {currentSlide === 0 ? (
           <motion.div
@@ -136,7 +136,7 @@ function Tagline({ currentSlide }: { currentSlide: number }) {
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
           >
-            <p className="text-lg md:text-xl lg:text-2xl font-light text-white/90 leading-relaxed max-w-md">
+            <p className="text-sm md:text-xl lg:text-2xl font-light text-white/90 leading-relaxed max-w-md">
               We Bring Your <span className="font-normal text-white">Idea</span>
               , Your
               <br />
@@ -152,7 +152,7 @@ function Tagline({ currentSlide }: { currentSlide: number }) {
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
           >
-            <p className="text-lg md:text-xl lg:text-2xl font-light text-white/90 leading-relaxed max-w-md">
+            <p className="text-sm md:text-xl lg:text-2xl font-light text-white/90 leading-relaxed max-w-md">
               While you grow your business, leave design to us
             </p>
           </motion.div>
@@ -181,7 +181,7 @@ function NavigationControls({
 }: NavigationControlsProps) {
   return (
     <div className="absolute bottom-8 left-0 right-0 z-30 px-8 lg:px-16">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <div className="md:max-w-7xl mx-auto flex md:items-center justify-between">
         <button
           onClick={onPrev}
           className="h-14 w-14 rounded-full border border-white/30 hover:border-white/60 hover:bg-white/5 flex items-center justify-center transition-all duration-300 group"
@@ -284,7 +284,7 @@ export default function HeroSection({ onExplore }: HeroSectionProps) {
   return (
     <section
       id="hero"
-      className="relative h-[120vh] w-full overflow-hidden bg-gradient-to-br from-[#1D2948] via-[#141D33] via-[#0F1628] to-[#050A16]"
+      className="relative h-[70vh] md:h-[120vh] w-full overflow-hidden bg-gradient-to-br from-[#1D2948] via-[#141D33] via-[#0F1628] to-[#050A16]"
     >
       <StarField className="z-0" />
       <OrbitRings isTransitioning={isTransitioning} className="z-[3]" />

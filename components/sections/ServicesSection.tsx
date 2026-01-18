@@ -6,6 +6,7 @@ import GlowingPlanet from "@/components/ui/GlowingPlanet";
 import OrbitRings from "@/components/ui/OrbitRings";
 import ContactBanner from "@/components/sections/ContactBanner";
 import AboutSection from "@/components/sections/AboutSection";
+import Image from "next/image";
 
 const SERVICES = [
   {
@@ -55,29 +56,30 @@ export default function ServicesSection({
   return (
     <>
       <div className="relative w-full bg-gradient-to-br from-[#1D2948] via-[#0A0C10] via-[#0F1628] via-[#141D33] to-[#050A16]">
-        <section className="relative w-full overflow-visible bg-transparent py-20 lg:py-32">
+        <section className="relative w-full overflow-visible bg-transparent py-10 md:py-32">
           {/* --- DECORATIVE LINES --- */}
 
-          {/* Left vertical line */}
-          <div className="absolute left-[8%] md:left-[18%] top-[25%] bottom-[8%] w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+          
+          {/* Desktop: Left vertical line */}
+          <div className="absolute hidden md:block left-[8%] md:left-[18%] top-[25%] bottom-[8%] w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
 
-          {/* Right vertical line */}
-          <div className="absolute right-[8%] md:right-[18%] top-[25%] bottom-[8%] w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+          {/* Desktop: Right vertical line */}
+          <div className="absolute hidden md:block right-[8%] md:right-[18%] top-[25%] bottom-[8%] w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
 
-          {/* Top decorative line */}
-          <div className="absolute top-[33.5%] left-[10%] right-[10%] h-px bg-white/10" />
+          {/* Desktop: Top decorative line */}
+          <div className="absolute hidden md:block top-[33.5%] left-[10%] right-[10%] h-px bg-white/10" />
 
-          {/* Bottom decorative line */}
-          <div className="absolute bottom-[14.5%] left-[10%] right-[10%] h-px bg-white/10" />
+          {/* Desktop: Bottom decorative line */}
+          <div className="absolute hidden md:block bottom-[14.5%] left-[10%] right-[10%] h-px bg-white/10" />
 
-          {/* Horizontal Middle Line - Stretches fully between vertical poles */}
-          <div className="absolute top-[59.5%] left-[8%] right-[8%] md:left-[18%] md:right-[18%] h-px bg-white/10 z-0" />
+          {/* Desktop: Horizontal Middle Line - Stretches fully between vertical poles */}
+          <div className="absolute hidden md:block top-[59.5%] left-[8%] right-[8%] md:left-[18%] md:right-[18%] h-px bg-white/10 z-0" />
 
-          {/* Vertical Center Line - Stretches between Top and Bottom lines */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-[33.5%] bottom-[14.5%] w-px bg-white/10 z-0" />
+          {/* Desktop: Vertical Center Line - Stretches between Top and Bottom lines */}
+          <div className="absolute hidden md:block left-1/2 -translate-x-1/2 top-[33.5%] bottom-[14.5%] w-px bg-white/10 z-0" />
 
-          {/* --- ENCLOSED BOX FILL --- */}
-          <div className="absolute top-[33.5%] bottom-[14.5%] left-[8%] right-[8%] md:left-[18%] md:right-[18%] bg-white/[0.03] pointer-events-none" />
+          {/* Desktop: ENCLOSED BOX FILL --- */}
+          <div className="absolute hidden md:block top-[33.5%] bottom-[14.5%] left-[8%] right-[8%] md:left-[18%] md:right-[18%] bg-white/[0.03] pointer-events-none" />
 
           {/* --- BACKGROUND ELEMENTS --- */}
 
@@ -112,32 +114,42 @@ export default function ServicesSection({
             position={{ top: "8%", left: "2%" }}
           />
 
+
           <GlowingPlanet
             src="/images/services/globe.png"
             alt="Globe"
             size={250}
             glowColor="rgba(100, 200, 255, 0.4)"
             position={{ top: "8%", right: "2%" }}
+            className="hidden md:block"
           />
 
+
           {/* Content */}
-          <div className="relative z-20 max-w-5xl mx-auto px-12 md:px-16 lg:px-20">
+          <div className="relative z-20 max-w-5xl mx-auto md:px-16 lg:px-20">
             {/* Section Header */}
-            <div className="mb-20">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-purple-400 font-mono text-sm">//</span>
-                <span className="text-purple-400 text-2xl tracking-wide">
+            <div className="mb-10 md:mb-20 px-12 relative">
+              <div className="flex items-center gap-1 md:gap-3 mb-4">
+                <span className="text-purple-400 font-mono text-xs md:text-sm">//</span>
+                <span className="text-purple-400 text-lg md:text-2xl tracking-wide">
                   Our Services
                 </span>
               </div>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white ">
                 What We Do, Done with intention
               </h2>
+              <Image
+                src="/images/custom-images/rocket.png"
+                alt=""
+                width={379}
+                height={200}
+                className="md:hidden absolute -bottom-20 -right-35"
+              />        
             </div>
 
             {/* Services Grid */}
             <div className="">
-              <div className="grid grid-cols-1 md:grid-cols-2 relative">
+              <div className="grid grid-cols-1 w-screen md:w-auto md:grid-cols-2 relative md:border md:border-white/10">
                 {SERVICES.map((service, index) => (
                   <ServiceCard
                     key={service.title}
@@ -159,6 +171,16 @@ export default function ServicesSection({
             size={250}
             glowColor="rgba(100, 200, 255, 0.4)"
             position={{ bottom: "2%", left: "2%" }}
+            className="hidden md:block"
+          />
+
+            <GlowingPlanet
+            src="/images/services/globe.png"
+            alt="Globe"
+            size={150}
+            glowColor="rgba(100, 200, 255, 0.4)"
+            position={{ bottom: "-8%", left: "-8%" }}
+            className="md:hidden"
           />
 
           <GlowingPlanet
@@ -167,6 +189,16 @@ export default function ServicesSection({
             size={250}
             glowColor="rgba(100, 180, 255, 0.4)"
             position={{ bottom: "2%", right: "2%" }}
+            className="hidden md:block"
+          />
+
+          <GlowingPlanet
+            src="/images/services/earth-like-planet.png"
+            alt="Earth Planet"
+            size={150}
+            glowColor="rgba(100, 180, 255, 0.4)"
+            position={{ bottom: "-8%", right: "-8%" }}
+            className="md:hidden"
           />
         </section>
 

@@ -15,23 +15,23 @@ export default function ContactBanner({
   onFillFormClick,
 }: ContactBannerProps) {
   return (
-    <section className="relative w-full overflow-visible py-20 lg:py-32 bg-transparent">
+    <section className="relative w-full mt-20 md:mt-0 overflow-visible py-20 lg:py-32 bg-transparent">
       {/* --- DECORATIVE LINES --- */}
 
       {/* Left vertical line */}
-      <div className="absolute left-[8%] md:left-[18%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+      <div className="absolute left-[0%] md:left-[18%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
 
       {/* Right vertical line */}
-      <div className="absolute right-[8%] md:right-[18%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+      <div className="absolute right-[0%] md:right-[18%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
 
       {/* Top decorative line */}
-      <div className="absolute top-[15%] left-[10%] right-[10%] h-px bg-white/10" />
+      <div className="absolute md:top-[15%] md:left-[10%] md:right-[10%] h-px bg-white/10" />
 
       {/* Bottom decorative line */}
-      <div className="absolute bottom-[15%] left-[10%] right-[10%] h-px bg-white/10" />
+      <div className="absolute md:bottom-[15%] md:left-[10%] md:right-[10%] h-px bg-white/10" />
 
       {/* Enclosed Box Fill */}
-      <div className="absolute top-[15%] bottom-[15%] left-[8%] right-[8%] md:left-[18%] md:right-[18%] bg-white/[0.03] pointer-events-none" />
+      <div className="absolute top-[0%] bottom-[0%] left-[0%] right-[0%] md:top-[15%] md:bottom-[15%] md:left-[18%] md:right-[18%] bg-white/[0.03] pointer-events-none" />
 
       {/* Orbit Rings Background */}
       <div className="absolute inset-0 pointer-events-none">
@@ -39,7 +39,13 @@ export default function ContactBanner({
           sizes={[400, 600, 800]}
           centerX="80%"
           centerY="50%"
-          className="opacity-15"
+          className="opacity-15 hidden md:block"
+        />
+        <OrbitRings
+          sizes={[300, 350, 400, 450, 500, 550]}
+          centerX="50%"
+          centerY="25%"
+          className="opacity-80 md:hidden"
         />
       </div>
 
@@ -55,8 +61,8 @@ export default function ContactBanner({
       />
 
       {/* Content */}
-      <div className="relative z-20 max-w-5xl mx-auto px-12 md:px-16 lg:px-25 ">
-        <div className="flex flex-col lg:flex-row items-center justify-between">
+      <div className="relative z-20 md:max-w-5xl md:mx-auto md:px-16 lg:px-25 ">
+        <div className="flex px-5 space-y-6 flex-col md:flex-row items-start md:items-center justify-between">
           {/* Left Content */}
           <div className="flex-1">
             <motion.div
@@ -91,14 +97,28 @@ export default function ContactBanner({
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative z-30"
           >
-            <VisitButton
-              onClick={onFillFormClick}
-              variant="outline"
-              size="lg"
-              className="whitespace-nowrap"
-            >
-              Fill the Form
-            </VisitButton>
+            <div className="hidden md:block">
+              <VisitButton
+                onClick={onFillFormClick}
+                variant="outline"
+                size="lg"
+                className="whitespace-nowrap"
+              >
+                Fill the Form
+              </VisitButton>
+            </div>
+
+            <div className="md:hidden">
+              <VisitButton
+                onClick={onFillFormClick}
+                variant="outline"
+                size="md"
+                className="whitespace-nowrap"
+              >
+                Fill the Form
+              </VisitButton>
+            </div>
+            
           </motion.div>
 
           {/* Rocket Image Wrapper */}

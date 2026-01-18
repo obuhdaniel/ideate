@@ -7,7 +7,8 @@ import {
   AnimatePresence,
   useScroll,
   useMotionValueEvent,
-  useSpring,
+  useTransform,
+  useMotionValue,
 } from "framer-motion";
 import StarField from "@/components/ui/StarField";
 import { VisitButton } from "@/components/ui/Button";
@@ -19,6 +20,7 @@ const PROCESS_STEPS = [
     title: "Design",
     description: "Shaping ideas into clear, meaningful digital experiences.",
     image: "/images/process/photo-with-design-on focus.png",
+    narrative: "Every great product starts with vision. We dive deep into understanding your needs.",
   },
   {
     id: "build",
@@ -26,6 +28,7 @@ const PROCESS_STEPS = [
     title: "Build",
     description: "Turning designs into scalable, dependable products.",
     image: "/images/process/photo-with-build-on-focus.png",
+    narrative: "With precision and expertise, we transform concepts into reality.",
   },
   {
     id: "launch",
@@ -33,6 +36,7 @@ const PROCESS_STEPS = [
     title: "Launch",
     description: "Releasing the product with confidence, clarity, and purpose.",
     image: "/images/process/photo-with-launch-on-focus.png",
+    narrative: "Ready to share your creation with the world. Let's make impact together.",
   },
 ];
 
@@ -41,42 +45,191 @@ const ANIMATED_WORDS = ["Precise.", "Strategic.", "Intentional."];
 export default function ProcessSection() {
   const [activeStep, setActiveStep] = useState(0);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [isProcessLocked, setIsProcessLocked] = useState(false);
+  const [lockDirection, setLockDirection] = useState<"forward" | "backward" | null>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
-  // Ref for the scroll container
+  // Refs
   const containerRef = useRef<HTMLDivElement>(null);
+  const scrollStartRef = useRef<number>(0);
+  const containerTopRef = useRef<number>(0);
+  const lastScrollYRef = useRef(0);
+  const scrollDirectionRef = useRef<"up" | "down" | null>(null);
+  const scrollIntentRef = useRef<"up" | "down" | null>(null);
 
-  // 1. Track scroll progress
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
 
-  // 2. PHYSICS ENGINE:
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 5,
-    damping: 15,
-    mass: 1,
-    restDelta: 0.001,
-  });
 
-  // 3. Update step based on SMOOTHED progress
-  useMotionValueEvent(smoothProgress, "change", (latest) => {
-    if (latest < 0.2) {
-      if (activeStep !== 0) setActiveStep(0);
-    } else if (latest < 0.65) {
-      if (activeStep !== 1) setActiveStep(1);
-    } else {
-      if (activeStep !== 2) setActiveStep(2);
+
+
+  // Motion values for parallax effects
+  const parallaxY = useMotionValue(0);
+
+  // Track scroll position to detect when process section comes into view
+  const { scrollY } = useScroll();
+
+
+  // Handle body scroll lock/unlock
+  useEffect(() => {
+    // No need to lock body overflow - let natural scrolling work through 300vh space
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, []);
+
+  useEffect(() => {
+  const handleWheel = (e: WheelEvent) => {
+    if (e.deltaY > 0) {
+      scrollIntentRef.current = "down";
+    } else if (e.deltaY < 0) {
+      scrollIntentRef.current = "up";
+    }
+  };
+
+  window.addEventListener("wheel", handleWheel, { passive: true });
+
+  return () => {
+    window.removeEventListener("wheel", handleWheel);
+  };
+}, []);
+
+
+
+  // Update locked state and active step based on user scroll
+  useMotionValueEvent(scrollY, "change", (currentScrollY) => {
+    if (currentScrollY > lastScrollYRef.current) {
+      scrollDirectionRef.current = "down";
+    } else if (currentScrollY < lastScrollYRef.current) {
+      scrollDirectionRef.current = "up";
+    }
+
+    lastScrollYRef.current = currentScrollY;
+
+    if (!containerRef.current) return;
+
+    const intent = scrollIntentRef.current;
+    const rect = containerRef.current.getBoundingClientRect();
+    const containerTop = currentScrollY + rect.top;
+    
+    // Only check lock conditions when NOT already locked
+    if (!isProcessLocked) {
+      // Forward lock: when container's top reaches viewport top
+      const shouldLockForward = 
+        (intent === "down" || scrollDirectionRef.current === "down") &&
+        rect.top >= -15 &&
+        rect.top <= 15;
+
+      // Backward lock: when container's bottom reaches viewport bottom
+      const shouldLockBackward = 
+        (intent === "up" || scrollDirectionRef.current === "up") &&
+        rect.bottom >= window.innerHeight - 15 &&
+        rect.bottom <= window.innerHeight + 15;
+        
+
+      if (shouldLockForward) {
+        setIsProcessLocked(true);
+        setLockDirection("forward");
+        scrollStartRef.current = currentScrollY;
+        containerTopRef.current = containerTop;
+        setActiveStep(0);
+        setScrollProgress(0);
+        return;
+      }
+
+      if (shouldLockBackward) {
+        setIsProcessLocked(true);
+        setLockDirection("backward");
+        scrollStartRef.current = currentScrollY;
+        containerTopRef.current = containerTop;
+        setActiveStep(PROCESS_STEPS.length - 1); // Start from Launch phase
+        setScrollProgress(1);
+        return;
+      }
+    }
+
+    // Handle step updates while locked
+    if (isProcessLocked && lockDirection) {
+      const stepHeight = window.innerHeight / PROCESS_STEPS.length;
+      
+      // Calculate scroll distance from when we locked
+      let scrollDistanceSinceLock = currentScrollY - scrollStartRef.current;
+      
+      // For backward lock, reverse the direction (scrolling up = positive progress)
+      if (lockDirection === "backward") {
+        scrollDistanceSinceLock = -scrollDistanceSinceLock;
+      }
+      
+      // Calculate step index and progress
+      const stepIndexRaw = scrollDistanceSinceLock / stepHeight;
+      let clampedStep: number;
+      let clampedProgress: number;
+      let totalProgress: number;
+
+      if (lockDirection === "backward") {
+        // BACKWARD: Count DOWN from step 2 (Launch) to 0 (Design)
+        const stepsDownFromLaunch = Math.trunc(stepIndexRaw);
+        clampedStep = Math.max(0, Math.min(2 - stepsDownFromLaunch, 2));
+        
+        // Progress within step (0 to 1)
+        let stepProgress = stepIndexRaw - Math.trunc(stepIndexRaw);
+        if (stepProgress < 0) {
+          stepProgress *= -1;
+        }
+        clampedProgress = Math.max(0, Math.min(stepProgress, 1));
+        
+        // Progress bar: 100% at Launch (step 2), 0% at Design (step 0)
+        // Goes from 100% → 0% as we scroll backward
+        totalProgress = (clampedStep + clampedProgress + 1) / PROCESS_STEPS.length;
+
+      } else {
+        // FORWARD: Count UP from step 0 (Design) to 2 (Launch)
+        clampedStep = Math.max(0, Math.min(Math.trunc(stepIndexRaw), 2));
+        
+        // Progress within step (0 to 1)
+        let stepProgress = stepIndexRaw - Math.trunc(stepIndexRaw);
+        if (stepProgress < 0) {
+          stepProgress *= -1;
+        }
+        clampedProgress = Math.max(0, Math.min(stepProgress, 1));
+        
+        // Progress bar: 0% at Design (step 0), 100% at Launch (step 2)
+        // Goes from 0% → 100% as we scroll forward
+        totalProgress = (clampedStep + clampedProgress) / PROCESS_STEPS.length;
+      }
+
+      setScrollProgress(clampedProgress);
+
+      // Update active step
+      if (clampedStep !== activeStep) {
+        setActiveStep(clampedStep);
+      }
+
+      // Sync word index based on total progress through all steps
+      const wordIdx = Math.floor((totalProgress * ANIMATED_WORDS.length) % ANIMATED_WORDS.length);
+      if (wordIdx !== currentWordIndex) {
+        setCurrentWordIndex(wordIdx);
+      }
+
+      // Update parallax (works in both directions)
+      parallaxY.set(scrollDistanceSinceLock * 0.5);
+
+      // Unlock logic with direction awareness
+      if (lockDirection === "forward") {
+        // Forward: unlock when scrolled far enough past the section
+        if (scrollDistanceSinceLock >= window.innerHeight) {
+          setIsProcessLocked(false);
+          setLockDirection(null);
+        }
+      }
+      
+      if (lockDirection === "backward") {
+        // Backward: unlock when scrolled far enough back past the section
+        if (scrollDistanceSinceLock >= window.innerHeight) {
+          setIsProcessLocked(false);
+          setLockDirection(null);
+        }
+      }
     }
   });
-
-  // Animate cycling words
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentWordIndex((prev) => (prev + 1) % ANIMATED_WORDS.length);
-    }, 2500);
-    return () => clearInterval(interval);
-  }, []);
 
   const handleFindOut = () => {
     const aboutSection = document.getElementById("about");
@@ -85,173 +238,358 @@ export default function ProcessSection() {
     }
   };
 
+  // Calculate opacity based on scroll progress for step indicator
+  const getStepOpacity = (index: number) => {
+    if (index === activeStep) return 1;
+    if (index < activeStep) return 0.5;
+    return 0.2;
+  };
+
   return (
-    // 4. CONTAINER HEIGHT: 110vh
-    <div
-      ref={containerRef}
-      id="process"
-      className="relative h-[100vh] w-full bg-gradient-to-br from-[#1D2948] via-[#141D33] via-[#0F1628] to-[#050A16]"
-    >
-      <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
-        <section className="relative w-full h-full flex items-center">
-          {/* --- BACKGROUND ELEMENTS --- */}
+    <>
+      <div
+        ref={containerRef}
+        id="process"
+        className="relative w-full"
+        style={{
+          height: isProcessLocked ? "100vh" : "auto",
+          minHeight: "auto",
+          backgroundColor: "transparent",
+          zIndex: isProcessLocked ? 40 : "auto",
+        }}
+      >
+        <div
+          className={`${
+            isProcessLocked ? "fixed" : "relative"
+          } top-0 left-0 right-0 w-full overflow-hidden`}
+          style={{
+            height: "100vh",
+            zIndex: isProcessLocked ? 30 : "auto",
+          }}
+        >
+          <section className="relative w-full h-full flex items-center bg-gradient-to-br from-[#1D2948] via-[#141D33] via-[#0F1628] to-[#050A16]">
+            {/* --- BACKGROUND ELEMENTS WITH PARALLAX --- */}
 
-          <StarField count={80} className="pointer-events-none opacity-60" />
+            <StarField count={80} className="pointer-events-none opacity-60" />
 
-          {/* Planet Top Left */}
-          <div className="absolute top-[-5%] left-[-5%] w-32 h-32 md:w-64 md:h-64 pointer-events-none">
-            <img
-              src="/images/process/planet-with-bodies-around.png"
-              alt=""
-              className="w-full h-full object-contain"
-            />
-          </div>
+            {/* Planet Top Left - Parallax Effect */}
+            <motion.div 
+              className="absolute top-[-5%] left-[-5%] w-32 h-32 md:w-64 md:h-64 pointer-events-none"
+              style={{ y: parallaxY }}
+            >
+              <img
+                src="/images/process/planet-with-bodies-around.png"
+                alt=""
+                className="w-full h-full object-contain"
+              />
+            </motion.div>
 
-          {/* Planet Bottom Right */}
-          <div className="absolute bottom-[35%] left-[10%] w-40 h-40 md:w-80 md:h-80 pointer-events-none opacity-70">
-            <img
-              src="/images/process/planet-with-bodies-around.png"
-              alt=""
-              className="w-full h-full object-contain"
-            />
-          </div>
+            {/* Planet Bottom Right - Counter Parallax */}
+            <motion.div 
+              className="absolute bottom-[35%] left-[10%] w-40 h-40 md:w-80 md:h-80 pointer-events-none opacity-70"
+              style={{ y: parallaxY }}
+            >
+              <img
+                src="/images/process/planet-with-bodies-around.png"
+                alt=""
+                className="w-full h-full object-contain"
+              />
+            </motion.div>
 
-          {/* Dynamic Background Image */}
-          <div className="absolute inset-0 z-0 flex items-end justify-center pointer-events-none">
-            <AnimatePresence mode="wait">
+            {/* Dynamic Background Image with Scale Animation */}
+            <div className="absolute inset-0 z-0 flex items-end justify-center pointer-events-none overflow-hidden">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeStep}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 1, ease: "easeInOut" }}
+                  className="absolute bottom-0 w-full flex items-end justify-center"
+                >
+                  {PROCESS_STEPS[activeStep] && (
+                    <img
+                      src={PROCESS_STEPS[activeStep].image}
+                      alt="Process"
+                      className="block w-auto h-auto max-w-full max-h-[85dvh] object-contain object-bottom"
+                    />
+                  )}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Scroll Progress Indicator Overlay */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-white/10 z-50">
               <motion.div
-                key={activeStep}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.8, ease: "easeInOut" }}
-                className="absolute bottom-0 w-full flex items-end justify-center"
-              >
-                <img
-                  src={PROCESS_STEPS[activeStep].image}
-                  alt="Process"
-                  className="block w-auto h-auto max-w-full max-h-[85dvh] object-contain object-bottom"
-                />
-              </motion.div>
-            </AnimatePresence>
-          </div>
+                className="h-full bg-gradient-to-r from-purple-400 to-purple-600"
+                initial={{ width: "33%" }}
+                animate={{
+                  width: `${((activeStep + scrollProgress) / PROCESS_STEPS.length) * 100}%`,
+                }}
+                transition={{ type: "spring", damping: 20, stiffness: 50 }}
+              />
+            </div>
 
-          {/* --- CONTENT CONTAINER --- */}
-          <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-8 items-center">
-              {/* LEFT COLUMN */}
-              <div className="lg:pr-10">
-                <div className="flex items-center gap-3">
-                  <span className="text-purple-500 font-mono text-sm">//</span>
-                  <span className="text-purple-400 text-2xl tracking-wide uppercase">
-                    The Process
-                  </span>
-                </div>
-
-                <div className="h-32 lg:h-40 flex flex-col justify-start mb-30">
-                  <AnimatePresence mode="wait">
-                    <motion.h2
-                      key={currentWordIndex}
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      exit={{ y: -20, opacity: 0 }}
-                      transition={{ duration: 0.5 }}
-                      className="text-4xl md:text-4xl lg:text-4xl font-bold text-white leading-tight"
-                    >
-                      {ANIMATED_WORDS[currentWordIndex]}
-                    </motion.h2>
-                  </AnimatePresence>
-                </div>
-
-                <div className="max-w-[50%] space-y-5">
-                  <p className="text-xl md:text-2xl text-gray-300 font-light leading-relaxed">
-                    <span className="text-white font-medium">Our mission</span>{" "}
-                    when you trust us to bring your product to life.
-                  </p>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
+            {/* --- CONTENT CONTAINER --- */}
+            <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12 h-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-6 items-center h-auto md:py-20">
+                {/* LEFT COLUMN */}
+                <div className="lg:pr-10">
+                  <motion.div 
+                    className="flex items-center gap-3"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={isProcessLocked ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
                   >
-                    <VisitButton
-                      onClick={handleFindOut}
-                      variant="outline"
-                      size="lg"
-                    >
-                      Find Out
-                    </VisitButton>
+                    <span className="text-purple-500 font-mono text-sm">//</span>
+                    <span className="text-purple-400 text-2xl tracking-wide uppercase">
+                      The Process
+                    </span>
                   </motion.div>
-                </div>
-              </div>
 
-              {/* RIGHT COLUMN */}
-              <div className="relative pl-4 lg:pl-70 py-10">
-                <div className="flex flex-col">
-                  {PROCESS_STEPS.map((step, index) => {
-                    const isLast = index === PROCESS_STEPS.length - 1;
-                    const isActive = activeStep === index;
-
-                    return (
-                      <div
-                        key={step.id}
-                        className={`relative group flex flex-col transition-opacity duration-700 ${
-                          !isLast ? "pb-20" : ""
-                        } ${isActive ? "opacity-100" : "opacity-30"}`}
+                  <div className="h-auto flex flex-row md:flex-col justify-start mb-30 overflow-hidden">
+                    <AnimatePresence mode="wait">
+                      <motion.h2
+                        key={currentWordIndex}
+                        initial={{ y: 40, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: -40, opacity: 0 }}
+                        transition={{ duration: 0.7, ease: "easeOut" }}
+                        className="text-4xl md:text-4xl lg:text-4xl font-bold text-white leading-tight"
                       >
-                        {!isLast && !isActive && (
-                          <div className="absolute left-[3px] lg:left-[3px] top-[2.5rem] bottom-0 w-px bg-white/10" />
-                        )}
+                        {ANIMATED_WORDS[currentWordIndex]}
+                      </motion.h2>
+                    </AnimatePresence>
+                  </div>
 
-                        <div className="flex items-start gap-8 lg:gap-12 relative z-10">
-                          <div className="flex flex-col items-center w-[7px]">
-                            <span
-                              className={`text-sm font-mono mt-1 transition-colors duration-500 ${
-                                isActive ? "text-purple-400" : "text-gray-600"
-                              }`}
+                  <div className="max-w-[50%] space-y-5">
+                    {/* Narrative text that changes with steps */}
+                    <AnimatePresence mode="wait">
+                      <motion.p
+                        key={activeStep}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.7, ease: "easeOut" }}
+                        className="text-xl md:text-2xl text-gray-300 font-light leading-relaxed italic"
+                      >
+                        {PROCESS_STEPS[activeStep].narrative}
+                      </motion.p>
+                    </AnimatePresence>
+
+                    <p className="text-xl md:text-2xl text-gray-300 font-light leading-relaxed">
+                      <span className="text-white font-medium">Our mission</span>{" "}
+                      when you trust us to bring your product to life.
+                    </p>
+
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.6, delay: 0.2 }}
+                    >
+                      <VisitButton
+                        onClick={handleFindOut}
+                        variant="outline"
+                        size="lg"
+                        className="relative z-50"
+                      >
+                        Find Out
+                      </VisitButton>
+                    </motion.div>
+                  </div>
+                </div>
+
+                {/* RIGHT COLUMN - Desktop Vertical Layout */}
+                <div className="hidden md:block relative pl-4 lg:pl-70 py-10">
+                  <div className="flex flex-col">
+                    {PROCESS_STEPS.map((step, index) => {
+                      const isLast = index === PROCESS_STEPS.length - 1;
+                      const isActive = activeStep === index;
+                      const isPast = index < activeStep;
+
+                      return (
+                        <motion.div
+                          key={step.id}
+                          className={`relative group flex flex-col transition-all duration-500 ${
+                            !isLast ? "pb-20" : ""
+                          }`}
+                          animate={{
+                            opacity: getStepOpacity(index),
+                          }}
+                          transition={{ type: "spring", damping: 20, stiffness: 50 }}
+                        >
+                          {!isLast && (
+                            <div className={`absolute left-[3px] lg:left-[3px] top-[2.5rem] bottom-0 w-px transition-all duration-500 ${
+                              isPast ? "bg-purple-400/50" : "bg-white/10"
+                            }`} />
+                          )}
+
+                          <div className="flex items-start gap-8 lg:gap-12 relative z-10">
+                            <motion.div 
+                              className="flex flex-col items-center w-[7px]"
+                              animate={{
+                                scale: isActive ? 1.2 : 1,
+                              }}
+                              transition={{ type: "spring", damping: 15, stiffness: 200 }}
                             >
-                              {step.number}
-                            </span>
+                              <motion.span
+                                className={`text-sm font-mono mt-1 transition-colors duration-500 font-bold ${
+                                  isActive ? "text-purple-400" : isPast ? "text-purple-300" : "text-gray-600"
+                                }`}
+                              >
+                                {step.number}
+                              </motion.span>
+                            </motion.div>
+
+                            <div className="flex-1 space-y-3 pt-0">
+                              <motion.h3
+                                className={`text-3xl font-bold transition-colors duration-700 ${
+                                  isActive
+                                    ? "text-white"
+                                    : isPast ? "text-gray-400" : "text-gray-600 group-hover:text-gray-400"
+                                }`}
+                                animate={{
+                                  letterSpacing: isActive ? "0.05em" : "0em",
+                                }}
+                                transition={{ type: "spring", damping: 15, stiffness: 150 }}
+                              >
+                                {step.title}
+                              </motion.h3>
+
+                              <motion.p
+                                className={`text-base max-w-xs transition-colors duration-700 ${
+                                  isActive ? "text-gray-300" : isPast ? "text-gray-600" : "text-gray-700"
+                                }`}
+                                animate={{
+                                  height: isActive ? "auto" : "0",
+                                  opacity: isActive ? 1 : 0,
+                                  marginTop: isActive ? "0.75rem" : "0",
+                                }}
+                                transition={{ type: "spring", damping: 18, stiffness: 100 }}
+                              >
+                                {step.description}
+                              </motion.p>
+                            </div>
                           </div>
 
-                          <div className="flex-1 space-y-3 pt-0">
-                            <h3
-                              className={`text-3xl font-bold transition-colors duration-500 ${
-                                isActive
-                                  ? "text-white"
-                                  : "text-gray-600 group-hover:text-gray-400"
-                              }`}
-                            >
-                              {step.title}
-                            </h3>
+                          {isActive && (
+                            <motion.div
+                              layoutId="activeGlow"
+                              className="absolute left-[3px] lg:left-[3px] top-2 h-12 w-[2px] bg-white -translate-x-1/2 shadow-[0_0_15px_rgba(255,255,255,0.8)]"
+                              transition={{ type: "spring", damping: 20, stiffness: 100 }}
+                            />
+                          )}
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </div>
 
-                            <p
-                              className={`text-base max-w-xs transition-colors duration-500 ${
-                                isActive ? "text-gray-300" : "text-gray-700"
-                              }`}
-                            >
-                              {step.description}
-                            </p>
-                          </div>
-                        </div>
+                {/* Mobile: Horizontal Layout at Top */}
+                <div className="md:hidden w-full -mx-6 px-6 lg:px-12">
+                  <div className="flex flex-col gap-6">
+                    {/* Horizontal Process Cards */}
+                    <div className="flex flex-row gap-4 overflow-x-auto pb-2 scrollbar-hide">
+                      {PROCESS_STEPS.map((step, index) => {
+                        const isActive = activeStep === index;
+                        const isPast = index < activeStep;
 
-                        {isActive && (
+                        return (
                           <motion.div
-                            layoutId="activeGlow"
-                            className="absolute left-[3px] lg:left-[3px] top-2 h-12 w-[2px] bg-white -translate-x-1/2 shadow-[0_0_15px_rgba(255,255,255,0.8)]"
-                            transition={{ duration: 0.5, ease: "easeInOut" }}
-                          />
-                        )}
-                      </div>
-                    );
-                  })}
+                            key={step.id}
+                            className={`relative group flex flex-col min-w-[200px] transition-all duration-500 p-4 rounded-lg border ${
+                              isActive
+                                ? "opacity-100 border-purple-400/50 bg-white/5"
+                                : isPast ? "opacity-60 border-purple-300/30" : "opacity-40 border-gray-700/30"
+                            }`}
+                            animate={{
+                              scale: isActive ? 1.05 : 1,
+                            }}
+                            transition={{ type: "spring", damping: 15, stiffness: 200 }}
+                          >
+                            <div className="flex flex-col gap-3">
+                              <span
+                                className={`text-sm font-mono transition-colors duration-500 font-bold ${
+                                  isActive ? "text-purple-400" : isPast ? "text-purple-300" : "text-gray-600"
+                                }`}
+                              >
+                                {step.number}
+                              </span>
+
+                              <h3
+                                className={`text-lg font-bold transition-colors duration-500 ${
+                                  isActive
+                                    ? "text-white"
+                                    : isPast ? "text-gray-400" : "text-gray-600 group-hover:text-gray-400"
+                                }`}
+                              >
+                                {step.title}
+                              </h3>
+
+                              <p
+                                className={`text-xs transition-colors duration-500 ${
+                                  isActive ? "text-gray-300" : isPast ? "text-gray-600" : "text-gray-700"
+                                }`}
+                              >
+                                {step.description}
+                              </p>
+                            </div>
+
+                            {isActive && (
+                              <motion.div
+                                layoutId="activeMobileGlow"
+                                className="absolute inset-0 rounded-lg border-2 border-purple-400 shadow-[0_0_20px_rgba(192,132,250,0.3)]"
+                                transition={{ duration: 0.5, ease: "easeInOut" }}
+                              />
+                            )}
+                          </motion.div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Mobile Description */}
+                    <div className="space-y-3">
+                      <AnimatePresence mode="wait">
+                        <motion.p
+                          key={activeStep}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          transition={{ duration: 0.4 }}
+                          className="text-sm text-gray-300 font-light leading-relaxed italic"
+                        >
+                          {PROCESS_STEPS[activeStep].narrative}
+                        </motion.p>
+                      </AnimatePresence>
+
+                      <p className="text-lg text-gray-300 font-light leading-relaxed">
+                        <span className="text-white font-medium">Our mission</span>{" "}
+                        when you trust us to bring your product to life.
+                      </p>
+
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                      >
+                        <VisitButton
+                          onClick={handleFindOut}
+                          variant="outline"
+                          size="lg"
+                        >
+                          Find Out
+                        </VisitButton>
+                      </motion.div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

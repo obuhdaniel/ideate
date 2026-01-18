@@ -116,7 +116,7 @@ export default function PortfolioCarousel({
 
       <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-20">
         {/* Left side - Project Info */}
-        <div className="flex-1 relative min-h-[300px] flex flex-col justify-center">
+        <div className="flex-1 relative md:min-h-[300px] flex flex-col justify-center">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={currentProject.id}
@@ -128,10 +128,10 @@ export default function PortfolioCarousel({
               transition={transition}
               className="space-y-6"
             >
-              <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
+              <h3 className="text-2xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
                 {currentProject.title}
               </h3>
-              <p className="text-2xl text-white/80 leading-relaxed max-w-lg">
+              <p className="text-md md:text-2xl text-white/80 leading-relaxed max-w-lg">
                 {currentProject.description}
               </p>
 
@@ -143,21 +143,33 @@ export default function PortfolioCarousel({
                   className="w-8 h-8 animate-pulse"
                 />
               </div>
-
-              <VisitButton
-                href={currentProject.url}
-                variant="outline"
-                size="lg"
-              >
-                VISIT
-              </VisitButton>
+              <div className="hidden md:block">
+                <VisitButton
+                  href={currentProject.url}
+                  variant="outline"
+                  size="lg"
+                >
+                  VISIT
+                </VisitButton>
+              </div>
+              
+              <div className="md:hidden">
+                <VisitButton
+                  href={currentProject.url}
+                  variant="outline"
+                  size="md"
+                >
+                  VISIT
+                </VisitButton>
+              </div>
+              
             </motion.div>
           </AnimatePresence>
 
           {/* Navigation - Left Arrow */}
           <button
             onClick={prevSlide}
-            className="absolute left-0 lg:left-auto lg:right-[calc(-20%+3rem)] top-1/2 -translate-y-1/2 h-12 w-12 rounded-full border border-white/30 hover:border-white/60 hover:bg-white/5 flex items-center justify-center transition-all duration-300 group z-10"
+            className="hidden md:flex absolute left-0 md:bottom-auto md:left-auto md:right-[calc(-20%+3rem)] md:top-1/2 -translate-y-1/2 h-12 w-12 rounded-full border border-white/30 hover:border-white/60 hover:bg-white/5 items-center justify-center transition-all duration-300 group z-10"
             aria-label="Previous project"
           >
             <ChevronLeft className="w-5 h-5 text-white/70 group-hover:text-white transition-colors" />
@@ -192,7 +204,7 @@ export default function PortfolioCarousel({
           {/* Navigation - Right Arrow */}
           <button
             onClick={nextSlide}
-            className="absolute right-0 lg:right-auto lg:left-[calc(100%+3rem)] top-1/2 -translate-y-1/2 h-12 w-12 rounded-full border border-white/30 hover:border-white/60 hover:bg-white/5 flex items-center justify-center transition-all duration-300 group z-10"
+            className="absolute hidden md:flex right-0 md:right-auto md:left-[calc(100%+3rem)] md:top-1/2 -translate-y-1/2 h-12 w-12 rounded-full border border-white/30 hover:border-white/60 hover:bg-white/5 items-center justify-center transition-all duration-300 group z-10"
             aria-label="Next project"
           >
             <ChevronRight className="w-5 h-5 text-white/70 group-hover:text-white transition-colors" />
@@ -217,6 +229,22 @@ export default function PortfolioCarousel({
             aria-label={`Go to project ${index + 1}`}
           />
         ))}
+      </div>
+      <div className="md:hidden flex mt-12 gap-10 justify-center items-center">
+        <button
+          onClick={prevSlide}
+          className="md:hidden flex -translate-y-1/2 h-12 w-12 rounded-full border border-white/30 hover:border-white/60 hover:bg-white/5 items-center justify-center transition-all duration-300 group z-10"
+          aria-label="Previous project"
+        >
+          <ChevronLeft className="w-5 h-5 text-white/70 group-hover:text-white transition-colors" />
+        </button>
+        <button
+          onClick={nextSlide}
+          className="md:hidden flex -translate-y-1/2 h-12 w-12 rounded-full border border-white/30 hover:border-white/60 hover:bg-white/5 items-center justify-center transition-all duration-300 group z-10"
+          aria-label="Next project"
+        >
+          <ChevronRight className="w-5 h-5 text-white/70 group-hover:text-white transition-colors" />
+        </button>
       </div>
     </div>
   );

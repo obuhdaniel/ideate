@@ -20,9 +20,9 @@ export default function ServiceCard({
 }: ServiceCardProps) {
   // Determine border classes based on position in the grid
   const borderClasses = {
-    "top-left": "border-r border-b border-white/10",
-    "top-right": "border-b border-white/10",
-    "bottom-left": "border-r border-white/10",
+    "top-left": "md:border-r md:border-b border-white/10",
+    "top-right": "md:border-b border-white/10",
+    "bottom-left": "md:border-r border-white/10",
     "bottom-right": "",
   };
 
@@ -32,7 +32,7 @@ export default function ServiceCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay }}
-      className={`group relative p-8 lg:p-10 ${borderClasses[position]} hover:bg-white/[0.02] transition-all duration-300`}
+      className={`group relative p-6 md:p-8 lg:p-10 ${borderClasses[position]} border md:border-0 border-white/10 rounded-lg md:rounded-none md:mb-0 hover:bg-white/[0.02] transition-all duration-300`}
     >
       <div className="relative z-10">
         {/* Icon */}

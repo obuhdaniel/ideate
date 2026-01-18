@@ -21,8 +21,8 @@ interface PlanetWithCanvasProps {
 export default function PlanetWithCanvas({
   position = "left",
   glowIntensity = 1,
-  width = "180px",
-  height = "180px",
+  width = "w-[20px]  md:w-[180px]",
+  height = "h-[20px] md:h-[180px]",
   className = "",
   customPosition,
 }: PlanetWithCanvasProps) {
@@ -31,8 +31,8 @@ export default function PlanetWithCanvas({
       return "";
     }
     return position === "left"
-      ? "top-[30%] left-[8%]"
-      : "bottom-[15%] right-[8%]";
+      ? "md:top-[30%] top-[42%] left-[-20%] md:left-[8%]"
+      : "bottom-[20%] md:bottom-[15%] right-[-20%] md:right-[8%]";
   };
 
   const getCustomStyles = () => {
@@ -46,8 +46,8 @@ export default function PlanetWithCanvas({
     <div
       className={`absolute z-[5] pointer-events-none ${getPositionClasses()} ${className}`}
       style={{
-        width,
-        height,
+        width: width,
+        height: height,
         ...getCustomStyles(),
       }}
     >

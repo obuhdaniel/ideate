@@ -31,7 +31,7 @@ const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     description:
       "Modern financial services platform with intuitive user experience.",
     image: "/images/portfolio/bullion-site.png",
-    url: "https://bullion-site.vercel.app",
+    url: "https://bullonsol19.com",
   },
   {
     id: "goldenmedia",
@@ -77,7 +77,7 @@ const PORTFOLIO_PROJECTS: PortfolioProject[] = [
 
 export default function ProjectSection() {
   return (
-    <section className="relative w-full overflow-hidden bg-gradient-to-br from-[#2F327D] via-[#0A0C10] via-[#0F1628] via-[#141D33] to-[#6E499F] py-20 lg:py-32">
+    <section className="relative w-full overflow-hidden bg-gradient-to-br from-[#2F327D] via-[#0A0C10] via-[#0F1628] via-[#141D33] to-[#6E499F] py-10 md:py-32">
       {/* Star Field Background */}
       <StarField count={100} className="pointer-events-none" />
       {/* Background Elements */}
@@ -87,7 +87,14 @@ export default function ProjectSection() {
           sizes={[400, 550, 700, 850]}
           centerX="5%"
           centerY="40%"
-          className="opacity-40"
+          className="opacity-40 hidden md:block"
+        />
+
+        <OrbitRings
+          sizes={[50, 100, 150, 200, 250, 300, 350]}
+          centerX="50%"
+          centerY="25%"
+          className="opacity-30 md:hidden"
         />
 
         {/* Orbit Rings - positioned at right side */}
@@ -95,8 +102,10 @@ export default function ProjectSection() {
           sizes={[300, 450, 600]}
           centerX="95%"
           centerY="20%"
-          className="opacity-30"
+          className="opacity-40 hidden md:block"
         />
+
+        
       </div>
 
       {/* Purple Planet - Left side */}
@@ -138,23 +147,30 @@ export default function ProjectSection() {
       <div className="relative z-20 max-w-5xl mx-auto px-6 lg:px-20">
         {/* Section Header */}
         <div className="mb-12">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-purple-400 font-mono text-sm">//</span>
-            <span className="text-purple-400 text-2xl tracking-wide">
+          <div className="flex items-center gap-1 md:gap-3 mb-4">
+            <span className="text-purple-400 font-mono text-xs md:text-sm">//</span>
+            <span className="text-purple-400 text-md md:text-2xl tracking-wide">
               Our Portfolio
             </span>
           </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
+          <h2 className="text-xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
             Projects We Have Done And Completed.
           </h2>
           <p className="text-lg md:text-xl text-white/60">
-            <span className="text-white text-2xl">What We Offer.</span> Designed
+            <span className="text-white text-xl md:text-2xl">What We Offer.</span> Designed
             for people. Built for the future.
           </p>
         </div>
 
         {/* Portfolio Carousel */}
+        <OrbitRings
+          sizes={[50, 100, 150, 200, 250, 300, 350]}
+          centerX="50%"
+          centerY="75%"
+          className="opacity-30 md:hidden"
+        />
         <PortfolioCarousel projects={PORTFOLIO_PROJECTS} />
+        
       </div>
 
       {/* Bottom gradient */}

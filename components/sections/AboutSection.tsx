@@ -52,23 +52,23 @@ export default function AboutSection() {
       {/* --- DECORATIVE LINES & BOX --- */}
 
       {/* Left vertical line */}
-      <div className="absolute left-[8%] md:left-[18%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+      <div className="absolute left-[0%] md:left-[18%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
 
       {/* Right vertical line */}
-      <div className="absolute right-[8%] md:right-[18%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+      <div className="absolute right-[0%] md:right-[18%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
 
       {/* Top decorative line */}
-      <div className="absolute top-[18%] left-[10%] right-[10%] h-px bg-white/10" />
+      <div className="absolute top-[10%] md:top-[18%] left-0 md:left-[10%] right-0 md:right-[10%] h-px bg-white/10" />
 
       {/* Bottom decorative line */}
-      <div className="absolute bottom-[18%] left-1/2 -translate-x-1/2 w-[90%] h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+      <div className="absolute bottom-[0%] md:bottom-[18%] left-1/2 -translate-x-1/2 w-full md:w-[90%] h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
       {/* NEW: THE ENCLOSED BOX FILL 
           Coordinates match the lines above:
           Top/Bottom: 18%
           Left/Right: 8% (mobile) -> 18% (desktop)
       */}
-      <div className="absolute top-[18%] bottom-[18%] left-[8%] right-[8%] md:left-[18%] md:right-[18%] bg-white/[0.03] pointer-events-none" />
+      <div className="absolute top-[10%] md:top-[18%] bottom-[0%] md:bottom-[18%] left-[0%] right-[0%] md:left-[18%] md:right-[18%] bg-white/[0.03] pointer-events-none" />
 
       {/* --- BACKGROUND ELEMENTS --- */}
 
@@ -78,7 +78,14 @@ export default function AboutSection() {
           sizes={[500, 700, 900]}
           centerX="85%"
           centerY="60%"
-          className="opacity-15"
+          className="opacity-15 hidden md:block"
+        />
+
+        <OrbitRings
+          sizes={[250, 300, 350, 400, 450, 500]}
+          centerX="50%"
+          centerY="50%"
+          className="opacity-65 md:hidden"
         />
       </div>
 
@@ -111,7 +118,7 @@ export default function AboutSection() {
       <DecorativeStar top="50%" left="35%" size={4} delay={1.2} />
 
       {/* --- CONTENT --- */}
-      <div className="relative z-20 max-w-5xl mx-auto px-12 md:px-16 lg:px-45 py-15 text-left">
+      <div className="relative z-20 md:max-w-5xl mx-auto px-12 md:px-16 lg:px-45 py-15 text-left">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -152,7 +159,7 @@ export default function AboutSection() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-center"
         >
-          <VisitButton href="/about" variant="outline" size="lg">
+          <VisitButton href="#about" variant="outline" size="lg">
             Read Why
           </VisitButton>
         </motion.div>

@@ -107,7 +107,7 @@ export function ExploreButton({ onClick, className = "" }: ExploreButtonProps) {
       whileHover="hover" 
       initial="rest"
       whileTap={{ scale: 0.97 }}
-      className={`px-12 py-4 bg-[#580196] hover:bg-[#6a02b3] text-white rounded-full transition-colors duration-300 font-medium text-lg tracking-wider shadow-lg shadow-[#580196]/30 ${className}`}
+      className={`px-12 py-4 hidden md:block bg-[#580196] hover:bg-[#6a02b3] text-white rounded-full transition-colors duration-300 font-medium text-lg tracking-wider shadow-lg shadow-[#580196]/30 ${className}`}
     >
 
       <h2 className="flex items-center">
