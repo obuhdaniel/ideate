@@ -1,6 +1,7 @@
 // @ts-nocheck
 "use client";
 
+import Image from "next/image";
 import * as motion from "framer-motion/client";
 
 interface ServiceCardProps {
@@ -36,12 +37,8 @@ export default function ServiceCard({
     >
       <div className="relative z-10">
         {/* Icon */}
-        <div className="w-8 h-8 mb-5">
-          <img
-            src={icon}
-            alt={title}
-            className="w-full h-full object-contain"
-          />
+        <div className="relative w-8 h-8 mb-5">
+          <Image src={icon} alt={title} fill className="object-contain" />
         </div>
 
         {/* Title */}

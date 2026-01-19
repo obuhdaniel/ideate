@@ -1,6 +1,7 @@
 // @ts-nocheck
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import * as motion from "framer-motion/client";
 
@@ -58,16 +59,16 @@ export default function GlowingPlanet({
         transition={{ duration: 0.5 }}
       />
 
-      {/* PLANET IMAGE */}
-      <motion.img
-        src={src}
-        alt={alt}
-        className="w-full h-full object-contain relative z-10"
+      {/* PLANET IMAGE - Replaced motion.img with motion.div wrapper + Next Image */}
+      <motion.div
+        className="relative w-full h-full z-10"
         animate={{
           filter: isHovered ? "brightness(1.1)" : "brightness(1)",
         }}
         transition={{ duration: 0.5 }}
-      />
+      >
+        <Image src={src} alt={alt} fill className="object-contain" />
+      </motion.div>
 
       <motion.div
         className="absolute inset-0 rounded-full z-20 pointer-events-none"

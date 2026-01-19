@@ -2,6 +2,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import Image from "next/image";
 import * as motion from "framer-motion/client";
 
 interface AnimatedRocketProps {
@@ -31,12 +32,14 @@ export default function AnimatedRocket({
           stiffness: 200,
           damping: 15,
         }}
-        className="cursor-pointer"
+        // Added dimensions (w-20 h-20) here to create a context for fill
+        className="cursor-pointer relative w-20 h-20"
       >
-        <img
+        <Image
           src="/images/custom-images/rocket.png"
           alt="Rocket"
-          className="w-20 h-auto object-contain"
+          fill
+          className="object-contain"
           style={{
             filter: isHovered
               ? "drop-shadow(0 0 20px rgba(147, 51, 234, 0.8))"

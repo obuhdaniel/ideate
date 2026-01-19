@@ -1,6 +1,7 @@
 // @ts-nocheck
 "use client";
 
+import Image from "next/image";
 import * as motion from "framer-motion/client";
 import { VisitButton } from "@/components/ui/Button";
 import OrbitRings from "@/components/ui/OrbitRings";
@@ -49,16 +50,21 @@ export default function ContactBanner({
         />
       </div>
 
-      {/* Space Star */}
-      <motion.img
-        src="/images/custom-images/space-star.png"
-        alt="Space Star"
+      {/* Space Star - Replaced motion.img with motion.div wrapping Image */}
+      <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="absolute top-[60%] left-[70%] w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 object-contain pointer-events-none"
-      />
+        className="absolute top-[60%] left-[70%] w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 pointer-events-none"
+      >
+        <Image
+          src="/images/custom-images/space-star.png"
+          alt="Space Star"
+          fill
+          className="object-contain"
+        />
+      </motion.div>
 
       {/* Content */}
       <div className="relative z-20 md:max-w-5xl md:mx-auto md:px-16 lg:px-25 ">
@@ -118,7 +124,6 @@ export default function ContactBanner({
                 Fill the Form
               </VisitButton>
             </div>
-            
           </motion.div>
 
           {/* Rocket Image Wrapper */}
@@ -158,17 +163,23 @@ export default function ContactBanner({
               animate="rest"
               className="cursor-pointer pointer-events-auto"
             >
-              <motion.img
-                src="/images/custom-images/rocket.png"
-                alt="Rocket"
-                className="w-32 h-32 lg:w-200 lg:h-200 object-contain"
+              {/* Rocket Animation Wrapper - Replaced motion.img with motion.div + Image */}
+              <motion.div
+                className="relative w-32 h-32 lg:w-200 lg:h-200"
                 animate={{ y: [0, -10, 0] }}
                 transition={{
                   duration: 6,
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-              />
+              >
+                <Image
+                  src="/images/custom-images/rocket.png"
+                  alt="Rocket"
+                  fill
+                  className="object-contain"
+                />
+              </motion.div>
             </motion.div>
           </motion.div>
         </div>

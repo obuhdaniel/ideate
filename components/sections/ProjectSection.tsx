@@ -1,6 +1,7 @@
 // @ts-nocheck
 "use client";
 
+import Image from "next/image";
 import PortfolioCarousel, {
   PortfolioProject,
 } from "@/components/features/PortfolioCarousel";
@@ -104,8 +105,6 @@ export default function ProjectSection() {
           centerY="20%"
           className="opacity-40 hidden md:block"
         />
-
-        
       </div>
 
       {/* Purple Planet - Left side */}
@@ -126,19 +125,21 @@ export default function ProjectSection() {
         position={{ top: "8%", right: "2%" }}
       />
 
-      {/* Space Star Decorations */}
+      {/* Space Star Decorations - Replaced img with Image */}
       <div className="absolute top-[8%] right-[12%] w-6 h-6 pointer-events-none">
-        <img
+        <Image
           src="/images/custom-images/space-star.png"
           alt=""
-          className="w-full h-full object-contain animate-pulse"
+          fill
+          className="object-contain animate-pulse"
         />
       </div>
       <div className="absolute top-[25%] right-[8%] w-4 h-4 pointer-events-none">
-        <img
+        <Image
           src="/images/custom-images/space-star.png"
           alt=""
-          className="w-full h-full object-contain animate-pulse"
+          fill
+          className="object-contain animate-pulse"
           style={{ animationDelay: "0.7s" }}
         />
       </div>
@@ -148,7 +149,9 @@ export default function ProjectSection() {
         {/* Section Header */}
         <div className="mb-12">
           <div className="flex items-center gap-1 md:gap-3 mb-4">
-            <span className="text-purple-400 font-mono text-xs md:text-sm">//</span>
+            <span className="text-purple-400 font-mono text-xs md:text-sm">
+              //
+            </span>
             <span className="text-purple-400 text-md md:text-2xl tracking-wide">
               Our Portfolio
             </span>
@@ -157,8 +160,10 @@ export default function ProjectSection() {
             Projects We Have Done And Completed.
           </h2>
           <p className="text-lg md:text-xl text-white/60">
-            <span className="text-white text-xl md:text-2xl">What We Offer.</span> Designed
-            for people. Built for the future.
+            <span className="text-white text-xl md:text-2xl">
+              What We Offer.
+            </span>{" "}
+            Designed for people. Built for the future.
           </p>
         </div>
 
@@ -170,7 +175,6 @@ export default function ProjectSection() {
           className="opacity-30 md:hidden"
         />
         <PortfolioCarousel projects={PORTFOLIO_PROJECTS} />
-        
       </div>
 
       {/* Bottom gradient */}

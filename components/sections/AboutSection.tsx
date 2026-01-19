@@ -1,6 +1,7 @@
 // @ts-nocheck
 "use client";
 
+import Image from "next/image"; // Import Next.js Image
 import * as motion from "framer-motion/client";
 import { VisitButton } from "@/components/ui/Button";
 import OrbitRings from "@/components/ui/OrbitRings";
@@ -33,10 +34,11 @@ function DecorativeStar({
         height: `${size * 4}px`,
       }}
     >
-      <img
+      <Image
         src="/images/custom-images/space-star.png"
         alt=""
-        className="w-full h-full object-contain animate-pulse"
+        fill
+        className="object-contain animate-pulse"
         style={{ animationDelay: `${delay}s` }}
       />
     </div>
@@ -89,27 +91,37 @@ export default function AboutSection() {
         />
       </div>
 
-      {/* Space Star - Adjust position as needed */}
-      <motion.img
-        src="/images/custom-images/space-star.png"
-        alt="Space Star"
+      {/* Space Star - Motion Wrapper + Next Image */}
+      <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="absolute top-[50%] left-[60%] w-16 h-16 md:w-20 md:h-20 lg:w-64 lg:h-64 object-contain pointer-events-none"
-      />
+        className="absolute top-[50%] left-[60%] w-16 h-16 md:w-20 md:h-20 lg:w-64 lg:h-64 pointer-events-none"
+      >
+        <Image
+          src="/images/custom-images/space-star.png"
+          alt="Space Star"
+          fill
+          className="object-contain"
+        />
+      </motion.div>
 
-      {/* Space Star - Adjust position as needed */}
-      <motion.img
-        src="/images/custom-images/space-star.png"
-        alt="Space Star"
+      {/* Space Star - Motion Wrapper + Next Image */}
+      <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="absolute top-[15%] left-[3%] w-16 h-16 md:w-20 md:h-20 lg:w-64 lg:h-64 object-contain pointer-events-none"
-      />
+        className="absolute top-[15%] left-[3%] w-16 h-16 md:w-20 md:h-20 lg:w-64 lg:h-64 pointer-events-none"
+      >
+        <Image
+          src="/images/custom-images/space-star.png"
+          alt="Space Star"
+          fill
+          className="object-contain"
+        />
+      </motion.div>
 
       {/* Decorative stars */}
       <DecorativeStar top="15%" right="12%" size={4} delay={0} />

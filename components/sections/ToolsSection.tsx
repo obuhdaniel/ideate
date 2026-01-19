@@ -1,6 +1,7 @@
 // @ts-nocheck
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import StarField from "@/components/ui/StarField";
@@ -34,10 +35,11 @@ export default function ToolsSection() {
 
       {/* Planet with bodies - Top Left */}
       <div className="absolute top-[3%] left-[2%] w-20 h-20 md:w-28 md:h-28 pointer-events-none z-10">
-        <img
+        <Image
           src="/images/tools/planet-with-bodies-around.png"
           alt=""
-          className="w-full h-full object-contain"
+          fill
+          className="object-contain"
         />
       </div>
 
@@ -69,9 +71,11 @@ export default function ToolsSection() {
 
       {/* Spiral Image - Full Width */}
       <div className="relative w-full">
-        <img
+        <Image
           src="/images/tools/spiral.png"
           alt="Spiral"
+          width={1440}
+          height={600}
           className="w-full h-auto object-cover"
         />
 
@@ -105,18 +109,24 @@ export default function ToolsSection() {
             // Added padding (p-10) to increase hit area so it triggers when "close"
             className="cursor-pointer p-5 -m-5"
           >
-            <motion.img
-              src="/images/custom-images/rocket.png"
-              alt="Rocket"
+            {/* Replaced motion.img with motion.div + Image */}
+            <motion.div
               style={{ rotate: -45 }}
-              className="w-32 h-32 lg:w-200 lg:h-200 object-contain"
+              className="relative w-32 h-32 lg:w-200 lg:h-200"
               animate={{ y: [0, -10, 0] }}
               transition={{
                 duration: 3,
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-            />
+            >
+              <Image
+                src="/images/custom-images/rocket.png"
+                alt="Rocket"
+                fill
+                className="object-contain"
+              />
+            </motion.div>
           </motion.div>
         </motion.div>
       </div>

@@ -1,6 +1,7 @@
 // @ts-nocheck
 "use client";
 
+import Image from "next/image";
 import { useState, useCallback, useEffect } from "react";
 import * as motion from "framer-motion/client";
 import { AnimatePresence } from "framer-motion";
@@ -89,27 +90,30 @@ export default function PortfolioCarousel({
 
   return (
     <div className="relative w-full">
-      {/* Decorative star elements */}
+      {/* Decorative star elements - Parent divs define size, Image fills them */}
       <div className="absolute left-[20%] top-[20%] w-3 h-3">
-        <img
+        <Image
           src="/images/custom-images/space-star.png"
           alt=""
-          className="w-full h-full object-contain animate-pulse"
+          fill
+          className="object-contain animate-pulse"
         />
       </div>
       <div className="absolute right-[15%] top-[10%] w-4 h-4">
-        <img
+        <Image
           src="/images/custom-images/space-star.png"
           alt=""
-          className="w-full h-full object-contain animate-pulse"
+          fill
+          className="object-contain animate-pulse"
           style={{ animationDelay: "0.5s" }}
         />
       </div>
       <div className="absolute left-[35%] bottom-[30%] w-2 h-2">
-        <img
+        <Image
           src="/images/custom-images/space-star.png"
           alt=""
-          className="w-full h-full object-contain animate-pulse"
+          fill
+          className="object-contain animate-pulse"
           style={{ animationDelay: "1s" }}
         />
       </div>
@@ -137,10 +141,12 @@ export default function PortfolioCarousel({
 
               {/* Decorative sparkle */}
               <div className="absolute left-0 bottom-24 opacity-50">
-                <img
+                <Image
                   src="/images/custom-images/space-star.png"
                   alt=""
-                  className="w-8 h-8 animate-pulse"
+                  width={32}
+                  height={32}
+                  className="animate-pulse"
                 />
               </div>
               <div className="hidden md:block">
@@ -152,7 +158,7 @@ export default function PortfolioCarousel({
                   VISIT
                 </VisitButton>
               </div>
-              
+
               <div className="md:hidden">
                 <VisitButton
                   href={currentProject.url}
@@ -162,7 +168,6 @@ export default function PortfolioCarousel({
                   VISIT
                 </VisitButton>
               </div>
-              
             </motion.div>
           </AnimatePresence>
 
@@ -190,10 +195,13 @@ export default function PortfolioCarousel({
               className="relative w-full max-w-2xl"
             >
               {/* Image Container with simple border/shadow */}
-              <img
+              <Image
                 src={currentProject.image}
                 alt={currentProject.title}
+                width={800}
+                height={600}
                 className="w-full h-auto object-cover"
+                priority
               />
 
               {/* Glow effect behind image */}

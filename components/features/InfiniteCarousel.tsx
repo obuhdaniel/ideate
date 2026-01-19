@@ -1,7 +1,7 @@
 // @ts-nocheck
 "use client";
 
-import { motion } from "framer-motion";
+import * as motion from "framer-motion/client";
 import ToolCard from "@/components/features/ToolCard";
 
 interface InfiniteCarouselProps {
@@ -27,7 +27,7 @@ export default function InfiniteCarousel({
           x: {
             repeat: Infinity,
             repeatType: "loop",
-            duration: 5,
+            duration: 20, // Increased duration for smoother/slower scrolling
             ease: "linear",
           },
         }}
