@@ -185,7 +185,7 @@ export default function ToolsSection() {
           <h3 className="text-2xl md:text-3xl lg:text-5xl font-bold text-white mb-4">
             BUILT WITH TOOLS WE TRUST
           </h3>
-          <p className=" text-base md:text-3xl mb-12">
+          <p className=" text-base md:text-3xl mb-12 text-[#D8D8D8]">
             The right tools are used to build your product based on the
             requirements
           </p>
