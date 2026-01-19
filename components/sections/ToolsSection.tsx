@@ -60,7 +60,11 @@ export default function ToolsSection() {
             VISIBILITY INTO OPPORTUNITY.
           </h2>
 
+<<<<<<< HEAD
           <p className="text-[#d8d8d8] text-base lg:text-3xl leading-relaxed">
+=======
+          <p className="text-[#D8D8D8] text-base lg:text-3xl leading-relaxed">
+>>>>>>> 310030b54f943af38de6fce80698d572ca50afeb
             Your website is your business, working 24/7. At Ideate Digital
             Agency we are interested in bringing digital presence to your
             business because a website doesn&apos;t just show your business, it
@@ -88,47 +92,49 @@ export default function ToolsSection() {
           position={{ top: "40%", right: "1%" }}
         />
 
-        {/* Rocket Image */}
+        {/* Rocket Image (Desktop + Mobile) */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="hidden z-[9999] lg:block absolute right-[2%] top-[35%] -translate-y-1/2"
+          initial={{ opacity: 0, y: "100vh" }} // start offscreen for mobile
+          whileInView={{ opacity: 1, y: 0 }} // animate into final position
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: [0.3, 1, 0.6, 1] }}
+          className="absolute right-[2%] top-[35%] -translate-y-1/2 z-[9999] w-32 h-32 sm:w-36 sm:h-36 md:w-44 md:h-44 lg:w-200 lg:h-200"
         >
           {/* Interaction Wrapper */}
           <motion.div
-            // UPDATED: Move Diagonal (Up and Left) to match the -45deg rotation
-            whileHover={{ x: -700, y: -600 }}
+            whileHover={{ x: -700, y: -600 }} // works on desktop
+            // Mobile: no hover, optionally add tap feedback
+            whileTap={{ scale: 0.95 }}
             transition={{
               type: "spring",
               stiffness: 50,
               damping: 15,
               mass: 1.2,
             }}
-            // Added padding (p-10) to increase hit area so it triggers when "close"
             className="cursor-pointer p-5 -m-5"
           >
-            {/* Replaced motion.img with motion.div + Image */}
+            {/* Wiggle + rotate wrapper */}
             <motion.div
               style={{ rotate: -45 }}
-              className="relative w-32 h-32 lg:w-200 lg:h-200"
-              animate={{ y: [0, -10, 0] }}
+              animate={{ y: [0, -10, 0] }} // subtle vertical wiggle
               transition={{
                 duration: 3,
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
+              className="relative w-full h-full"
             >
               <Image
                 src="/images/custom-images/rocket.png"
                 alt="Rocket"
                 fill
                 className="object-contain"
+                priority
               />
             </motion.div>
           </motion.div>
         </motion.div>
+
       </div>
 
       {/* Scattered Planets Section */}
@@ -185,7 +191,7 @@ export default function ToolsSection() {
           <h3 className="text-2xl md:text-3xl lg:text-5xl font-bold text-white mb-4">
             BUILT WITH TOOLS WE TRUST
           </h3>
-          <p className=" text-base md:text-3xl mb-12">
+          <p className=" text-base md:text-3xl mb-12 text-[#D8D8D8]">
             The right tools are used to build your product based on the
             requirements
           </p>
