@@ -60,7 +60,7 @@ export default function ToolsSection() {
             VISIBILITY INTO OPPORTUNITY.
           </h2>
 
-          <p className="text-gray-400 text-base lg:text-3xl leading-relaxed">
+          <p className="text-[#D8D8D8] text-base lg:text-3xl leading-relaxed">
             Your website is your business, working 24/7. At Ideate Digital
             Agency we are interested in bringing digital presence to your
             business because a website doesn&apos;t just show your business, it
