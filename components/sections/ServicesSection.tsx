@@ -7,6 +7,16 @@ import OrbitRings from "@/components/ui/OrbitRings";
 import ContactBanner from "@/components/sections/ContactBanner";
 import AboutSection from "@/components/sections/AboutSection";
 import Image from "next/image";
+import {
+  motion,
+  useAnimation,
+  AnimatePresence,
+  useScroll,
+  useMotionValueEvent,
+  useTransform,
+  useMotionValue,
+} from "framer-motion";
+import { useEffect, useRef } from "react";
 
 const SERVICES = [
   {
@@ -53,9 +63,36 @@ export default function ServicesSection({
     }
   };
 
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const controls = useAnimation();
+
+  const hasLaunched = useRef(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasLaunched.current) {
+          hasLaunched.current = true;
+          controls.start("launch");
+        }
+      },
+      {
+        root: null,
+        threshold: 0,
+        rootMargin: "-30% 0px 0px 0px", // trigger earlier (mobile-safe)
+      }
+    );
+
+      observer.observe(el);
+      return () => observer.disconnect();
+    }, [controls]);
+
   return (
     <>
-      <div className="relative w-full bg-gradient-to-br from-[#1D2948] via-[#0A0C10] via-[#0F1628] via-[#141D33] to-[#050A16]">
+      <div ref={containerRef} className="relative w-full bg-gradient-to-br from-[#1D2948] via-[#0A0C10] via-[#0F1628] via-[#141D33] to-[#050A16]">
         <section className="relative w-full overflow-visible bg-transparent py-10 md:py-32">
           {/* --- DECORATIVE LINES --- */}
 
@@ -138,13 +175,52 @@ export default function ServicesSection({
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white ">
                 What We Do, Done with intention
               </h2>
-              <Image
-                src="/images/custom-images/rocket.png"
-                alt=""
-                width={379}
-                height={200}
+              {/* Rocket (mobile only) */}
+              <motion.div
                 className="md:hidden absolute -bottom-20 -right-35"
-              />        
+                variants={{
+                  hidden: {
+                    y: "100vh",
+                    opacity: 0,
+                  },
+                  launch: {
+                    y: 0,
+                    opacity: 1,
+                    transition: {
+                      duration: 3, // fast but visible
+                      ease: [0.22, 1, 0.36, 1],
+                    },
+                  },
+                  wiggle: {
+                    rotate: [-4, -4, -4],
+                    y: [0, -10, 0],
+                    transition: {
+                      duration: 3,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                    },
+                  },
+                }}
+                initial="hidden"
+                animate={controls}
+                onAnimationComplete={(variant) => {
+                  if (variant === "launch") {
+                    controls.start("wiggle");
+                  }
+                }}
+                style={{
+                  willChange: "transform",
+                  transformOrigin: "center",
+                }}
+              >
+                <Image
+                  src="/images/custom-images/rocket.png"
+                  alt="Rocket"
+                  width={379}
+                  height={200}
+                  priority
+                />
+              </motion.div>
             </div>
 
             {/* Services Grid */}

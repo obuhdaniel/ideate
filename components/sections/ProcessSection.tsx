@@ -21,8 +21,6 @@ const PROCESS_STEPS = [
     title: "Design",
     description: "Shaping ideas into clear, meaningful digital experiences.",
     image: "/images/process/photo-with-design-on focus.png",
-    narrative:
-      "Every great product starts with vision. We dive deep into understanding your needs.",
   },
   {
     id: "build",
@@ -30,8 +28,6 @@ const PROCESS_STEPS = [
     title: "Build",
     description: "Turning designs into scalable, dependable products.",
     image: "/images/process/photo-with-build-on-focus.png",
-    narrative:
-      "With precision and expertise, we transform concepts into reality.",
   },
   {
     id: "launch",
@@ -39,8 +35,6 @@ const PROCESS_STEPS = [
     title: "Launch",
     description: "Releasing the product with confidence, clarity, and purpose.",
     image: "/images/process/photo-with-launch-on-focus.png",
-    narrative:
-      "Ready to share your creation with the world. Let's make impact together.",
   },
 ];
 
@@ -96,36 +90,38 @@ export default function ProcessSection() {
     };
   }, []);
 
-  useEffect(() => {
-    if (isProcessLocked) {
-      centerActiveMobileItem(activeStep);
-    }
-  }, [activeStep, isProcessLocked]);
 
   // Translate vertical scroll to horizontal scroll
   const updateMobileHorizontalScroll = (scrollDistance: number) => {
-    if (!mobileTrackRef.current) return;
+  const track = mobileTrackRef.current;
+  if (!track) return;
 
-    const track = mobileTrackRef.current;
-    const viewportWidth = window.innerWidth;
-    const contentWidth = track.scrollWidth;
+  // Use VISUAL viewport (mobile-safe)
+  const viewportWidth =
+    window.visualViewport?.width ?? document.documentElement.clientWidth;
 
-    const maxTranslateX = Math.max(contentWidth - viewportWidth, 0);
+  const contentWidth = track.scrollWidth;
+  const maxTranslateX = Math.max(contentWidth - viewportWidth, 0);
 
-    // Normalize scroll distance (0 → window.innerHeight)
-    const progress = Math.min(
-      Math.max(scrollDistance / window.innerHeight, 0),
-      1,
-    );
+  // Use document scrollable height instead of innerHeight
+  const scrollableHeight =
+    document.documentElement.scrollHeight - window.visualViewport?.height!;
 
-    // Direction-aware translation
-    const x =
-      lockDirection === "forward"
-        ? -progress * maxTranslateX
-        : -(1 - progress) * maxTranslateX;
+  if (scrollableHeight <= 0) return;
 
-    mobileX.set(x);
-  };
+  const progress = Math.min(
+    Math.max(scrollDistance / scrollableHeight, 0),
+    1
+  );
+
+  const x =
+    lockDirection === "forward"
+      ? -progress * maxTranslateX
+      : -(1 - progress) * maxTranslateX;
+
+  mobileX.set(x);
+};
+
 
   const centerActiveMobileItem = (stepIndex: number) => {
     const track = mobileTrackRef.current;
@@ -133,16 +129,23 @@ export default function ProcessSection() {
 
     if (!track || !item) return;
 
-    const trackRect = track.getBoundingClientRect();
-    const itemRect = item.getBoundingClientRect();
+    const trackWidth = track.offsetWidth;
+    const itemWidth = item.offsetWidth;
 
-    const trackCenter = trackRect.width / 2;
-    const itemCenter = item.offsetLeft + itemRect.width / 2;
+    const trackCenter = trackWidth / 2;
+    const itemCenter = item.offsetLeft + itemWidth / 2;
 
     const translateX = trackCenter - itemCenter;
 
     mobileX.set(translateX);
   };
+
+  useEffect(() => {
+    if (isProcessLocked) {
+      centerActiveMobileItem(activeStep);
+    }
+  }, [activeStep, isProcessLocked]);
+
 
   // Update locked state and active step based on user scroll
   useMotionValueEvent(scrollY, "change", (currentScrollY) => {
@@ -392,7 +395,7 @@ export default function ProcessSection() {
 
             {/* --- CONTENT CONTAINER --- */}
             <div className="relative z-10 w-full md:max-w-7xl mx-auto px-4 py-5 md:py-0 md:px-12 h-auto">
-              <div className="flex flex-col justify-between md:flex-row gap-2 md:gap-6 items-center h-auto md:py-20">
+              <div className="flex flex-col justify-between md:flex-row gap-2 md:gap-6 items-center md:items-start h-auto md:py-20">
                 {/* LEFT COLUMN */}
                 <div className="md:pr-10">
                   <motion.div
@@ -408,12 +411,12 @@ export default function ProcessSection() {
                     <span className="text-purple-500 font-mono text-xs md:text-sm">
                       //
                     </span>
-                    <span className="text-purple-400 text-md md:text-2xl tracking-wide uppercase">
+                    <span className="text-purple-400 text-md md:text-2xl tracking-wide">
                       The Process
                     </span>
                   </motion.div>
 
-                  <div className="h-auto flex flex-row md:flex-col justify-start mb-6 md:mb-30 overflow-hidden">
+                  <div className="h-auto flex flex-row md:flex-col justify-start md:justify-between mb-6 md:mb-30 overflow-hidden">
                     <AnimatePresence mode="wait">
                       <motion.h2
                         key={currentWordIndex}
@@ -429,21 +432,8 @@ export default function ProcessSection() {
                   </div>
 
                   <div className="md:max-w-[50%] space-y-5">
-                    {/* Narrative text that changes with steps */}
-                    <AnimatePresence mode="wait">
-                      <motion.p
-                        key={activeStep}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.7, ease: "easeOut" }}
-                        className="text-xl md:text-2xl text-gray-300 font-light leading-relaxed italic"
-                      >
-                        {PROCESS_STEPS[activeStep].narrative}
-                      </motion.p>
-                    </AnimatePresence>
 
-                    <p className="text-xl md:text-2xl mb-4 md:mb-0 text-gray-300 font-light leading-relaxed">
+                    <p className="text-xl md:text-2xl mb-4 md:mb-8 text-gray-300 font-light leading-relaxed">
                       <span className="text-white font-medium">
                         Our mission
                       </span>{" "}

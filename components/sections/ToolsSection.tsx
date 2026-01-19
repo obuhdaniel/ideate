@@ -56,11 +56,11 @@ export default function ToolsSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 flex flex-col items-center text-left">
         <div className="max-w-6xl mb-16">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
-            DIGITAL PRESENCE <span className="text-gray-400">TURNS </span>
+            DIGITAL PRESENCE TURNS
             VISIBILITY INTO OPPORTUNITY.
           </h2>
 
-          <p className="text-gray-400 text-base lg:text-3xl leading-relaxed">
+          <p className="text-[#d8d8d8] text-base lg:text-3xl leading-relaxed">
             Your website is your business, working 24/7. At Ideate Digital
             Agency we are interested in bringing digital presence to your
             business because a website doesn&apos;t just show your business, it
@@ -192,7 +192,7 @@ export default function ToolsSection() {
         </div>
 
         {/* Tool Carousels */}
-        <div className="relative z-10 space-y-6 mt-8">
+        <div className="relative z-10 space-y-3 md:space-y-6 mt-8">
           <InfiniteCarousel tools={TOP_CAROUSEL_TOOLS} direction="left" />
           <InfiniteCarousel tools={BOTTOM_CAROUSEL_TOOLS} direction="right" />
         </div>

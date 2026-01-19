@@ -19,7 +19,7 @@ export default function InfiniteCarousel({
   return (
     <div className="relative overflow-hidden">
       <motion.div
-        className="flex gap-6"
+        className="flex gap-3 md:gap-6"
         animate={{
           x: direction === "left" ? ["0%", "-50%"] : ["-50%", "0%"],
         }}

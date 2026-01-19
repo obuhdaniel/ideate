@@ -164,7 +164,7 @@ function Tagline({ currentSlide }: { currentSlide: number }) {
             transition={{ duration: 0.2, ease: "easeOut" }}
           >
             <p className="text-sm md:text-xl lg:text-2xl font-light text-white/90 leading-relaxed max-w-md">
-              While you grow your business, leave design to us
+              While you grow your business, <br/> leave design to us
             </p>
           </motion.div>
         )}

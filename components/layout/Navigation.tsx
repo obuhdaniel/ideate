@@ -80,7 +80,8 @@ export default function Navigation() {
 
         {isMenuOpen && (
           <div className="absolute top-full left-0 w-full md:hidden pt-4 pb-20 bg-gradient-to-br from-[#1D2948] to-[#050a16] via-[#1D2948] via-[#1D2948] via-[#13192A] via-[#0A0c10] via-[#0f1628] via-[#141d33] via-[#141d33] via-[#141d33] via-[#141d33] via-[#141d33]">
-            <p className="mx-4 px-4 py-2  text-white text-2xl leading-10 font-light border-b-2 border-solid border-[#424345] relative">Welcome to where <br/> ideas evolve</p>
+            <StarField count={20} className="z-0" />
+            <p className="mx-4 px-4 py-2 text-white text-2xl leading-10 font-light border-b-2 border-solid border-[#424345] relative">Welcome to where <br/> ideas evolve</p>
             <Image
               src="/images/custom-images/earth-like-planet.png"
               alt="" 
@@ -88,26 +89,29 @@ export default function Navigation() {
               height={62}
               className="absolute top-13 left-44"
             />
-            <div className="flex flex-col items-star px-4 py-2 space-y-3 w-full">
+            <div className="flex flex-col relative items-star px-4 py-2 space-y-3 w-full z-10">
               {menuItems.map((item) => (
-                <div key={item.id} className="flex w-full px-4 py-1 items-center space-between border-b-1 border-solid border-[#424345]">
+                <div key={item.id} className="w-full px-4 py-1 border-b-1 border-solid border-[#424345]">
                   <a
                     href={`#${item.id}`}
                     onClick={(e) => scrollToSection(e, item.id)}
                     className="text-white text-lg font-light hover:text-purple-400 transition-colors duration-300 w-full py-2"
                   >
-                    {item.label}
+                    <div className="w-full flex justify-between items-center">
+                      <p>
+                        {item.label}
+                      </p>
+                      <Image
+                        src="/arrow.svg"
+                        alt="Arrow"
+                        width={21.44}
+                        height={27.70}
+                      />
+                    </div>
                   </a>
-                  <Image
-                    src="/arrow.svg"
-                    alt="Arrow"
-                    width={21.44}
-                    height={27.70}
-                  />
                 </div>
               ))}
             </div>
-            <StarField count={20} className="z-0" />
           </div>
         )}
 

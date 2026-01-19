@@ -9,6 +9,8 @@ import GlowingPlanet from "@/components/ui/GlowingPlanet";
 import StarField from "@/components/ui/StarField";
 import OrbitRings from "@/components/ui/OrbitRings";
 
+
+
 const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   {
     id: "aces-uniben",
@@ -156,11 +158,11 @@ export default function ProjectSection() {
               Our Portfolio
             </span>
           </div>
-          <h2 className="text-xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#d8d8d8] mb-6">
             Projects We Have Done And Completed.
           </h2>
-          <p className="text-lg md:text-xl text-white/60">
-            <span className="text-white text-xl md:text-2xl">
+          <p className="text-xl md:text-xl text-[#d8d8d8]">
+            <span className="text-[#d8d8d8] text-xl md:text-2xl">
               What We Offer.
             </span>{" "}
             Designed for people. Built for the future.
