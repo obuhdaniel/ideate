@@ -2,8 +2,8 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useAnimation } from "framer-motion";
 import StarField from "@/components/ui/StarField";
 import GlowingPlanet from "@/components/ui/GlowingPlanet";
 import InfiniteCarousel from "@/components/features/InfiniteCarousel";
@@ -26,10 +26,31 @@ const BOTTOM_CAROUSEL_TOOLS = [
 ];
 
 export default function ToolsSection() {
-  const [isEarthHovered, setIsEarthHovered] = useState(false);
+  const sectionRef = useRef<HTMLDivElement | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const controls = useAnimation();
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
+
+  // Trigger rocket animation when section is fully in view
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          controls.start("visible");
+        }
+      },
+      { threshold: 0.5 } // Changed to 0.5 for "fully in viewport"
+    );
+    observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, [controls]);
 
   return (
-    <section className="relative w-full overflow-hidden bg-transparent py-20 lg:py-32">
+    <section ref={sectionRef} className="relative w-full overflow-hidden bg-transparent py-20 lg:py-32">
       {/* Star Field Background */}
       <StarField count={100} className="pointer-events-none" />
 
@@ -60,11 +81,7 @@ export default function ToolsSection() {
             VISIBILITY INTO OPPORTUNITY.
           </h2>
 
-<<<<<<< HEAD
           <p className="text-[#d8d8d8] text-base lg:text-3xl leading-relaxed">
-=======
-          <p className="text-[#D8D8D8] text-base lg:text-3xl leading-relaxed">
->>>>>>> 310030b54f943af38de6fce80698d572ca50afeb
             Your website is your business, working 24/7. At Ideate Digital
             Agency we are interested in bringing digital presence to your
             business because a website doesn&apos;t just show your business, it
@@ -92,49 +109,91 @@ export default function ToolsSection() {
           position={{ top: "40%", right: "1%" }}
         />
 
-        {/* Rocket Image (Desktop + Mobile) */}
+        {/* Rocket Image - Positioned in middle, moves diagonally up-left */}
         <motion.div
-          initial={{ opacity: 0, y: "100vh" }} // start offscreen for mobile
-          whileInView={{ opacity: 1, y: 0 }} // animate into final position
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, ease: [0.3, 1, 0.6, 1] }}
-          className="absolute right-[2%] top-[35%] -translate-y-1/2 z-[9999] w-32 h-32 sm:w-36 sm:h-36 md:w-44 md:h-44 lg:w-200 lg:h-200"
+          className="absolute"
+          style={{
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: isMobile ? 150 : 200,
+            height: isMobile ? 150 : 200,
+          }}
+          initial="hidden"
+          animate={controls}
+          variants={{
+            hidden: { 
+              opacity: 0,
+              x: 0,
+              y: 0,
+            },
+            visible: {
+              opacity: 1,
+              x: isMobile ? -200 : -400,
+              y: isMobile ? -250 : -500,
+              transition: {
+                duration: 3,
+                ease: "easeOut"
+              }
+            }
+          }}
+        >
+          <motion.div
+            style={{ rotate: -45 }}
+            animate={{ y: [0, -10, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            className="relative w-full h-full"
+          >
+            <Image
+              src="/images/custom-images/rocket.png"
+              alt="Rocket"
+              fill
+              className="object-contain"
+              priority
+            />
+          </motion.div>
+        </motion.div>
+        {/* Desktop Rocket Image */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="hidden z-[9999] lg:block absolute right-[2%] top-[35%] -translate-y-1/2"
         >
           {/* Interaction Wrapper */}
           <motion.div
-            whileHover={{ x: -700, y: -600 }} // works on desktop
-            // Mobile: no hover, optionally add tap feedback
-            whileTap={{ scale: 0.95 }}
+            // UPDATED: Move Diagonal (Up and Left) to match the -45deg rotation
+            whileHover={{ x: -700, y: -600 }}
             transition={{
               type: "spring",
               stiffness: 50,
               damping: 15,
               mass: 1.2,
             }}
+            // Added padding (p-10) to increase hit area so it triggers when "close"
             className="cursor-pointer p-5 -m-5"
           >
-            {/* Wiggle + rotate wrapper */}
+            {/* Replaced motion.img with motion.div + Image */}
             <motion.div
               style={{ rotate: -45 }}
-              animate={{ y: [0, -10, 0] }} // subtle vertical wiggle
+              className="relative w-32 h-32 lg:w-200 lg:h-200"
+              animate={{ y: [0, -10, 0] }}
               transition={{
                 duration: 3,
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              className="relative w-full h-full"
             >
               <Image
                 src="/images/custom-images/rocket.png"
                 alt="Rocket"
                 fill
                 className="object-contain"
-                priority
               />
             </motion.div>
           </motion.div>
-        </motion.div>
-
+        </motion.div>  
       </div>
 
       {/* Scattered Planets Section */}
@@ -165,8 +224,6 @@ export default function ToolsSection() {
           glowColor="rgba(147, 51, 234, 0.6)"
           position={{ top: "-12%", left: "80%" }}
         />
-
-        {/* Build with tools we trust */}
 
         {/* Sun-like Planet - Right */}
         <GlowingPlanet

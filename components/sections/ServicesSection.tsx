@@ -82,7 +82,7 @@ export default function ServicesSection({
       {
         root: null,
         threshold: 0,
-        rootMargin: "-30% 0px 0px 0px", // trigger earlier (mobile-safe)
+        rootMargin: "-100% 0px 0px 0px", // trigger earlier (mobile-safe)
       }
     );
 
@@ -187,8 +187,8 @@ export default function ServicesSection({
                     y: 0,
                     opacity: 1,
                     transition: {
-                      duration: 3, // fast but visible
-                      ease: [0.22, 1, 0.36, 1],
+                      duration: 5, // fast but visible
+                      ease: [0.22, 0.75, 0.36, 0.9],
                     },
                   },
                   wiggle: {
