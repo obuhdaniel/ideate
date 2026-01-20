@@ -4,7 +4,12 @@ import { useState } from "react";
 import Image from "next/image";
 import StarField from "@/components/ui/StarField";
 
-export default function Navigation() {
+interface NavigationProps {
+  baseUrl?: string;
+}
+export default function Navigation({
+  baseUrl = "", 
+}: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Function to handle smooth scrolling
@@ -21,10 +26,10 @@ export default function Navigation() {
   };
 
   const menuItems = [
-    { label: "Process", id: "process" },
-    { label: "Services", id: "services" },
-    { label: "Portfolio", id: "portfolio" },
-    { label: "Contact us", id: "contact" },
+    { label: "Process", id: `${baseUrl}#process` },
+    { label: "Services", id: `${baseUrl}#services` },
+    { label: "Portfolio", id: `${baseUrl}#portfolio` },
+    { label: "Contact us", id: `${baseUrl}#contact` },
   ];
 
   return (
@@ -93,7 +98,7 @@ export default function Navigation() {
               {menuItems.map((item) => (
                 <div key={item.id} className="w-full px-4 py-1 border-b-1 border-solid border-[#424345]">
                   <a
-                    href={`#${item.id}`}
+                    href={item.id}
                     onClick={(e) => scrollToSection(e, item.id)}
                     className="text-white text-lg font-light hover:text-purple-400 transition-colors duration-300 w-full py-2"
                   >
@@ -118,14 +123,14 @@ export default function Navigation() {
         <div className="hidden md:block">
           <div className="flex items-center mx-auto gap-12 md:gap-32 w-fit px-8 py-6">
             <a
-              href="#process"
+              href= {`${baseUrl}#process`}
               onClick={(e) => scrollToSection(e, "process")}
               className="text-white text-lg font-light hover:text-purple-400 transition-colors duration-300 hover:scale-105 cursor-pointer"
             >
               Process
             </a>
             <a
-              href="#services"
+              href={`${baseUrl}#services`}
               onClick={(e) => scrollToSection(e, "services")}
               className="text-white text-lg font-light hover:text-purple-400 transition-colors duration-300 hover:scale-105 cursor-pointer"
             >
@@ -133,7 +138,7 @@ export default function Navigation() {
             </a>
 
 
-            <a href="#">
+            <a href="/">
               <Image
                 src="/images/hero/ideate.png"
                 alt="Ideate Logo"
@@ -144,14 +149,14 @@ export default function Navigation() {
             </a>
 
             <a
-              href="#portfolio"
+              href= {`${baseUrl}#portfolio`}
               onClick={(e) => scrollToSection(e, "portfolio")}
               className="text-white text-lg font-light hover:text-purple-400 transition-colors duration-300 hover:scale-105 cursor-pointer"
             >
               Portfolio
             </a>
             <a
-              href="#contact"
+              href= {`${baseUrl}#contact`}
               onClick={(e) => scrollToSection(e, "contact")}
               className="text-white text-lg font-light hover:text-purple-400 transition-colors duration-300 hover:scale-105 cursor-pointer"
             >

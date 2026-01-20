@@ -116,8 +116,8 @@ export default function ToolsSection() {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: isMobile ? 150 : 200,
-            height: isMobile ? 150 : 200,
+            width: isMobile ? 250 : 300,
+            height: isMobile ? 250 : 300,
           }}
           initial="hidden"
           animate={controls}
@@ -141,7 +141,7 @@ export default function ToolsSection() {
           <motion.div
             style={{ rotate: -45 }}
             animate={{ y: [0, -10, 0] }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
             className="relative w-full h-full"
           >
             <Image

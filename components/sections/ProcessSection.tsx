@@ -93,34 +93,38 @@ export default function ProcessSection() {
 
   // Translate vertical scroll to horizontal scroll
   const updateMobileHorizontalScroll = (scrollDistance: number) => {
-  const track = mobileTrackRef.current;
-  if (!track) return;
+    const track = mobileTrackRef.current;
+    if (!track) return;
 
-  // Use VISUAL viewport (mobile-safe)
-  const viewportWidth =
-    window.visualViewport?.width ?? document.documentElement.clientWidth;
+    // Get viewport width
+    const viewportWidth =
+      window.visualViewport?.width ?? document.documentElement.clientWidth;
 
-  const contentWidth = track.scrollWidth;
-  const maxTranslateX = Math.max(contentWidth - viewportWidth, 0);
+    const contentWidth = track.scrollWidth;
+    const maxTranslateX = Math.max(contentWidth - viewportWidth, 0);
 
-  // Use document scrollable height instead of innerHeight
-  const scrollableHeight =
-    document.documentElement.scrollHeight - window.visualViewport?.height!;
+    // Total scroll height for the process section (3 steps = 3 viewport heights)
+    const totalScrollHeight = window.innerHeight * PROCESS_STEPS.length;
 
-  if (scrollableHeight <= 0) return;
+    if (totalScrollHeight <= 0) return;
 
-  const progress = Math.min(
-    Math.max(scrollDistance / scrollableHeight, 0),
-    1
-  );
+    // Calculate progress based on scroll distance through the section
+    const rawProgress = scrollDistance / totalScrollHeight;
+    const progress = Math.min(Math.max(rawProgress, 0), 1);
 
-  const x =
-    lockDirection === "forward"
-      ? -progress * maxTranslateX
-      : -(1 - progress) * maxTranslateX;
+    // Apply translation based on direction
+    let x: number;
+    if (lockDirection === "forward") {
+      x = -progress * maxTranslateX;
+    } else if (lockDirection === "backward") {
+      // For backward, we want to go from left (0) back to right (maxTranslateX)
+      x = -(1 - progress) * maxTranslateX;
+    } else {
+      x = 0;
+    }
 
-  mobileX.set(x);
-};
+    mobileX.set(x);
+  };
 
 
   const centerActiveMobileItem = (stepIndex: number) => {
@@ -129,13 +133,16 @@ export default function ProcessSection() {
 
     if (!track || !item) return;
 
-    const trackWidth = track.offsetWidth;
+    const viewportWidth =
+      window.visualViewport?.width ?? document.documentElement.clientWidth;
+
     const itemWidth = item.offsetWidth;
+    const itemLeft = item.offsetLeft;
 
-    const trackCenter = trackWidth / 2;
-    const itemCenter = item.offsetLeft + itemWidth / 2;
-
-    const translateX = trackCenter - itemCenter;
+    // Calculate center position: viewport center - item center
+    const viewportCenter = viewportWidth / 2;
+    const itemCenter = itemLeft + itemWidth / 2;
+    const translateX = viewportCenter - itemCenter;
 
     mobileX.set(translateX);
   };
