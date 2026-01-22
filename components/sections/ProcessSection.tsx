@@ -92,68 +92,22 @@ export default function ProcessSection() {
 
 
   // Translate vertical scroll to horizontal scroll
-  const updateMobileHorizontalScroll = (scrollDistance: number) => {
+  const updateMobilePosition = (stepIndex: number, stepProgress: number) => {
     const track = mobileTrackRef.current;
     if (!track) return;
 
-    // Get viewport width
-    const viewportWidth =
-      window.visualViewport?.width ?? document.documentElement.clientWidth;
-
+    const viewportWidth = window.innerWidth;
     const contentWidth = track.scrollWidth;
     const maxTranslateX = Math.max(contentWidth - viewportWidth, 0);
 
-    // Total scroll height for the process section (3 steps = 3 viewport heights)
-    const totalScrollHeight = window.innerHeight * PROCESS_STEPS.length;
-
-    if (totalScrollHeight <= 0) return;
-
-    // Calculate progress based on scroll distance through the section
-    const rawProgress = scrollDistance / totalScrollHeight;
-    const progress = Math.min(Math.max(rawProgress, 0), 1);
-
-    // Apply translation based on direction
-    let x: number;
-    if (lockDirection === "forward") {
-      x = -progress * maxTranslateX;
-    } else if (lockDirection === "backward") {
-      // For backward, we want to go from left (0) back to right (maxTranslateX)
-      x = -(1 - progress) * maxTranslateX;
-    } else {
-      x = 0;
-    }
-
-    mobileX.set(x);
-  };
-
-
-  const centerActiveMobileItem = (stepIndex: number) => {
-    const track = mobileTrackRef.current;
-    const item = mobileItemRefs.current[stepIndex];
-
-    if (!track || !item) return;
-
-    const trackRect = track.getBoundingClientRect();
-    const itemRect = item.getBoundingClientRect();
-
-    const viewportCenter = window.innerWidth / 2;
-
-    // Item center relative to viewport
-    const itemCenter = itemRect.left + itemRect.width / 2;
-
-    // How far the item is from the viewport center
-    const delta = viewportCenter - itemCenter;
-
-    // Apply correction relative to current motion value
-    mobileX.set(mobileX.get() + delta);
+    // Calculate total progress (0 to 1) across all steps
+    const totalProgress = (stepIndex + stepProgress) / PROCESS_STEPS.length;
+    
+    // Map to horizontal scroll position
+    const targetX = -totalProgress * maxTranslateX;
+    
+    mobileX.set(targetX);
 };
-
-
-  useEffect(() => {
-    if (isProcessLocked) {
-      centerActiveMobileItem(activeStep);
-    }
-  }, [activeStep, isProcessLocked]);
 
 
   // Update locked state and active step based on user scroll
@@ -214,8 +168,7 @@ export default function ProcessSection() {
       // Calculate scroll distance from when we locked
       let scrollDistanceSinceLock = currentScrollY - scrollStartRef.current;
 
-      // For mobile movement
-      updateMobileHorizontalScroll(scrollDistanceSinceLock);
+      
 
       // For backward lock, reverse the direction (scrolling up = positive progress)
       if (lockDirection === "backward") {
@@ -265,8 +218,10 @@ export default function ProcessSection() {
       // Update active step
       if (clampedStep !== activeStep) {
         setActiveStep(clampedStep);
-        centerActiveMobileItem(clampedStep);
       }
+
+      // Update mobile horizontal position - ONE CALL HANDLES EVERYTHING
+      updateMobilePosition(clampedStep, clampedProgress);
 
       // Sync word index based on total progress through all steps
       const wordIdx = Math.floor(
