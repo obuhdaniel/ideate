@@ -133,19 +133,21 @@ export default function ProcessSection() {
 
     if (!track || !item) return;
 
-    const viewportWidth =
-      window.visualViewport?.width ?? document.documentElement.clientWidth;
+    const trackRect = track.getBoundingClientRect();
+    const itemRect = item.getBoundingClientRect();
 
-    const itemWidth = item.offsetWidth;
-    const itemLeft = item.offsetLeft;
+    const viewportCenter = window.innerWidth / 2;
 
-    // Calculate center position: viewport center - item center
-    const viewportCenter = viewportWidth / 2;
-    const itemCenter = itemLeft + itemWidth / 2;
-    const translateX = viewportCenter - itemCenter;
+    // Item center relative to viewport
+    const itemCenter = itemRect.left + itemRect.width / 2;
 
-    mobileX.set(translateX);
-  };
+    // How far the item is from the viewport center
+    const delta = viewportCenter - itemCenter;
+
+    // Apply correction relative to current motion value
+    mobileX.set(mobileX.get() + delta);
+};
+
 
   useEffect(() => {
     if (isProcessLocked) {
