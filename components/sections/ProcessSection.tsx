@@ -92,22 +92,69 @@ export default function ProcessSection() {
 
 
   // Translate vertical scroll to horizontal scroll
-  const updateMobilePosition = (stepIndex: number, stepProgress: number) => {
+  const updateMobilePosition = (
+    stepIndex: number,
+    stepProgress: number,
+    direction: "forward" | "backward" | null
+  ) => {
     const track = mobileTrackRef.current;
-    if (!track) return;
+    const item = mobileItemRefs.current[stepIndex];
+
+    if (!track || !item) return;
 
     const viewportWidth = window.innerWidth;
-    const contentWidth = track.scrollWidth;
-    const maxTranslateX = Math.max(contentWidth - viewportWidth, 0);
+    const viewportCenter = viewportWidth / 2;
 
-    // Calculate total progress (0 to 1) across all steps
-    const totalProgress = (stepIndex + stepProgress) / PROCESS_STEPS.length;
-    
-    // Map to horizontal scroll position
-    const targetX = -totalProgress * maxTranslateX;
-    
-    mobileX.set(targetX);
-};
+    // Get the current item's position and dimensions
+    const itemWidth = item.offsetWidth;
+    const itemLeftInTrack = item.offsetLeft; // Position relative to track
+
+    // Calculate where the item's center is in the track
+    const itemCenterInTrack = itemLeftInTrack + itemWidth / 2;
+
+    // Calculate base X to center the current item
+    let targetX = -(itemCenterInTrack - viewportCenter);
+
+    // Interpolate to next/previous item based on progress and direction
+    if (stepProgress > 0) {
+      let adjacentItem: HTMLDivElement | null = null;
+
+      if (direction === "forward" && stepIndex < PROCESS_STEPS.length - 1) {
+        // Moving forward: interpolate towards next item
+        adjacentItem = mobileItemRefs.current[stepIndex + 1];
+      } else if (direction === "backward" && stepIndex > 0) {
+        // Moving backward: interpolate towards previous item
+        adjacentItem = mobileItemRefs.current[stepIndex - 1];
+      }
+
+      if (adjacentItem) {
+        const adjacentItemWidth = adjacentItem.offsetWidth;
+        const adjacentItemLeftInTrack = adjacentItem.offsetLeft;
+        const adjacentItemCenterInTrack =
+          adjacentItemLeftInTrack + adjacentItemWidth / 2;
+
+        // Calculate X to center the adjacent item
+        const adjacentTargetX = -(adjacentItemCenterInTrack - viewportCenter);
+
+        // Interpolate between current and adjacent based on progress
+        targetX = targetX + (adjacentTargetX - targetX) * stepProgress;
+      }
+    }
+
+    // Add extra padding to ensure last item can be fully centered
+    // Without this, the last item can't scroll to center because track ends
+    const contentWidth = track.scrollWidth;
+    const lastItemPadding = viewportWidth * 0.5; // Add 50% viewport width as buffer
+    const maxTranslateX = Math.max(
+      contentWidth - viewportWidth + lastItemPadding,
+      0
+    );
+
+    // Clamp to valid scroll range
+    const clampedX = Math.max(-maxTranslateX, Math.min(0, targetX));
+
+    mobileX.set(clampedX);
+  };
 
 
   // Update locked state and active step based on user scroll
@@ -221,7 +268,7 @@ export default function ProcessSection() {
       }
 
       // Update mobile horizontal position - ONE CALL HANDLES EVERYTHING
-      updateMobilePosition(clampedStep, clampedProgress);
+      updateMobilePosition(clampedStep, clampedProgress, lockDirection);
 
       // Sync word index based on total progress through all steps
       const wordIdx = Math.floor(
