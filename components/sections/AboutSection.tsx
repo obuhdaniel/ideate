@@ -1,8 +1,10 @@
 // @ts-nocheck
 "use client";
 
-import Image from "next/image"; // Import Next.js Image
+import { useState } from "react";
+import Image from "next/image";
 import * as motion from "framer-motion/client";
+import { AnimatePresence } from "framer-motion"; // Import AnimatePresence
 import { VisitButton } from "@/components/ui/Button";
 import OrbitRings from "@/components/ui/OrbitRings";
 
@@ -46,6 +48,9 @@ function DecorativeStar({
 }
 
 export default function AboutSection() {
+  // State to track if the full text is shown
+  const [isExpanded, setIsExpanded] = useState(false);
+
   return (
     <section
       id="about"
@@ -65,11 +70,7 @@ export default function AboutSection() {
       {/* Bottom decorative line */}
       <div className="absolute bottom-[0%] md:bottom-[18%] left-1/2 -translate-x-1/2 w-full md:w-[90%] h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-      {/* NEW: THE ENCLOSED BOX FILL 
-          Coordinates match the lines above:
-          Top/Bottom: 18%
-          Left/Right: 8% (mobile) -> 18% (desktop)
-      */}
+      {/* THE ENCLOSED BOX FILL */}
       <div className="absolute top-[10%] md:top-[18%] bottom-[0%] md:bottom-[18%] left-[0%] right-[0%] md:left-[18%] md:right-[18%] bg-white/[0.03] pointer-events-none" />
 
       {/* --- BACKGROUND ELEMENTS --- */}
@@ -91,7 +92,7 @@ export default function AboutSection() {
         />
       </div>
 
-      {/* Space Star - Motion Wrapper + Next Image */}
+      {/* Space Star 1 */}
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         whileInView={{ opacity: 1, scale: 1 }}
@@ -107,7 +108,7 @@ export default function AboutSection() {
         />
       </motion.div>
 
-      {/* Space Star - Motion Wrapper + Next Image */}
+      {/* Space Star 2 */}
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         whileInView={{ opacity: 1, scale: 1 }}
@@ -144,37 +145,73 @@ export default function AboutSection() {
           </h2>
         </motion.div>
 
-        {/* Description */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="space-y-6 mb-10"
-        >
-          <p className="text-lg md:text-xl text-white/80 leading-relaxed">
-            Lets talk about what Motivated us. We started this agency because we
-            saw how often products are rushed, built without thought and without
-            achieving the user requirements.
-          </p>
-          <p className="text-lg md:text-xl text-white/80 leading-relaxed">
-            We realized people have strong ideas but have issues with
-            implementation and We wanted to change that.
-          </p>
-        </motion.div>
+        {/* Description Container */}
+        <div className="space-y-6 mb-10">
+          {/* Initial Paragraphs (Always Visible) */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="space-y-6"
+          >
+            <p className="text-lg md:text-xl text-white/80 leading-relaxed">
+              Lets talk about what Motivated us. We started this agency because
+              we saw how often products are rushed, built without thought and
+              without achieving the user requirements.
+            </p>
+            <p className="text-lg md:text-xl text-white/80 leading-relaxed">
+              We realized people have strong ideas but have issues with
+              implementation and We wanted to change that.
+            </p>
+          </motion.div>
 
-        {/* CTA Button */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-center"
-        >
-          <VisitButton href="#about" variant="outline" size="lg">
-            Read Why
-          </VisitButton>
-        </motion.div>
+          {/* Expanded Text (Visible only after click) */}
+          <AnimatePresence>
+            {isExpanded && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className="space-y-6 overflow-hidden"
+              >
+                <p className="text-lg md:text-xl text-white/80 leading-relaxed">
+                  We believe good design is not about noise or trends. It is
+                  about clarity, understanding real needs, and building products
+                  that feel simple, useful, and lasting. That belief led us to
+                  creating this space where ideas becomes reality.
+                </p>
+                <p className="text-lg md:text-xl text-white/80 leading-relaxed">
+                  This agency exists to help ideas grow thoughtfully,
+                  deliberately, and with intention.
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* CTA Button (Disappears after click) */}
+        <AnimatePresence>
+          {!isExpanded && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-center"
+            >
+              <VisitButton
+                onClick={() => setIsExpanded(true)}
+                variant="outline"
+                size="lg"
+              >
+                Read Why
+              </VisitButton>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );
