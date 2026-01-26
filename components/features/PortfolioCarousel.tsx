@@ -13,7 +13,7 @@ export interface PortfolioProject {
   title: string;
   description: string;
   image: string;
-  url: string;
+  url?: string; // UPDATED: Made url optional
 }
 
 interface PortfolioCarouselProps {
@@ -149,25 +149,31 @@ export default function PortfolioCarousel({
                   className="animate-pulse"
                 />
               </div>
-              <div className="hidden md:block">
-                <VisitButton
-                  href={currentProject.url}
-                  variant="outline"
-                  size="lg"
-                >
-                  VISIT
-                </VisitButton>
-              </div>
 
-              <div className="md:hidden">
-                <VisitButton
-                  href={currentProject.url}
-                  variant="outline"
-                  size="md"
-                >
-                  VISIT
-                </VisitButton>
-              </div>
+              {/* UPDATED: Only show button if URL exists */}
+              {currentProject.url && (
+                <>
+                  <div className="hidden md:block">
+                    <VisitButton
+                      href={currentProject.url}
+                      variant="outline"
+                      size="lg"
+                    >
+                      VISIT
+                    </VisitButton>
+                  </div>
+
+                  <div className="md:hidden">
+                    <VisitButton
+                      href={currentProject.url}
+                      variant="outline"
+                      size="md"
+                    >
+                      VISIT
+                    </VisitButton>
+                  </div>
+                </>
+              )}
             </motion.div>
           </AnimatePresence>
 
@@ -182,7 +188,7 @@ export default function PortfolioCarousel({
         </div>
 
         {/* Right side - Project Image */}
-        <div className="flex-1 relative min-h-[250px] flex items-center justify-center">
+        <div className="flex-1 relative flex items-center justify-center">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={currentProject.id + "-image"}

@@ -9,8 +9,6 @@ import GlowingPlanet from "@/components/ui/GlowingPlanet";
 import StarField from "@/components/ui/StarField";
 import OrbitRings from "@/components/ui/OrbitRings";
 
-
-
 const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   {
     id: "aces-uniben",
@@ -31,8 +29,7 @@ const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   {
     id: "bullion",
     title: "BULLION (WEB 3)",
-    description:
-      "Modern financial services platform with intuitive user experience.",
+    description: "Website for a community driven memecoin on Solana.",
     image: "/images/portfolio/bullion-site.png",
     url: "https://bullonsol19.com",
   },
@@ -42,7 +39,7 @@ const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     description:
       "A website for an advertising agency in Delta State, that showcases their previous works.",
     image: "/images/portfolio/goldenmedia-site.png",
-    url: "https://goldenmedia-site.vercel.app",
+    url: "https://www.goldenmedia.com.ng/",
   },
   {
     id: "adagba",
@@ -50,7 +47,7 @@ const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     description:
       "A News Publication website for a student body that shows their current news and updates.",
     image: "/images/portfolio/adagba-site.png",
-    url: "https://adagba.vercel.app",
+    url: "https://adagbanewsline.com.ng/",
   },
   {
     id: "acesmobileapp",
@@ -58,7 +55,6 @@ const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     description:
       "A mobile application for the Association of Computer Engineering Students, UNIBEN.",
     image: "/images/portfolio/aces-app.png",
-    url: "https://acesmobileapp.vercel.app",
   },
   {
     id: "acesdashboard",
@@ -66,7 +62,6 @@ const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     description:
       "An admin portal for ACES UNIBEN used to register students and post information on the website and app.",
     image: "/images/portfolio/aces-dashboard.png",
-    url: "https://acesdashboard.vercel.app",
   },
   {
     id: "passpaymobileapp",
@@ -74,13 +69,12 @@ const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     description:
       "A mobile app that integrates LazorKit's SDK for passkey-powered Solana wallets with gasless transactions.",
     image: "/images/portfolio/passpay-app.png",
-    url: "https://passpaymobileapp.vercel.app",
   },
 ];
 
 export default function ProjectSection() {
   return (
-    <section className="relative w-full overflow-hidden bg-gradient-to-br from-[#2F327D] via-[#0A0C10] via-[#0F1628] via-[#141D33] to-[#6E499F] py-10 md:py-32">
+    <section className="relative w-full overflow-hidden bg-gradient-to-br from-[#2F327D] via-[#0A0C10] via-[#0F1628] via-[#141D33] to-[#6E499F] min-h-[900px] h-[115vh] flex flex-col justify-center py-10 md:py-32">
       {/* Star Field Background */}
       <StarField count={100} className="pointer-events-none" />
       {/* Background Elements */}
