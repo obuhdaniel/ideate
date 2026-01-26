@@ -174,7 +174,7 @@ export default function PortfolioCarousel({
           {/* Navigation - Left Arrow */}
           <button
             onClick={prevSlide}
-            className="hidden md:flex absolute left-0 md:bottom-auto md:left-auto md:right-[calc(-20%+3rem)] md:top-1/2 -translate-y-1/2 h-12 w-12 rounded-full border border-white/30 hover:border-white/60 hover:bg-white/5 items-center justify-center transition-all duration-300 group z-10"
+            className="hidden md:flex absolute left-0 md:bottom-auto md:left-auto md:right-[calc(-20%+1rem)] md:top-1/2 -translate-y-1/2 h-12 w-12 rounded-full border border-white/30 hover:border-white/60 hover:bg-white/5 items-center justify-center transition-all duration-300 group z-10"
             aria-label="Previous project"
           >
             <ChevronLeft className="w-5 h-5 text-white/70 group-hover:text-white transition-colors" />
@@ -182,7 +182,7 @@ export default function PortfolioCarousel({
         </div>
 
         {/* Right side - Project Image */}
-        <div className="flex-1 relative flex items-center justify-center">
+        <div className="flex-1 relative min-h-[250px] flex items-center justify-center">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={currentProject.id + "-image"}
@@ -212,7 +212,7 @@ export default function PortfolioCarousel({
           {/* Navigation - Right Arrow */}
           <button
             onClick={nextSlide}
-            className="absolute hidden md:flex right-0 md:right-auto md:left-[calc(100%+3rem)] md:top-1/2 -translate-y-1/2 h-12 w-12 rounded-full border border-white/30 hover:border-white/60 hover:bg-white/5 items-center justify-center transition-all duration-300 group z-10"
+            className="absolute hidden md:flex right-0 md:right-auto md:left-[calc(100%+1rem)] md:top-1/2 -translate-y-1/2 h-12 w-12 rounded-full border border-white/30 hover:border-white/60 hover:bg-white/5 items-center justify-center transition-all duration-300 group z-10"
             aria-label="Next project"
           >
             <ChevronRight className="w-5 h-5 text-white/70 group-hover:text-white transition-colors" />

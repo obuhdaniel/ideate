@@ -43,14 +43,17 @@ export default function ToolsSection() {
           controls.start("visible");
         }
       },
-      { threshold: 0.5 } // Changed to 0.5 for "fully in viewport"
+      { threshold: 0.5 }, // Changed to 0.5 for "fully in viewport"
     );
     observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, [controls]);
 
   return (
-    <section ref={sectionRef} className="relative w-full overflow-hidden bg-transparent py-20 lg:py-32">
+    <section
+      ref={sectionRef}
+      className="relative w-full overflow-hidden bg-transparent py-20 lg:py-32"
+    >
       {/* Star Field Background */}
       <StarField count={100} className="pointer-events-none" />
 
@@ -77,8 +80,7 @@ export default function ToolsSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 flex flex-col items-center text-left">
         <div className="max-w-6xl mb-16">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
-            DIGITAL PRESENCE TURNS
-            VISIBILITY INTO OPPORTUNITY.
+            DIGITAL PRESENCE TURNS VISIBILITY INTO OPPORTUNITY.
           </h2>
 
           <p className="text-[#d8d8d8] text-base lg:text-3xl leading-relaxed">
@@ -122,7 +124,7 @@ export default function ToolsSection() {
           initial="hidden"
           animate={controls}
           variants={{
-            hidden: { 
+            hidden: {
               opacity: 0,
               x: 0,
               y: 0,
@@ -133,9 +135,9 @@ export default function ToolsSection() {
               y: isMobile ? -250 : -500,
               transition: {
                 duration: 3,
-                ease: "easeOut"
-              }
-            }
+                ease: "easeOut",
+              },
+            },
           }}
         >
           <motion.div
@@ -158,7 +160,7 @@ export default function ToolsSection() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
+          transition={{ duration: 0.8, delay: 2 }}
           className="hidden z-[9999] lg:block absolute right-[2%] top-[35%] -translate-y-1/2"
         >
           {/* Interaction Wrapper */}
@@ -172,7 +174,7 @@ export default function ToolsSection() {
               mass: 1.2,
             }}
             // Added padding (p-10) to increase hit area so it triggers when "close"
-            className="cursor-pointer p-5 -m-5"
+            className="cursor-pointer p-10 -m-5"
           >
             {/* Replaced motion.img with motion.div + Image */}
             <motion.div
@@ -193,7 +195,7 @@ export default function ToolsSection() {
               />
             </motion.div>
           </motion.div>
-        </motion.div>  
+        </motion.div>
       </div>
 
       {/* Scattered Planets Section */}
