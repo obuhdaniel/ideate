@@ -1,9 +1,8 @@
-// @ts-nocheck|
 // @ts-nocheck
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import * as motion from "framer-motion/client";
 import { AnimatePresence } from "framer-motion";
@@ -13,7 +12,15 @@ import OrbitRings from "@/components/ui/OrbitRings";
 import PlanetWithCanvas from "@/components/ui/PlanetWithCanvas";
 import { ExploreButton } from "@/components/ui/Button";
 
-// Hero section constants
+const MemoizedStarField = memo(StarField);
+
+const MemoizedPlanet = memo(PlanetWithCanvas);
+
+const MemoizedOrbitRings = memo(OrbitRings);
+
+// ============================================
+// CONSTANTS & VARIANTS
+// ============================================
 
 const SLIDE_DURATION = 5000;
 const TRANSITION_DURATION = 1500;
@@ -28,8 +35,6 @@ const HERO_IMAGES = [
   "/images/hero/hero-female.png",
   "/images/hero/hero-male.png",
 ] as const;
-
-// ANIMATION VARIANTS
 
 const textVariants = {
   enter: (direction: number) => ({
@@ -66,20 +71,24 @@ const imageVariants = {
   }),
 };
 
-// Image remains snappy/fast
 const imageTransition = {
   x: { type: "spring", stiffness: 120, damping: 20 },
   opacity: { duration: 0.2 },
 };
 
-// Sub-components
+// ============================================
+// SUB-COMPONENTS
+// ============================================
 
 interface SlideTextProps {
   currentTextSlide: number;
   textDirection: number;
 }
 
-function SlideText({ currentTextSlide, textDirection }: SlideTextProps) {
+const SlideText = memo(function SlideText({
+  currentTextSlide,
+  textDirection,
+}: SlideTextProps) {
   return (
     <div className="absolute inset-0 z-10 flex items-start leading-12 justify-center pt-42 md:pt-16 pointer-events-none overflow-hidden">
       <AnimatePresence mode="wait" custom={textDirection}>
@@ -98,18 +107,20 @@ function SlideText({ currentTextSlide, textDirection }: SlideTextProps) {
       </AnimatePresence>
     </div>
   );
-}
+});
 
 interface HeroImageProps {
   currentSlide: number;
   direction: number;
 }
 
-function HeroImage({ currentSlide, direction }: HeroImageProps) {
+const HeroImage = memo(function HeroImage({
+  currentSlide,
+  direction,
+}: HeroImageProps) {
   return (
     <div className="absolute inset-0 z-20 flex items-end md:items-center justify-center md:pt-40 overflow-hidden">
       <AnimatePresence mode="wait" custom={direction}>
-        {/* Replaced motion.img with motion.div wrapping Next Image */}
         <motion.div
           key={currentSlide}
           custom={direction}
@@ -132,9 +143,8 @@ function HeroImage({ currentSlide, direction }: HeroImageProps) {
       </AnimatePresence>
     </div>
   );
-}
+});
 
-// Tagline sub-component
 function Tagline({ currentSlide }: { currentSlide: number }) {
   return (
     <div className="absolute top-25 md:top-auto md:bottom-40 left-0 z-30 px-8 lg:px-16">
@@ -164,7 +174,7 @@ function Tagline({ currentSlide }: { currentSlide: number }) {
             transition={{ duration: 0.2, ease: "easeOut" }}
           >
             <p className="text-sm md:text-xl lg:text-2xl font-light text-white/90 leading-relaxed max-w-md">
-              While you grow your business, <br/> leave design to us
+              While you grow your business, <br /> leave design to us
             </p>
           </motion.div>
         )}
@@ -182,7 +192,7 @@ interface NavigationControlsProps {
   onExplore?: () => void;
 }
 
-function NavigationControls({
+const NavigationControls = memo(function NavigationControls({
   onPrev,
   onNext,
   currentSlide,
@@ -230,7 +240,7 @@ function NavigationControls({
       </div>
     </div>
   );
-}
+});
 
 // ============================================
 // MAIN COMPONENT
@@ -254,7 +264,7 @@ export default function HeroSection({ onExplore }: HeroSectionProps) {
       setIsTransitioning(true);
       setCurrentSlide(index);
     },
-    [currentSlide]
+    [currentSlide],
   );
 
   const nextSlide = useCallback(() => {
@@ -267,11 +277,10 @@ export default function HeroSection({ onExplore }: HeroSectionProps) {
     setDirection(-1);
     setIsTransitioning(true);
     setCurrentSlide(
-      (prev) => (prev - 1 + HERO_IMAGES.length) % HERO_IMAGES.length
+      (prev) => (prev - 1 + HERO_IMAGES.length) % HERO_IMAGES.length,
     );
   }, []);
 
-  // Auto-slide text only
   useEffect(() => {
     const timer = setInterval(() => {
       setTextDirection(1);
@@ -284,7 +293,7 @@ export default function HeroSection({ onExplore }: HeroSectionProps) {
     if (isTransitioning) {
       const timer = setTimeout(
         () => setIsTransitioning(false),
-        TRANSITION_DURATION
+        TRANSITION_DURATION,
       );
       return () => clearTimeout(timer);
     }
@@ -297,11 +306,12 @@ export default function HeroSection({ onExplore }: HeroSectionProps) {
       id="hero"
       className="relative h-[70vh] md:h-[120vh] w-full overflow-hidden bg-gradient-to-br from-[#1D2948] via-[#141D33] via-[#0F1628] to-[#050A16]"
     >
-      <StarField className="z-0" />
-      <OrbitRings isTransitioning={isTransitioning} className="z-[3]" />
+      <MemoizedStarField className="z-0" />
 
-      <PlanetWithCanvas position="left" glowIntensity={glowIntensity} />
-      <PlanetWithCanvas position="right" glowIntensity={glowIntensity} />
+      <MemoizedOrbitRings isTransitioning={isTransitioning} className="z-[3]" />
+
+      <MemoizedPlanet position="left" glowIntensity={glowIntensity} />
+      <MemoizedPlanet position="right" glowIntensity={glowIntensity} />
 
       <Navigation />
 
