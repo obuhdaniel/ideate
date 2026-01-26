@@ -19,7 +19,7 @@ export default function ServiceCard({
   delay = 0,
   position = "top-left",
 }: ServiceCardProps) {
-  // Determine border classes based on position in the grid
+  
   const borderClasses = {
     "top-left": "md:border-r md:border-b border-white/10",
     "top-right": "md:border-b border-white/10",
