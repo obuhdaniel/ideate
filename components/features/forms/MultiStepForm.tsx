@@ -64,9 +64,9 @@ export default function MultiStepForm({ onSubmit }: MultiStepFormProps) {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto px-6">
+    <div className="w-full max-w-3xl mx-auto ">
       {/* Progress Indicators */}
-      <div className="flex gap-4 mb-12">
+      <div className="flex gap-4 mb-12 px-12 lg:px-24">
         {[1, 2, 3].map((step) => (
           <motion.div
             key={step}

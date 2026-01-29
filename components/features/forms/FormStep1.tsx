@@ -6,8 +6,7 @@ import FormInput from "@/components/features/forms/FormInput";
 import PhoneInput from "@/components/features/forms/PhoneInput";
 import FormButton from "@/components/features/forms/FormButton";
 
-
- interface FormData {
+interface FormData {
   firstName: string;
   lastName: string;
   phoneNumber: string;
@@ -18,7 +17,6 @@ import FormButton from "@/components/features/forms/FormButton";
   timeline: string;
   projectDetails: string;
 }
-
 
 interface FormStep1Props {
   formData: FormData;
@@ -70,45 +68,80 @@ export default function FormStep1({
       animate="visible"
       exit="exit"
       onSubmit={handleSubmit}
-      className="space-y-8"
+      className="space-y-8 flex flex-col"
     >
-      <FormInput
-        label="First Name?"
-        type="text"
-        value={formData.firstName}
-        onChange={(value) => updateFormData({ firstName: value })}
-        placeholder=""
-        required
-      />
+    <div className="relative">
+   {/* Extension lines layer - sits above but pointer-events-none */}
+    <div className="absolute inset-0 pointer-events-none">
+      {/* Horizontal extension lines (extending outward) */}
+      <div className="absolute h-[1px] bg-gradient-to-r from-transparent via-[#E5E5E560] to-transparent top-0 left-[-2rem] right-[-2rem]"></div>
+      <div className="absolute h-[1px] bg-gradient-to-r from-transparent via-[#E5E5E560] to-transparent top-full left-[-2rem] right-[-2rem]"></div>
+      
+      {/* Vertical extension lines (extending outward) */}
+      <div className="absolute w-[1px] bg-gradient-to-b from-transparent via-[#E5E5E560] to-transparent left-0 top-[-2rem] bottom-[-2rem] hidden md:block"></div>
+      <div className="absolute w-[1px] bg-gradient-to-b from-transparent via-[#E5E5E560] to-transparent left-full top-[-2rem] bottom-[-2rem] hidden md:block"></div>
+      
+  
+    </div>
 
-      <FormInput
-        label="Last Name?"
-        type="text"
-        value={formData.lastName}
-        onChange={(value) => updateFormData({ lastName: value })}
-        placeholder=""
-        required
-      />
 
-      <PhoneInput
-        countryCode={formData.countryCode}
-        phoneNumber={formData.phoneNumber}
-        onCountryCodeChange={(code) => updateFormData({ countryCode: code })}
-        onPhoneNumberChange={(number) =>
-          updateFormData({ phoneNumber: number })
-        }
-      />
+  {/* Main container with dividers */}
+  <div className="relative grid grid-cols-1 md:grid-cols-2 bg-[#E5E5E508] p-8 gap-y-8 gap-x-6 border border-[#424345]/10">
+    
+    {/* Vertical divider - hidden on mobile, visible on md+ */}
+    <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-[#E5E5E560] to-transparent"></div>
+    
+    {/* Horizontal divider - visible on mobile, hidden on md+ */}
+    <div className=" absolute left-0 right-0 top-1/2 h-px bg-gradient-to-r from-transparent via-[#E5E5E560] to-transparent"></div>
+    
 
-      <FormInput
-        label="Email Address"
-        type="email"
-        value={formData.email}
-        onChange={(value) => updateFormData({ email: value })}
-        placeholder=""
-        required
-      />
+     {/* Horizontal divider - visible on mobile, hidden on md+ */}
+    <div className=" md:hidden absolute left-0 right-0 top-1/4 h-px bg-gradient-to-r from-transparent via-[#E5E5E560] to-transparent"></div>
 
-      <FormButton type="submit">NEXT STEP →</FormButton>
+        <div className=" md:hidden absolute left-0 right-0 top-3/4 h-px bg-gradient-to-r from-transparent via-[#E5E5E560] to-transparent"></div>
+
+
+
+    {/* Decorative center dot where dividers meet */}
+    
+    <FormInput
+      label="First Name?"
+      type="text"
+      value={formData.firstName}
+      onChange={(value) => updateFormData({ firstName: value })}
+      placeholder=""
+      required
+    />
+    <FormInput
+      label="Last Name?"
+      type="text"
+      value={formData.lastName}
+      onChange={(value) => updateFormData({ lastName: value })}
+      placeholder=""
+      required
+    />
+    <PhoneInput
+      countryCode={formData.countryCode}
+      phoneNumber={formData.phoneNumber}
+      onCountryCodeChange={(code) => updateFormData({ countryCode: code })}
+      onPhoneNumberChange={(number) =>
+        updateFormData({ phoneNumber: number })
+      }
+    />
+    <FormInput
+      label="Email Address"
+      type="email"
+      value={formData.email}
+      onChange={(value) => updateFormData({ email: value })}
+      placeholder=""
+      required
+    />
+  </div>
+</div>
+
+<div className="text-right">
+  <FormButton type="submit">NEXT STEP →</FormButton>
+</div>
     </motion.form>
   );
 }
