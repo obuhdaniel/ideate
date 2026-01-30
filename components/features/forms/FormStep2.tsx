@@ -147,8 +147,7 @@ export default function FormStep2({
           onClick={onBack}
           variants={itemVariants}
           className="flex items-center justify-center w-12 h-12 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300"
-          whileHover={{ scale: 1.05, x: -3 }}
-          whileTap={{ scale: 0.95 }}
+
         >
           <svg
             className="w-6 h-6 text-white"
@@ -242,8 +241,7 @@ const ServiceCard = ({ service, isSelected, onSelect, variants }) => (
           : "bg-white/5 border-white/10 hover:bg-white/10"
       }
     `}
-    whileHover={{ scale: 1.02, y: -4 }}
-    whileTap={{ scale: 0.98 }}
+
   >
     <div className="flex items-start gap-6">
       <div className="flex flex-col gap-4">
