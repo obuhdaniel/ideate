@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -66,4 +68,15 @@ h6,
 
 .animate-float {
   animation: float 6s ease-in-out infinite;
+}
+
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill {
+  -webkit-text-fill-color: white;
+  transition: background-color 9999s ease-in-out 0s;
+  box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0.07) inset;
+  border: 1px solid rgba(168, 85, 247, 0.5);
 }
