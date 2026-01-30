@@ -8,6 +8,7 @@ import ProcessSection from "@/components/sections/ProcessSection";
 import ToolsSection from "@/components/sections/ToolsSection";
 import Footer from "@/components/layout/Footer";
 import FormSection from "@/components/sections/form/FormSection";
+import Navigation from "@/components/layout/Navigation";
 
 export default function HomePage() {
   const portfolioRef = useRef<HTMLDivElement>(null);
@@ -17,6 +18,7 @@ export default function HomePage() {
 
   return (
     <main className="relative w-full overflow-x-hidden bg-[#070d1f]">
+
 
 
       {/* Portfolio Section */}

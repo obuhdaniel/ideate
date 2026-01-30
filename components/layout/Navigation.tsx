@@ -29,7 +29,7 @@ export default function Navigation({
     { label: "Process", id: `${baseUrl}#process` },
     { label: "Services", id: `${baseUrl}#services` },
     { label: "Portfolio", id: `${baseUrl}#portfolio` },
-    { label: "Contact us", id: `${baseUrl}#contact` },
+    { label: "Contact us", id: `/contact` },
   ];
 
   return (
@@ -156,8 +156,7 @@ export default function Navigation({
               Portfolio
             </a>
             <a
-              href= {`${baseUrl}#contact`}
-              onClick={(e) => scrollToSection(e, "contact")}
+              href= {`/contact`}
               className="text-white text-lg font-light hover:text-purple-400 transition-colors duration-300 hover:scale-105 cursor-pointer"
             >
               Contact us

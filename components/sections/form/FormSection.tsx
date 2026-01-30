@@ -6,7 +6,7 @@ import MultiStepForm from "@/components/features/forms/MultiStepForm";
 import GlowingPlanet from "@/components/ui/GlowingPlanet";
 import StarField from "@/components/ui/StarField";
 import OrbitRings from "@/components/ui/OrbitRings";
-
+import Navigation from "@/components/layout/Navigation";
 export default function FormSection() {
   const handleFormSubmit = (data: any) => {
     console.log("Form submission:", data);
@@ -16,6 +16,8 @@ export default function FormSection() {
 
   return (
     <section className="relative w-full overflow-hidden  bg-gradient-to-br from-[#1D2948] via-[#141D33] via-[#0F1628] to-[#050A16] min-h-screen flex flex-col justify-center py-16 md:py-32">
+
+       <Navigation />
       {/* Star Field Background */}
       <StarField count={100} className="pointer-events-none" />
       
@@ -83,7 +85,7 @@ export default function FormSection() {
       </div>
 
       {/* Content */}
-      <div className="relative z-20 max-w-5xl mx-auto  w-full">
+      <div className="relative mt-20 z-20 max-w-5xl mx-auto  w-full">
         {/* Section Header */}
         <div className="mb-12 px-6 lg:px-20 text-left">
           <div className="flex items-center justify-start gap-1 md:gap-3 mb-4">
