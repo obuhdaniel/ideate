@@ -15,13 +15,8 @@ export default function HomePage() {
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    // Simulate initialization tasks
     const initializePage = async () => {
-      // Add any initialization logic here
-      // For example: loading fonts, images, data, etc.
-      
-      // Ensure minimum loading time for better UX (optional)
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+           await new Promise((resolve) => setTimeout(resolve, 10000));
       
       setIsInitialized(true);
     };
