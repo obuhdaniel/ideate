@@ -67,7 +67,7 @@ export default function ContactBanner({
       </motion.div>
 
       {/* Content */}
-      <div className="relative z-20 md:max-w-5xl md:mx-auto md:px-16 lg:px-25 ">
+      <div className="relative z-20 md:max-w-5xl md:mx-auto md:px-16 lg:px-32 ">
         <div className="flex px-5 space-y-6 flex-col md:flex-row items-start md:items-center justify-between">
           {/* Left Content */}
           <div className="flex-1">

@@ -104,13 +104,13 @@ export default function ServicesSection({
           <div className="absolute hidden md:block right-[8%] md:right-[18%] top-[25%] bottom-[8%] w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
 
           {/* Desktop: Top decorative line */}
-          <div className="absolute hidden md:block top-[33.5%] left-[10%] right-[10%] h-px bg-white/10" />
+          <div className="absolute hidden md:block top-[33.3%] left-[10%] right-[10%] h-px bg-white/10" />
 
           {/* Desktop: Bottom decorative line */}
-          <div className="absolute hidden md:block bottom-[14.5%] left-[10%] right-[10%] h-px bg-white/10" />
+          <div className="absolute hidden md:block bottom-[14.3%] left-[10%] right-[10%] h-px bg-white/10" />
 
           {/* Desktop: Horizontal Middle Line - Stretches fully between vertical poles */}
-          <div className="absolute hidden md:block top-[59.5%] left-[8%] right-[8%] md:left-[18%] md:right-[18%] h-px bg-white/10 z-0" />
+          <div className="absolute hidden md:block top-[60%] left-[8%] right-[8%] md:left-[18%] md:right-[18%] h-px bg-white/10 z-0" />
 
           {/* Desktop: Vertical Center Line - Stretches between Top and Bottom lines */}
           <div className="absolute hidden md:block left-1/2 -translate-x-1/2 top-[33.5%] bottom-[14.5%] w-px bg-white/10 z-0" />
@@ -225,7 +225,7 @@ export default function ServicesSection({
 
             {/* Services Grid */}
             <div className="">
-              <div className="grid grid-cols-1 w-screen md:w-auto md:grid-cols-2 relative md:border md:border-white/10">
+              <div className="grid grid-cols-1 w-screen md:w-auto md:grid-cols-2">
                 {SERVICES.map((service, index) => (
                   <ServiceCard
                     key={service.title}
