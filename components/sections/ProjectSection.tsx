@@ -156,7 +156,7 @@ export default function ProjectSection() {
             Projects We Have Done And Completed.
           </h2>
           <p className="text-xl md:text-xl text-[#d8d8d8]">
-            <span className="text-[#d8d8d8] text-xl md:text-2xl">
+            <span className="">
               What We Offer.
             </span>{" "}
             Designed for people. Built for the future.
