@@ -218,7 +218,7 @@ export default function FormStep2({
       </div>
 
       {/* Submit Button */}
-      <motion.div className="text-right md:text-center" variants={itemVariants}>
+      <motion.div className="text-right md:text-center mt-10 mr-4 md:mt-30" variants={itemVariants}>
         <FormButton type="submit" variant="primary"  disabled={!selectedService}>
           LAST STEP →
         </FormButton>

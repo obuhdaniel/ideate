@@ -65,6 +65,16 @@ export default function FormSection() {
         position={{ top: "8%", right: "2%" }}
       />
 
+      {/* Sun-like Planet - Top Right with glow */}
+            <GlowingPlanet
+              src="/images/custom-images/sun-like-planet.png"
+              alt="Sun Planet"
+              size={250}
+              glowColor="rgba(255, 180, 50, 0.6)"
+              position={{ top: "2%", right: "2%" }}
+            />
+      
+
       {/* Space Star Decorations */}
       <div className="absolute top-[8%] right-[12%] w-6 h-6 pointer-events-none">
         <Image

@@ -40,8 +40,8 @@ export default function FormButton({
         transition-all duration-300
         ${
           !disabled
-            ? "bg-[#58019680] text-white cursor-not-allowed"
-            : "bg-white/5 hover:bg-white/10 text-white border border-white/10"
+            ? "bg-[#58019680] text-white "
+            : "bg-white/5 hover:bg-white/10 text-white border cursor-not-allowed border-white/10"
         }
       `}
       whileHover={disabled ? {} : { scale: 1.02, y: -2 }}

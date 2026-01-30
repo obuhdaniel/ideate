@@ -67,24 +67,31 @@ export default function MultiStepForm({ onSubmit }: MultiStepFormProps) {
 
   return (
     <div className="w-full max-w-3xl mx-auto ">
-      {/* Progress Indicators */}
-      <div className="flex gap-4 mb-12 px-12 lg:px-24">
-        {[1, 2, 3].map((step) => (
-          <motion.div
-            key={step}
-            className="h-1 flex-1 rounded-full bg-white/10"
-            initial={{ scaleX: 0 }}
-            animate={{
-              scaleX: 1,
-              backgroundColor:
-                step <= currentStep
-                  ? "rgba(168, 85, 247, 0.8)"
-                  : "rgba(255, 255, 255, 0.1)",
-            }}
-            transition={{ duration: 0.3, delay: step * 0.1 }}
-          />
-        ))}
-      </div>
+     {/* Progress Indicators */}
+<div className="flex gap-4 mb-12 px-12 lg:px-24">
+  {[1, 2, 3].map((step) => {
+    const isActive = step <= currentStep;
+
+    return (
+      <motion.div
+        key={step}
+        className="h-2 flex-1 rounded-full origin-left"
+        initial={{ scaleX: 0 }}
+        animate={{
+          scaleX: 1,
+          backgroundImage: isActive
+            ? "linear-gradient(90deg, #394CAD 0%, #967BC7 50%, #D8D8D8 100%)"
+            : "none",
+          backgroundColor: isActive
+            ? "transparent"
+            : "rgba(255, 255, 255, 0.1)",
+        }}
+        transition={{ duration: 0.3, delay: step * 0.1 }}
+      />
+    );
+  })}
+</div>
+
 
       {/* Form Steps with Animation */}
       <AnimatePresence mode="wait">
