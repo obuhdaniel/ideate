@@ -1,23 +1,35 @@
 // @ts-nocheck
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import MultiStepForm from "@/components/features/forms/MultiStepForm";
+import SuccessScreen from "@/components/features/forms/SuccessScreen";
 import GlowingPlanet from "@/components/ui/GlowingPlanet";
 import StarField from "@/components/ui/StarField";
 import OrbitRings from "@/components/ui/OrbitRings";
 import Navigation from "@/components/layout/Navigation";
+
 export default function FormSection() {
+  const [isSuccess, setIsSuccess] = useState(false);
+
   const handleFormSubmit = (data: any) => {
     console.log("Form submission:", data);
-    // Handle form submission - send to API, show success message, etc.
-    alert("Form submitted successfully! We'll be in touch soon.");
+    // Show success screen
+    setIsSuccess(true);
+  };
+
+  const handleGoHome = () => {
+    // Reset to show form again
+    setIsSuccess(false);
+    // Optional: Navigate to home page
+    window.location.href = '/';
   };
 
   return (
-    <section className="relative w-full overflow-hidden  bg-gradient-to-br from-[#1D2948] via-[#141D33] via-[#0F1628] to-[#050A16] min-h-screen flex flex-col justify-center py-16 md:py-32">
-
-       <Navigation />
+    <section className="relative w-full overflow-hidden bg-gradient-to-br from-[#1D2948] via-[#141D33] via-[#0F1628] to-[#050A16] min-h-screen flex flex-col justify-center py-16 md:py-32">
+      <Navigation />
+      
       {/* Star Field Background */}
       <StarField count={100} className="pointer-events-none" />
       
@@ -66,14 +78,13 @@ export default function FormSection() {
       />
 
       {/* Sun-like Planet - Top Right with glow */}
-            <GlowingPlanet
-              src="/images/custom-images/sun-like-planet.png"
-              alt="Sun Planet"
-              size={250}
-              glowColor="rgba(255, 180, 50, 0.6)"
-              position={{ top: "2%", right: "2%" }}
-            />
-      
+      <GlowingPlanet
+        src="/images/custom-images/sun-like-planet.png"
+        alt="Sun Planet"
+        size={250}
+        glowColor="rgba(255, 180, 50, 0.6)"
+        position={{ top: "2%", right: "2%" }}
+      />
 
       {/* Space Star Decorations */}
       <div className="absolute top-[8%] right-[12%] w-6 h-6 pointer-events-none">
@@ -95,27 +106,34 @@ export default function FormSection() {
       </div>
 
       {/* Content */}
-      <div className="relative mt-20 z-20 max-w-5xl mx-auto  w-full">
-        {/* Section Header */}
-        <div className="mb-12 px-6 lg:px-20 text-left">
-          <div className="flex items-center justify-start gap-1 md:gap-3 mb-4">
-            <span className="text-purple-400 font-mono text-xs md:text-sm">
-              //
-            </span>
-            <span className="text-purple-400 text-md md:text-2xl tracking-wide">
-              Fill the Form
-            </span>
-          </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#d8d8d8] mb-6">
-            Your First Step Towards Building Something Great.
-          </h2>
-          <p className="text-lg md:text-xl text-[#d8d8d8]">
-            We'll review your request and reach out shortly.
-          </p>
-        </div>
+      <div className={`relative ${isSuccess ? "mt-0" : "mt-20"} z-20 max-w-5xl mx-auto w-full`}>
+        {!isSuccess ? (
+          <>
+            {/* Section Header */}
+            <div className="mb-12 px-6 lg:px-20 text-left">
+              <div className="flex items-center justify-start gap-1 md:gap-3 mb-4">
+                <span className="text-purple-400 font-mono text-xs md:text-sm">
+                  //
+                </span>
+                <span className="text-purple-400 text-md md:text-2xl tracking-wide">
+                  Fill the Form
+                </span>
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#d8d8d8] mb-6">
+                Your First Step Towards Building Something Great.
+              </h2>
+              <p className="text-lg md:text-xl text-[#d8d8d8]">
+                We'll review your request and reach out shortly.
+              </p>
+            </div>
 
-        {/* Multi-Step Form */}
-        <MultiStepForm onSubmit={handleFormSubmit} />
+            {/* Multi-Step Form */}
+            <MultiStepForm onSubmit={handleFormSubmit} />
+          </>
+        ) : (
+          /* Success Screen */
+          <SuccessScreen onGoHome={handleGoHome} />
+        )}
       </div>
     </section>
   );

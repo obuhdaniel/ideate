@@ -11,6 +11,7 @@ interface FormStep3Props {
   updateFormData: (data: Partial<FormData>) => void;
   onSubmit: () => void;
   onBack: () => void;
+  isSubmitting?: boolean;
 }
 
 interface Currency {
@@ -57,6 +58,7 @@ export default function FormStep3({
   updateFormData,
   onSubmit,
   onBack,
+  isSubmitting = false,
 }: FormStep3Props) {
   const [currency, setCurrency] = useState("NGN");
   const [formattedBudget, setFormattedBudget] = useState("");
@@ -430,7 +432,7 @@ export default function FormStep3({
           variant="primary"
           disabled={!formData.projectDetails || !formData.budget}
         >
-          SUBMIT →
+         {isSubmitting ? "SUBMITTING..." : "SUBMIT →"}
         </FormButton>
       </motion.div>
     </motion.form>
