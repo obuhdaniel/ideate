@@ -35,9 +35,10 @@ const initialFormData: FormData = {
 
 interface MultiStepFormProps {
   onSubmit?: (data: FormData) => void;
+  onStepChange?: (step: number) => void;
 }
 
-export default function MultiStepForm({ onSubmit }: MultiStepFormProps) {
+export default function MultiStepForm({ onSubmit, onStepChange }: MultiStepFormProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -55,6 +56,11 @@ export default function MultiStepForm({ onSubmit }: MultiStepFormProps) {
       setCurrentStep((prev) => prev + 1);
     }
   };
+
+  useEffect(() => {
+  onStepChange?.(currentStep);
+}, [currentStep, onStepChange]);
+
 
   const prevStep = () => {
     if (currentStep > 1) {

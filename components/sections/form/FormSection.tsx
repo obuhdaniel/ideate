@@ -13,6 +13,8 @@ import PlanetWithRocket from "@/components/ui/PlanetWithRocket";
 
 export default function FormSection() {
   const [isSuccess, setIsSuccess] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
+
 
   const handleFormSubmit = (data: any) => {
     console.log("Form submission:", data);
@@ -26,6 +28,12 @@ export default function FormSection() {
     // Optional: Navigate to home page
     window.location.href = '/';
   };
+
+const STEP_COPY: Record<number, string> = {
+  1: "First",
+  2: "Next",
+  3: "Final",
+};
 
   return (
     <section className="relative w-full overflow-hidden bg-gradient-to-br from-[#1D2948] via-[#141D33] via-[#0F1628] to-[#050A16] min-h-screen flex flex-col justify-center py-16 md:py-32">
@@ -122,7 +130,7 @@ export default function FormSection() {
                 </span>
               </div>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#d8d8d8] mb-6">
-                Your First Step Towards Building Something Great.
+                Your {STEP_COPY[currentStep]} Step Towards Building Something Great.
               </h2>
               <p className="text-lg md:text-xl text-[#d8d8d8]">
                 We'll review your request and reach out shortly.
@@ -130,7 +138,10 @@ export default function FormSection() {
             </div>
 
             {/* Multi-Step Form */}
-            <MultiStepForm onSubmit={handleFormSubmit} />
+            <MultiStepForm
+  onSubmit={handleFormSubmit}
+  onStepChange={setCurrentStep}
+/>
           </>
         ) : (
           /* Success Screen */
