@@ -25,13 +25,20 @@ export default function ServiceCard({
     "bottom-right": "",
   };
 
+  const paddingClasses = {
+    "top-left": "p-6 md:pl-4 md:pr-8 md:py-8 lg:pl-10 lg:pr-10 lg:py-10",
+    "top-right": "p-6 md:p-8 lg:p-10",
+    "bottom-left": "p-6 md:pl-4 md:pr-8 md:py-8 lg:pl-10 lg:pr-10 lg:py-10",
+    "bottom-right": "p-6 md:p-8 lg:p-10",
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay }}
-      className={`group relative p-6 md:p-8 lg:p-10 ${borderClasses[position]} border md:border-0 border-white/10 rounded-lg md:rounded-none md:mb-0 transition-all duration-300`}
+      className={`group relative ${paddingClasses[position]} ${borderClasses[position]} border md:border-0 border-white/10 rounded-lg md:rounded-none md:mb-0 transition-all duration-300`}
     >
       <div className="relative z-10">
         {/* Icon */}
