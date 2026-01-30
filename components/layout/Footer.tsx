@@ -33,7 +33,7 @@ const SOCIAL_LINKS = [
   {
     name: "LinkedIn",
     icon: "/images/footer/linkedin-icon.png",
-    url: "https://linkedin.com",
+    url: "https://www.linkedin.com/company/ideate-digital-agency",
   },
 ];
 
