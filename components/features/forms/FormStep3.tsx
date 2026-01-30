@@ -4,7 +4,7 @@
 import { motion } from "framer-motion";
 import { FormData } from "./MultiStepForm";
 import FormButton from "./FormButton";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface FormStep3Props {
   formData: FormData;
@@ -28,6 +28,30 @@ const currencies: Currency[] = [
   { code: "AUD", symbol: "A$", name: "Australian Dollar" },
 ];
 
+// Helper function to format number with commas
+const formatNumberWithCommas = (value: string): string => {
+  // Remove all non-digit characters except decimal point
+  const numericValue = value.replace(/[^\d.]/g, '');
+  
+  // If empty, return empty string
+  if (!numericValue) return '';
+  
+  // Split into whole and decimal parts
+  const parts = numericValue.split('.');
+  let wholePart = parts[0];
+  const decimalPart = parts.length > 1 ? '.' + parts[1] : '';
+  
+  // Format whole part with commas
+  wholePart = wholePart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  
+  return wholePart + decimalPart;
+};
+
+// Helper function to parse formatted number back to numeric string
+const parseFormattedNumber = (formattedValue: string): string => {
+  return formattedValue.replace(/,/g, '');
+};
+
 export default function FormStep3({
   formData,
   updateFormData,
@@ -35,16 +59,54 @@ export default function FormStep3({
   onBack,
 }: FormStep3Props) {
   const [currency, setCurrency] = useState("NGN");
-  const [budgetAmount, setBudgetAmount] = useState("");
+  const [formattedBudget, setFormattedBudget] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const budgetInputRef = useRef<HTMLInputElement>(null);
+
+  // Initialize formatted budget from formData
+  useEffect(() => {
+    if (formData.budget) {
+      const numericValue = formData.budget.replace(/[^\d.]/g, '');
+      setFormattedBudget(formatNumberWithCommas(numericValue));
+    }
+  }, [formData.budget]);
+
+  const handleBudgetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    
+    // Get cursor position before formatting
+    const cursorPosition = e.target.selectionStart || 0;
+    
+    // Format the number
+    const formatted = formatNumberWithCommas(inputValue);
+    setFormattedBudget(formatted);
+    
+    // Update the actual form data with the numeric value (without commas)
+    const numericValue = parseFormattedNumber(formatted);
+    updateFormData({ budget: numericValue });
+    
+    // Restore cursor position after formatting
+    setTimeout(() => {
+      if (budgetInputRef.current) {
+        // Calculate new cursor position by counting how many commas were added before the cursor
+        const inputBeforeCursor = inputValue.substring(0, cursorPosition);
+        const formattedBeforeCursor = formatNumberWithCommas(inputBeforeCursor);
+        const newCursorPosition = formattedBeforeCursor.length;
+        
+        budgetInputRef.current.setSelectionRange(newCursorPosition, newCursorPosition);
+      }
+    }, 0);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.projectDetails || !budgetAmount) {
+    if (!formData.projectDetails || !formData.budget) {
       return;
     }
     // Combine currency and amount for budget field
-    updateFormData({ budget: `${currency} ${budgetAmount}` });
+    updateFormData({ 
+      budget: `${currency} ${parseFormattedNumber(formattedBudget)}`
+    });
     onSubmit();
   };
 
@@ -189,7 +251,7 @@ export default function FormStep3({
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 className="h-full px-5 py-5 bg-transparent border-r border-white/10 text-white hover:bg-white/[0.05] focus:outline-none transition-all duration-300 flex items-center gap-2 min-w-[110px]"
               >
-                <span className="font-medium">{formData.currency}</span>
+                <span className="font-medium">{currency}</span>
                 <svg
                   className={`w-4 h-4 transition-transform ${
                     isDropdownOpen ? "rotate-180" : ""
@@ -221,7 +283,7 @@ export default function FormStep3({
                       type="button"
                       onClick={() => {
                         setCurrency(curr.code);
-                         updateFormData({ currency: curr.code });
+                        updateFormData({ currency: curr.code });
                         setIsDropdownOpen(false);
                       }}
                       className="w-full px-4 py-3 text-left hover:bg-white/5 transition-colors flex items-center justify-between text-white group"
@@ -241,13 +303,13 @@ export default function FormStep3({
 
             {/* Budget Amount Input */}
             <motion.input
-              type="number"
-              value={formData.budget}
-               onChange={(e) => updateFormData({ budget: e.target.value })}
+              ref={budgetInputRef}
+              type="text"
+              inputMode="numeric"
+              value={formattedBudget}
+              onChange={handleBudgetChange}
               placeholder="500,000"
               required
-              min="0"
-              step="1000"
               className="flex-1 px-6 py-5 bg-transparent text-white text-lg placeholder:text-gray-500 focus:outline-none"
               whileFocus={{ scale: 1.01 }}
               transition={{ duration: 0.2 }}
@@ -289,7 +351,7 @@ export default function FormStep3({
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   className="h-full px-3 py-2 bg-transparent border-r border-white/10 text-white hover:bg-white/[0.05] focus:outline-none transition-all duration-300 flex items-center gap-1 text-sm"
                 >
-                  <span className="font-medium text-xl">{formData.currency}</span>
+                  <span className="font-medium text-xl">{currency}</span>
                   <svg
                     className={`w-3 h-3 transition-transform ${
                       isDropdownOpen ? "rotate-180" : ""
@@ -321,7 +383,7 @@ export default function FormStep3({
                         type="button"
                         onClick={() => {
                           setCurrency(curr.code);
-                          updateFormData({currency: curr.code})
+                          updateFormData({currency: curr.code});
                           setIsDropdownOpen(false);
                         }}
                         className="w-full px-4 py-3 text-left hover:bg-white/5 transition-colors flex items-center justify-between text-white group"
@@ -342,13 +404,13 @@ export default function FormStep3({
               </div>
 
               <motion.input
-                type="number"
-                value={formData.budget}
-                 onChange={(e) => updateFormData({ budget: e.target.value })}
+                ref={budgetInputRef}
+                type="text"
+                inputMode="numeric"
+                value={formattedBudget}
+                onChange={handleBudgetChange}
                 placeholder="500,000"
                 required
-                min="0"
-                step="1000"
                 className="px-3 py-2 w-28 bg-transparent text-white text-xl text-center placeholder:text-gray-500 focus:outline-none"
                 whileFocus={{ scale: 1.02 }}
                 transition={{ duration: 0.2 }}
@@ -366,7 +428,7 @@ export default function FormStep3({
         <FormButton
           type="submit"
           variant="primary"
-          disabled={!formData.projectDetails || !budgetAmount}
+          disabled={!formData.projectDetails || !formData.budget}
         >
           SUBMIT →
         </FormButton>

@@ -1,7 +1,7 @@
 // @ts-nocheck
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import FormStep1 from "@/components/features/forms/FormStep1";
 import FormStep2 from "@/components/features/forms/FormStep2";
@@ -40,7 +40,10 @@ interface MultiStepFormProps {
 export default function MultiStepForm({ onSubmit }: MultiStepFormProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>(initialFormData);
+
   const totalSteps = 3;
+
+  const formRef = useRef<HTMLDivElement>(null);
 
   const updateFormData = (data: Partial<FormData>) => {
     setFormData((prev) => ({ ...prev, ...data }));
@@ -60,40 +63,47 @@ export default function MultiStepForm({ onSubmit }: MultiStepFormProps) {
 
   const handleSubmit = () => {
     console.log("Form submitted:", formData);
-    if (onSubmit) {
-      onSubmit(formData);
-    }
+    onSubmit?.(formData);
   };
 
+  // 🔽 Scroll form into view on step change
+  useEffect(() => {
+    if (currentStep > 1) {
+      formRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [currentStep]);
+
   return (
-    <div className="w-full max-w-3xl mx-auto ">
-     {/* Progress Indicators */}
-<div className="flex gap-4 mb-12 px-12 lg:px-24">
-  {[1, 2, 3].map((step) => {
-    const isActive = step <= currentStep;
+    <div ref={formRef} className="w-full max-w-3xl mx-auto">
+      {/* Progress Indicators */}
+      <div className="flex gap-4 mb-12 px-12 lg:px-24">
+        {[1, 2, 3].map((step) => {
+          const isActive = step <= currentStep;
 
-    return (
-      <motion.div
-        key={step}
-        className="h-2 flex-1 rounded-full origin-left"
-        initial={{ scaleX: 0 }}
-        animate={{
-          scaleX: 1,
-          backgroundImage: isActive
-            ? "linear-gradient(90deg, #394CAD 0%, #967BC7 50%, #D8D8D8 100%)"
-            : "none",
-          backgroundColor: isActive
-            ? "transparent"
-            : "rgba(255, 255, 255, 0.1)",
-        }}
-        transition={{ duration: 0.3, delay: step * 0.1 }}
-      />
-    );
-  })}
-</div>
+          return (
+            <motion.div
+              key={step}
+              className="h-2 flex-1 rounded-full origin-left"
+              initial={{ scaleX: 0 }}
+              animate={{
+                scaleX: 1,
+                backgroundImage: isActive
+                  ? "linear-gradient(90deg, #394CAD 0%, #967BC7 50%, #D8D8D8 100%)"
+                  : "none",
+                backgroundColor: isActive
+                  ? "transparent"
+                  : "rgba(255, 255, 255, 0.1)",
+              }}
+              transition={{ duration: 0.3, delay: step * 0.1 }}
+            />
+          );
+        })}
+      </div>
 
-
-      {/* Form Steps with Animation */}
+      {/* Form Steps */}
       <AnimatePresence mode="wait">
         {currentStep === 1 && (
           <FormStep1
