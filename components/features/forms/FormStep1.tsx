@@ -139,8 +139,8 @@ export default function FormStep1({
   </div>
 </div>
 
-<div className="text-right mt-10">
-  <FormButton type="submit">NEXT STEP →</FormButton>
+<div className="text-right mr-10 mt-10">
+  <FormButton type="submit" disabled={!formData.firstName || !formData.lastName || !formData.phoneNumber || !formData.email}>NEXT STEP →</FormButton>
 </div>
     </motion.form>
   );

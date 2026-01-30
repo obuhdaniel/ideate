@@ -86,18 +86,23 @@ export default function FormStep2({
   onNext,
   onBack,
 }: FormStep2Props) {
-  const [selectedService, setSelectedService] = useState<string>(
-    formData.projectType || "",
+  // Changed to array for multiple selections
+  const [selectedServices, setSelectedServices] = useState<string[]>(
+    formData.projectTypes || []
   );
 
-  const handleServiceSelect = (value: string) => {
-    setSelectedService(value);
-    updateFormData({ projectType: value });
+  const handleServiceToggle = (value: string) => {
+    const newSelected = selectedServices.includes(value)
+      ? selectedServices.filter((service) => service !== value)
+      : [...selectedServices, value];
+    
+    setSelectedServices(newSelected);
+    updateFormData({ projectTypes: newSelected });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedService) {
+    if (selectedServices.length === 0) {
       return;
     }
     onNext();
@@ -140,14 +145,12 @@ export default function FormStep2({
       className="space-y-8"
     >
       {/* Back Button */}
-
       <div className="space-y-8 px-6 md:px-0">
         <motion.button
           type="button"
           onClick={onBack}
           variants={itemVariants}
           className="flex items-center justify-center w-12 h-12 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300"
-
         >
           <svg
             className="w-6 h-6 text-white"
@@ -164,11 +167,14 @@ export default function FormStep2({
           </svg>
         </motion.button>
 
-        {/* Heading */}
+        {/* Heading - Updated to reflect multiple selection */}
         <motion.div variants={itemVariants} className="space-y-2">
           <h2 className="text-2xl md:text-3xl font-semibold text-[#D8D8D8] leading-tight">
             What Do You Want Us To Help You With?
           </h2>
+          <p className="text-gray-400 text-sm">
+            Select all services that apply
+          </p>
         </motion.div>
       </div>
 
@@ -179,8 +185,8 @@ export default function FormStep2({
           <ServiceCard
             key={service.id}
             service={service}
-            isSelected={selectedService === service.value}
-            onSelect={handleServiceSelect}
+            isSelected={selectedServices.includes(service.value)}
+            onSelect={handleServiceToggle}
             variants={itemVariants}
           />
         ))}
@@ -192,8 +198,7 @@ export default function FormStep2({
           {/* Horizontal extensions */}
           <div className="absolute h-px bg-gradient-to-r from-[#E5E5E560] via-transparent to-[#E5E5E560] top-0 left-[-4rem] right-[-4rem]" />
           <div className="absolute h-px bg-gradient-to-r from-[#E5E5E560] via-transparent to-[#E5E5E560] bottom-0 left-[-4rem] right-[-4rem]" />
- 
-
+          
           {/* Vertical extensions */}
           <div className="absolute w-px bg-gradient-to-b from-[#E5E5E560] via-transparent to-[#E5E5E560] left-0 top-[-4rem] bottom-[-4rem]" />
           <div className="absolute w-px bg-gradient-to-b from-[#E5E5E560] via-transparent to-[#E5E5E560] left-1/2 top-[-4rem] bottom-[-4rem]" />
@@ -201,28 +206,43 @@ export default function FormStep2({
         </div>
 
         {/* Main grid container */}
-        <div className="relative grid grid-cols-2 bg-[#E5E5E508]  border border-[#424345]/10">
-          {/* Vertical divider */}
-
-
+        <div className="relative grid grid-cols-2 bg-[#E5E5E508] border border-[#424345]/10">
           {services.map((service) => (
             <ServiceCard
               key={service.id}
               service={service}
-              isSelected={selectedService === service.value}
-              onSelect={handleServiceSelect}
+              isSelected={selectedServices.includes(service.value)}
+              onSelect={handleServiceToggle}
               variants={itemVariants}
             />
           ))}
         </div>
       </div>
 
+      {/* Selected count indicator */}
+      <motion.div 
+        variants={itemVariants}
+        className="px-6 md:px-0"
+      >
+        <div className="text-gray-400 text-sm">
+          {selectedServices.length === 0 
+            ? "No services selected" 
+            : `Selected ${selectedServices.length} service${selectedServices.length > 1 ? 's' : ''}`}
+        </div>
+      </motion.div>
+
       {/* Submit Button */}
-      <motion.div className="text-right md:text-center mt-10 mr-4 md:mt-30" variants={itemVariants}>
-        <FormButton type="submit" variant="primary"  disabled={!selectedService}>
+      <motion.div 
+        className="text-right md:text-center mt-10 mr-4 md:mt-30" 
+        variants={itemVariants}
+      >
+        <FormButton 
+          type="submit" 
+          variant="primary"  
+          disabled={selectedServices.length === 0}
+        >
           LAST STEP →
         </FormButton>
-       
       </motion.div>
     </motion.form>
   );
@@ -241,7 +261,6 @@ const ServiceCard = ({ service, isSelected, onSelect, variants }) => (
           : "bg-white/5 border-white/10 hover:bg-white/10"
       }
     `}
-
   >
     <div className="flex items-start gap-6">
       <div className="flex flex-col gap-4">
@@ -267,10 +286,14 @@ const ServiceCard = ({ service, isSelected, onSelect, variants }) => (
         </div>
       </div>
 
+      {/* Updated checkbox to handle multiple selections */}
       <div
         className={`
-          flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center
-          ${isSelected ? "border-purple-500 bg-purple-500" : "border-gray-500"}
+          flex-shrink-0 w-6 h-6 rounded border-2 flex items-center justify-center
+          ${isSelected 
+            ? "border-purple-500 bg-purple-500" 
+            : "border-gray-500 bg-transparent"
+          }
         `}
       >
         {isSelected && (
