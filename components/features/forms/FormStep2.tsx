@@ -187,16 +187,18 @@ export default function FormStep2({
         ))}
       </div>
       {/* Desktop layout */}
-      <div className="hidden md:block relative">
+      <div className="hidden md:block my-15 relative">
         {/* Extension lines */}
         <div className="absolute inset-0 pointer-events-none">
           {/* Horizontal extensions */}
-          <div className="absolute h-px bg-gradient-to-r from-transparent via-[#E5E5E560] to-transparent top-0 left-[-4rem] right-[-4rem]" />
-          <div className="absolute h-px bg-gradient-to-r from-transparent via-[#E5E5E560] to-transparent bottom-0 left-[-4rem] right-[-4rem]" />
+          <div className="absolute h-px bg-gradient-to-r from-[#E5E5E560] via-transparent to-[#E5E5E560] top-0 left-[-4rem] right-[-4rem]" />
+          <div className="absolute h-px bg-gradient-to-r from-[#E5E5E560] via-transparent to-[#E5E5E560] bottom-0 left-[-4rem] right-[-4rem]" />
+ 
 
           {/* Vertical extensions */}
-          <div className="absolute w-px bg-gradient-to-b from-transparent via-[#E5E5E560] to-transparent left-0 top-[-4rem] bottom-[-4rem]" />
-          <div className="absolute w-px bg-gradient-to-b from-transparent via-[#E5E5E560] to-transparent right-0 top-[-4rem] bottom-[-4rem]" />
+          <div className="absolute w-px bg-gradient-to-b from-[#E5E5E560] via-transparent to-[#E5E5E560] left-0 top-[-4rem] bottom-[-4rem]" />
+          <div className="absolute w-px bg-gradient-to-b from-[#E5E5E560] via-transparent to-[#E5E5E560] left-1/2 top-[-4rem] bottom-[-4rem]" />
+          <div className="absolute w-px bg-gradient-to-b from-[#E5E5E560] via-transparent to-[#E5E5E560] right-0 top-[-4rem] bottom-[-4rem]" />
         </div>
 
         {/* Main grid container */}
@@ -218,9 +220,10 @@ export default function FormStep2({
 
       {/* Submit Button */}
       <motion.div className="text-right md:text-center" variants={itemVariants}>
-        <FormButton type="submit" variant="primary" disabled={!selectedService}>
+        <FormButton type="submit" variant="primary"  disabled={!selectedService}>
           LAST STEP →
         </FormButton>
+       
       </motion.div>
     </motion.form>
   );

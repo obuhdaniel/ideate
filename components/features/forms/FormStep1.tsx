@@ -70,16 +70,16 @@ export default function FormStep1({
       onSubmit={handleSubmit}
       className="space-y-8 flex flex-col"
     >
-    <div className="relative">
+    <div className="relative mb-10">
    {/* Extension lines layer - sits above but pointer-events-none */}
     <div className="absolute inset-0 pointer-events-none">
-      {/* Horizontal extension lines (extending outward) */}
-      <div className="absolute h-[1px] bg-gradient-to-r from-transparent via-[#E5E5E560] to-transparent top-0 left-[-2rem] right-[-2rem]"></div>
-      <div className="absolute h-[1px] bg-gradient-to-r from-transparent via-[#E5E5E560] to-transparent top-full left-[-2rem] right-[-2rem]"></div>
-      
-      {/* Vertical extension lines (extending outward) */}
-      <div className="absolute w-[1px] bg-gradient-to-b from-transparent via-[#E5E5E560] to-transparent left-0 top-[-2rem] bottom-[-2rem] hidden md:block"></div>
-      <div className="absolute w-[1px] bg-gradient-to-b from-transparent via-[#E5E5E560] to-transparent left-full top-[-2rem] bottom-[-2rem] hidden md:block"></div>
+      <div className="absolute h-px bg-gradient-to-r from-[#E5E5E560] via-transparent to-[#E5E5E560] top-0 left-[-4rem] right-[-4rem]" />
+          <div className="absolute h-px bg-gradient-to-r from-[#E5E5E560] via-transparent to-[#E5E5E560] bottom-0 left-[-4rem] right-[-4rem]" />
+ 
+
+          {/* Vertical extensions */}
+          <div className="absolute w-px bg-gradient-to-b from-[#E5E5E560] via-transparent to-[#E5E5E560] left-0 top-[-4rem] bottom-[-4rem]" />
+          <div className="absolute w-px bg-gradient-to-b from-[#E5E5E560] via-transparent to-[#E5E5E560] right-0 top-[-4rem] bottom-[-4rem]" />
       
   
     </div>
@@ -139,7 +139,7 @@ export default function FormStep1({
   </div>
 </div>
 
-<div className="text-right">
+<div className="text-right mt-10">
   <FormButton type="submit">NEXT STEP →</FormButton>
 </div>
     </motion.form>

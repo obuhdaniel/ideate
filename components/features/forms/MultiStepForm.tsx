@@ -17,6 +17,7 @@ export interface FormData {
   budget: string;
   timeline: string;
   projectDetails: string;
+  currency: string;
 }
 
 const initialFormData: FormData = {
@@ -29,6 +30,7 @@ const initialFormData: FormData = {
   budget: "",
   timeline: "",
   projectDetails: "",
+  currency: "NGN",
 };
 
 interface MultiStepFormProps {

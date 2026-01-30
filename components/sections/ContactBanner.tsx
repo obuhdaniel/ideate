@@ -105,6 +105,7 @@ export default function ContactBanner({
           >
             <div className="hidden md:block">
               <VisitButton
+                href="/contact"
                 onClick={onFillFormClick}
                 variant="outline"
                 size="lg"
@@ -116,6 +117,7 @@ export default function ContactBanner({
 
             <div className="md:hidden">
               <VisitButton
+              href="/contact"
                 onClick={onFillFormClick}
                 variant="outline"
                 size="md"
