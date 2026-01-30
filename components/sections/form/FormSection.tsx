@@ -9,6 +9,7 @@ import GlowingPlanet from "@/components/ui/GlowingPlanet";
 import StarField from "@/components/ui/StarField";
 import OrbitRings from "@/components/ui/OrbitRings";
 import Navigation from "@/components/layout/Navigation";
+import PlanetWithRocket from "@/components/ui/PlanetWithRocket";
 
 export default function FormSection() {
   const [isSuccess, setIsSuccess] = useState(false);
@@ -77,13 +78,14 @@ export default function FormSection() {
         position={{ top: "8%", right: "2%" }}
       />
 
-      {/* Sun-like Planet - Top Right with glow */}
-      <GlowingPlanet
-        src="/images/custom-images/sun-like-planet.png"
-        alt="Sun Planet"
-        size={250}
-        glowColor="rgba(255, 180, 50, 0.6)"
-        position={{ top: "2%", right: "2%" }}
+
+       <PlanetWithRocket
+        planetSrc="/images/custom-images/sun-like-planet.png" // Replace with your planet image path
+        rocketSrc="/images/custom-images/rocket.png" // Replace with your rocket image path
+        planetSize={120}
+        rocketSize={200}
+        glowColor="rgba(147, 51, 234, 1)"
+      position={{ top: "2%", right: "2%" }}
       />
 
       {/* Space Star Decorations */}
