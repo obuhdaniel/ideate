@@ -26,14 +26,14 @@ export default function Navigation({
   };
 
   const menuItems = [
-    { label: "Process", id: `${baseUrl}#process` },
-    { label: "Services", id: `${baseUrl}#services` },
-    { label: "Portfolio", id: `${baseUrl}#portfolio` },
-    { label: "Contact us", id: `/contact` },
+    { label: "Process", id: `${baseUrl}#process`, scrollId: 'process' },
+    { label: "Services", id: `${baseUrl}#services`, scrollId: 'services' },
+    { label: "Portfolio", id: `${baseUrl}#portfolio`, scrollId: 'portfolio' },
+    { label: "Contact us", id: `/contact`, scrollId: 'contact' },
   ];
 
   return (
-    <>
+    <div>
       <nav className="absolute top-[-3%] md:top-[-5%] left-0 w-full z-[100] flex items-center justify-center px-4 md:px-8 pt-6 bg-transparent">
         <div className="flex justify-between items-center md:hidden w-full">
           <a href="#">
@@ -96,10 +96,10 @@ export default function Navigation({
             />
             <div className="flex flex-col relative items-star px-4 py-2 space-y-3 w-full z-10">
               {menuItems.map((item) => (
-                <div key={item.id} className="w-full px-4 py-1 border-b-1 border-solid border-[#424345]">
+                <div key={item.id}  className="w-full px-4 py-1 border-b-1 border-solid border-[#424345]">
                   <a
                     href={item.id}
-                    onClick={(e) => scrollToSection(e, item.id)}
+                    onClick={(e) => scrollToSection(e, item.scrollId)}
                     className="text-white text-lg font-light hover:text-purple-400 transition-colors duration-300 w-full py-2"
                   >
                     <div className="w-full flex justify-between items-center">
@@ -164,6 +164,6 @@ export default function Navigation({
           </div>
          </div> 
       </nav>
-    </>
+    </div>
   );
 }

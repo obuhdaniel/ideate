@@ -37,7 +37,7 @@ const STEP_COPY: Record<number, string> = {
 
   return (
     <section className="relative w-full overflow-hidden bg-gradient-to-br from-[#1D2948] via-[#141D33] via-[#0F1628] to-[#050A16] min-h-screen flex flex-col justify-center py-16 md:py-32">
-      <Navigation />
+      <Navigation baseUrl="/"/>
       
       {/* Star Field Background */}
       <StarField count={100} className="pointer-events-none" />
@@ -139,8 +139,8 @@ const STEP_COPY: Record<number, string> = {
 
             {/* Multi-Step Form */}
             <MultiStepForm
-  onSubmit={handleFormSubmit}
-  onStepChange={setCurrentStep}
+              onSubmit={handleFormSubmit}
+              onStepChange={setCurrentStep}
 />
           </>
         ) : (

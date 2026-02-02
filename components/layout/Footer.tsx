@@ -18,7 +18,7 @@ const SOCIAL_LINKS = [
   {
     name: "X",
     icon: "/images/footer/x-icon.png",
-    url: "https://x.com",
+    url: "https://x.com/ideate_ng",
   },
   {
     name: "Gmail",
@@ -28,7 +28,7 @@ const SOCIAL_LINKS = [
   {
     name: "TikTok",
     icon: "/images/footer/tiktok-icon.png",
-    url: "https://tiktok.com",
+    url: "https://tiktok.com/@ideate_ng",
   },
   {
     name: "LinkedIn",
@@ -94,7 +94,7 @@ export default function Footer() {
             {/* Bottom Row: Website + Button */}
             <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10">
               <span className="text-gray-300 text-lg tracking-wide">
-                www.ideate.com.ng
+                <a href="https://www.ideate.com.ng">www.ideate.com.ng</a>
               </span>
 
               <motion.div
@@ -104,7 +104,7 @@ export default function Footer() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="text-center"
               >
-                <VisitButton href="/about" variant="outline" size="lg">
+                <VisitButton href="/contact" variant="outline" size="lg">
                   MESSAGE US
                 </VisitButton>
               </motion.div>

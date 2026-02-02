@@ -12,7 +12,7 @@ interface ContactBannerProps {
 }
 
 export default function ContactBanner({
-  email = "ideatedigitalagency@gmail.com",
+  email = "info@ideate.com.ng",
   onFillFormClick,
 }: ContactBannerProps) {
   return (

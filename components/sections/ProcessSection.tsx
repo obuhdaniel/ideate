@@ -144,7 +144,7 @@ export default function ProcessSection() {
     // Add extra padding to ensure last item can be fully centered
     // Without this, the last item can't scroll to center because track ends
     const contentWidth = track.scrollWidth;
-    const lastItemPadding = viewportWidth * 0.5; // Add 50% viewport width as buffer
+    const lastItemPadding = viewportWidth * 0.25; // Add 25% viewport width as buffer
     const maxTranslateX = Math.max(
       contentWidth - viewportWidth + lastItemPadding,
       0
@@ -279,12 +279,12 @@ export default function ProcessSection() {
       }
 
       // Update parallax (works in both directions)
-      parallaxY.set(scrollDistanceSinceLock * 0.5);
+      parallaxY.set(scrollDistanceSinceLock * 0.33);
 
       // Unlock logic with direction awareness
       if (lockDirection === "forward") {
         // Forward: unlock when scrolled far enough past the section
-        if (scrollDistanceSinceLock >= window.innerHeight) {
+        if (scrollDistanceSinceLock >= window.innerHeight - 20) {
           setIsProcessLocked(false);
           setLockDirection(null);
         }
@@ -292,7 +292,7 @@ export default function ProcessSection() {
 
       if (lockDirection === "backward") {
         // Backward: unlock when scrolled far enough back past the section
-        if (scrollDistanceSinceLock >= window.innerHeight) {
+        if (scrollDistanceSinceLock >= window.innerHeight - 20) {
           setIsProcessLocked(false);
           setLockDirection(null);
         }

@@ -16,7 +16,7 @@ export default function HomePage() {
 
   useEffect(() => {
     const initializePage = async () => {
-           await new Promise((resolve) => setTimeout(resolve, 10000));
+      await new Promise((resolve) => setTimeout(resolve, 10000));
       
       setIsInitialized(true);
     };

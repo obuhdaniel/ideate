@@ -99,6 +99,14 @@ export default function MultiStepForm({ onSubmit, onStepChange }: MultiStepFormP
       const data = await response.json();
 
       if (data.success) {
+        await fetch("/api/send-confirmation", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              firstName: formData.firstName,
+              email: formData.email,
+          }),
+         });
         console.log("Form submitted successfully:", formData);
         
         // Call parent onSubmit to show success screen
