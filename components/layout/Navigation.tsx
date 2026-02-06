@@ -29,7 +29,7 @@ export default function Navigation({
     { label: "Process", id: `${baseUrl}#process`, scrollId: 'process' },
     { label: "Services", id: `${baseUrl}#services`, scrollId: 'services' },
     { label: "Portfolio", id: `${baseUrl}#portfolio`, scrollId: 'portfolio' },
-    { label: "Contact us", id: `/contact`, scrollId: 'contact' },
+    { label: "Contact us", id: `/contact`},
   ];
 
   return (
@@ -99,7 +99,10 @@ export default function Navigation({
                 <div key={item.id}  className="w-full px-4 py-1 border-b-1 border-solid border-[#424345]">
                   <a
                     href={item.id}
-                    onClick={(e) => scrollToSection(e, item.scrollId)}
+                    onClick={(e) => {
+                      if (!item.scrollId || baseUrl !== "/") return;
+                      scrollToSection(e, item.scrollId);
+                    }}
                     className="text-white text-lg font-light hover:text-purple-400 transition-colors duration-300 w-full py-2"
                   >
                     <div className="w-full flex justify-between items-center">
