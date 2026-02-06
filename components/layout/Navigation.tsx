@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import Image from "next/image";
 import StarField from "@/components/ui/StarField";
@@ -144,7 +143,7 @@ export default function Navigation({
                 alt="Ideate Logo"
                 width={140}
                 height={50}
-                className="cursor-pointer" // Optional: makes logo look clickable
+                className="cursor-pointer" 
               />
             </a>
 
