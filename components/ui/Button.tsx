@@ -65,22 +65,20 @@ export function VisitButton({
     </>
   );
 
-  if (href) {
-    return (
-      <motion.a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        initial="rest"
-        whileHover="hover"
-        whileTap={{ scale: 0.98 }}
-        className={baseClasses}
-        style={{ scale: 1 }}
-      >
-        {content}
-      </motion.a>
-    );
-  }
+if (href) {
+  return (
+    <motion.a
+      href={href}
+      initial="rest"
+      whileHover="hover"
+      whileTap={{ scale: 0.98 }}
+      className={baseClasses}
+      style={{ scale: 1 }}
+    >
+      {content}
+    </motion.a>
+  );
+}
 
   return (
     <motion.button
