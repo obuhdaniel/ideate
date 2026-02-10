@@ -104,7 +104,11 @@ export default function Footer() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="text-center"
               >
-                <VisitButton href="/contact" variant="outline" size="lg">
+                <VisitButton
+                  href="https://wa.me/2348029140650"
+                  variant="outline"
+                  size="lg"
+                >
                   MESSAGE US
                 </VisitButton>
               </motion.div>
